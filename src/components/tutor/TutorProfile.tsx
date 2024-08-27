@@ -1,10 +1,12 @@
 import React, {  useState } from 'react';
 import TutorNavbar from './TutorNavbar';
+// import { useNavigate } from 'react-router-dom';
 
 
 
 const TutorProfile: React.FC = () => {
-   
+
+
     const [profileImage, setProfileImage] = useState<string | ArrayBuffer | null>(null);
    
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,17 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LOGO from '../../../assets/Nextera_Logo.jpg'
 import axios  from 'axios';
 import { adminEndpoints } from '../../../constraints/endpoints/adminEndpoints';
 import { toast } from 'sonner';
-
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faEye,faEyeSlash} from '@fortawesome/free-solid-svg-icons'
 import * as Yup from 'yup';
 import  {Form,Formik,Field,ErrorMessage} from  'formik';
 
 
 
 const validationSchema= Yup.object({
-  email : Yup.string().email("Invalid email address").required("Email is  required"),
+  email : Yup.string().matches(
+    /^[a-zA-Z0-9._%+-]+@gmail\.com$/,
+    "Email must be a valid Gmail address"
+  ),
   password : Yup.string().required("Passoword required") 
 })
 
@@ -24,8 +28,12 @@ const initialValues={
 
 function AdminLogin() {
   const navigate = useNavigate()
+  const [showPassword,setShowPassword] =useState(false);
 
 
+const togglePasswordVisiblility=()=>{
+  setShowPassword(!showPassword)
+}
 
   useEffect(()=>{
     const token = localStorage.getItem('adminToken');
@@ -71,8 +79,25 @@ function AdminLogin() {
         <Form className='w-full max-w-sm'>
           <Field type="email" name="email" placeholder='Email' className='w-full p-3 m-4 border shadow-lg  rounded'/>
           <ErrorMessage name="email" component="div" className="text-red-500 mx-2 px-2  text-xs" />
-          <Field type="password" name="password" placeholder='Password' className='w-full p-3 m-4 border shadow-lg rounded'/>
-          <ErrorMessage name="password" component="div"  className="text-red-500 text-xs mx-2 px-2 " />
+          <div className='relative'>
+                <Field
+                  type={showPassword ? 'text' : 'password'}
+                  name='password'
+                  placeholder='Password'
+                  className='w-full p-3 m-4 border shadow-lg rounded'
+                />
+                <span
+                  onClick={togglePasswordVisiblility}
+                  className='absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer'
+                >
+                  <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                </span>
+                <ErrorMessage
+                  name='password'
+                  component='div'
+                  className='text-red-500 text-xs mx-2 px-2'
+                />
+              </div>
           <button disabled={isSubmitting}   type='submit'  className='w-full p-3 m-4 bg-[#000000]  text-white rounded-2xl hover:bg-[#44237a] '> {isSubmitting ? 'Submitting...' : 'Login'}</button>
           {isSubmitting && (
                   <div className="flex justify-center">

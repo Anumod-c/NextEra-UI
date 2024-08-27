@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import tutorLoginImage from '../../../assets/tutorlogin.png'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -10,7 +10,10 @@ import axios from 'axios';
 
 
 const validationSchema =Yup.object({
-  email:Yup.string().email("Invalid Email address").required("Email Required")
+  email:Yup.string().matches(
+    /^[a-zA-Z0-9._%+-]+@gmail\.com$/,
+    "Email must be a valid Gmail address"
+  ).required("Email Required")
 })
 
 const initialValues={
@@ -19,12 +22,7 @@ const initialValues={
 
 const TutorForgotPass: React.FC=()=> {
   const navigate =  useNavigate()
-  useEffect(()=>{
-    const token = localStorage.getItem('tutorToken');
-    if(token){
-      navigate('/tutor/dashboard')
-    }
-  },[navigate]);
+
   const handleSubmit=async(values : typeof initialValues,{setSubmitting}:{setSubmitting:(isSubmitting:boolean)=>void})=>{
     try{
       const response = await axios.post(tutorEndpoints.forgotPassword,values);

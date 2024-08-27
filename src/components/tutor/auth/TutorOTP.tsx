@@ -18,6 +18,8 @@ function TutorOTP() {
         const token = localStorage.getItem('tutorToken');
         if(token){
           navigate('/tutor/dashboard')
+        }else{
+            navigate('/tutor')
         }
       },[navigate]);
     const location = useLocation();

@@ -9,7 +9,10 @@ import {Form,Formik,ErrorMessage, Field} from 'formik';
 import axios from 'axios';
 
 const validationSchema =Yup.object({
-  email:Yup.string().email("Invalid Email address").required("Email Required")
+  email:Yup.string().matches(
+    /^[a-zA-Z0-9._%+-]+@gmail\.com$/,
+    "Email must be a valid Gmail address"
+  ).required("Email Required")
 })
 const initialValues={
   email:''

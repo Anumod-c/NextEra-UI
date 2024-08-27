@@ -5,7 +5,7 @@ import TutorRegister from "../components/tutor/auth/TutorRegister"
 import TutorForgotPass from "../components/tutor/auth/TutorForgotPass"
 import TutorOTP from "../components/tutor/auth/TutorOTP"
 import TutorResetPass from "../components/tutor/auth/TutorResetPass"
-import TutorProfile from "../components/tutor/auth/TutorProfile"
+import TutorProfile from "../components/tutor/TutorProfile"
 
 const TutorRoutes=()=>{
     const token = localStorage.getItem('tutorToken');

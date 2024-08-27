@@ -5,7 +5,9 @@ import {Formik,Form,ErrorMessage,Field} from 'formik'
 import * as Yup from 'yup';
 import { tutorEndpoints } from '../../../constraints/endpoints/tutorEndpoints';
 import { toast } from 'sonner';
-import { useEffect } from 'react';
+import {  useState } from 'react';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faEye,faEyeSlash} from '@fortawesome/free-solid-svg-icons'
 
 
 
@@ -19,8 +21,16 @@ const initialValues ={
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Name is required"),
-  email: Yup.string().email("Invalid email address").required("Email is required"),
-  phone: Yup.number().positive().integer().required("Phone number is required"),
+  email: Yup.string().matches(
+    /^[a-zA-Z0-9._%+-]+@gmail\.com$/,
+    "Email must be a valid Gmail address"
+  ).required("Email is required"),
+  phone: Yup.number().typeError("Phone number must be a number")
+  .test(
+    "len",
+    "Phone number must be exactly 10 digits",
+    (val) => val !== undefined && val.toString().length === 10
+  ),
   password: Yup.string().min(8, "Password must be at least 8 characters").matches(
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
     "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
@@ -31,12 +41,13 @@ const validationSchema = Yup.object({
 
 const TutorRegister: React.FC = () => {
   const navigate = useNavigate();
-  useEffect(()=>{
-    const token = localStorage.getItem('tutorToken');
-    if(token){
-      navigate('/tutor/dashboard')
-    }
-  },[navigate]);
+  const [showPassword,setShowPassword] =useState(false);
+ 
+
+  const togglePasswordVisiblility=()=>{
+    setShowPassword(!showPassword)
+  }
+
   const handleSubmit = async(values:typeof initialValues, {setSubmitting}:{setSubmitting:(isSubmitting:boolean)=>void}) => {
    try{
     const response = await axios.post(tutorEndpoints.register,values)
@@ -78,11 +89,45 @@ const TutorRegister: React.FC = () => {
               <Field name='phone' type="number" placeholder='Phone Number' className='w-full p-3 m-4 border shadow-lg rounded' />
               <ErrorMessage name="phone" component="div" className="text-red-500 mx-2 px-2  text-xs" />
 
-              <Field name='password' type="password" placeholder='Password' className='w-full p-3 m-4 border shadow-lg rounded' />
-              <ErrorMessage name="password" component="div" className="text-red-500 mx-2 px-2  text-xs" />
+              <div className='relative'>
+                <Field
+                  type={showPassword ? 'text' : 'password'}
+                  name='password'
+                  placeholder='Password'
+                  className='w-full p-3 m-4 border shadow-lg rounded'
+                />
+                <span
+                  onClick={togglePasswordVisiblility}
+                  className='absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer'
+                >
+                  <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                </span>
+                <ErrorMessage
+                  name='password'
+                  component='div'
+                  className='text-red-500 text-xs mx-2 px-2'
+                />
+              </div>
 
-              <Field name='confirmPassword' type="password" placeholder='Confirm Password' className='w-full p-3 m-4 border shadow-lg rounded' />
-              <ErrorMessage name="confirmPassword" component="div" className="text-red-500 mx-2 px-2  text-xs" />
+              <div className='relative'>
+                <Field
+                  type={showPassword ? 'text' : 'password'}
+                  name='confirmPassword'
+                  placeholder='confirmPassword'
+                  className='w-full p-3 m-4 border shadow-lg rounded'
+                />
+                <span
+                  onClick={togglePasswordVisiblility}
+                  className='absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer'
+                >
+                  <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                </span>
+                <ErrorMessage
+                  name='confirmPassword'
+                  component='div'
+                  className='text-red-500 text-xs mx-2 px-2'
+                />
+              </div>
 
           <button type='submit' disabled={isSubmitting} className='w-full p-3 m-4 bg-[#000000] text-white rounded-2xl hover:bg-[#44237a]'>{isSubmitting ? 'Submitting...' : "Register"}</button>
           <div className='flex justify-center'>

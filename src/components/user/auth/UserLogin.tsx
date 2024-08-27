@@ -4,17 +4,21 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 // import { userAxios } from '../../../constraints/axios/userAxios';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faEye,faEyeSlash} from '@fortawesome/free-solid-svg-icons'
 import axios from "axios";
 import {} from "@react-oauth/google";
 import { userEndpoints } from "../../../constraints/endpoints/userEndPoints";
 import * as Yup from "yup";
 import { Form, Formik, Field, ErrorMessage } from "formik";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const validationSchema = Yup.object({
   email: Yup.string()
-    .email("Invalid Email address")
-    .required("Email is required"),
+  .matches(
+    /^[a-zA-Z0-9._%+-]+@gmail\.com$/,
+    "Email must be a valid Gmail address"
+  ).required("Email is required"),
   password: Yup.string().required("Password Required"),
 });
 
@@ -25,6 +29,12 @@ const initialValues = {
 
 function UserLogin() {
   const navigate = useNavigate();
+  const [showPassword,setShowPassword] =useState(false);
+
+
+const togglePasswordVisiblility=()=>{
+  setShowPassword(!showPassword)
+}
 
   useEffect(()=>{
     const token = localStorage.getItem('userToken');
@@ -103,17 +113,26 @@ function UserLogin() {
                 component="div"
                 className="text-red-500 mx-2 px-2  text-xs"
               />
-              <Field
-                type="password"
-                name="password"
-                placeholder="Password"
-                className="w-full p-3 m-4 border shadow-lg rounded"
-              />
-              <ErrorMessage
-                name="password"
-                component="div"
-                className="text-red-500 mx-2 px-2  text-xs"
-              />
+              <div className='relative'>
+                <Field
+                  type={showPassword ? 'text' : 'password'}
+                  name='password'
+                  placeholder='Password'
+                  className='w-full p-3 m-4 border shadow-lg rounded'
+                />
+                <span
+                  onClick={togglePasswordVisiblility}
+                  className='absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer'
+                >
+                  <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                </span>
+                <ErrorMessage
+                  name='password'
+                  component='div'
+                  className='text-red-500 text-xs mx-2 px-2'
+                />
+              </div>
+              
 
               <a
                 className="flex justify-end text-blue-800"

@@ -1,9 +1,15 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import {  Link, useNavigate } from "react-router-dom";
 import profileImage from "../../assets/profile.png";
+import { FaBars, FaTimes } from "react-icons/fa";
 
 const UserNavbar: React.FC = () => {
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
   const token =  localStorage.getItem('userToken');
   const handleProfileClick = () => {
     if (token) {
@@ -15,49 +21,63 @@ const UserNavbar: React.FC = () => {
     }
   };
   return (
-    <nav className="bg-white  p-4 shadow-lg flex">
-      <div className="container flex justify-evenly items-center ">
-        <div className="flex">
+    <nav className="bg-gray-800 text-white">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="flex justify-between items-center h-16">
+        {/* Logo */}
+        <div className="flex-shrink-0">
+          <a href="/" className="text-xl font-bold">
+            Nextera
+          </a>
+        </div>
+
+        {/* Search Bar */}
+        <div className=" md:flex flex-grow mx-4">
           <input
-            className="flex-1 px-4 py-2 border-none  outline-none focus:ring-1 focus:ring-blue-300"
             type="text"
             placeholder="Search..."
+            className="w-full p-2 rounded-md text-black"
           />
-          <button className="ml-2 px-4 py-2 bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-300">
-            Search
+        </div>
+        
+
+        {/* Desktop Menu */}
+        <div className="hidden justify-center items-center p-4 m-4 md:flex space-x-4">
+          <a href="#" className="hover:text-gray-400">
+            My Course
+          </a>
+          <a href="#" className="hover:text-gray-400">
+            Discussion
+          </a>
+          <button  onClick={handleProfileClick} className=" w-16 h-16 px-3 py-2 rounded-md ">
+            <img src={profileImage} alt="" />
           </button>
         </div>
-        <div className="flex  space-x-6">
-          <Link
-            to="/"
-            className="text-black text-lg font-semibold hover:text-gray-200"
-          >
-            Home
-          </Link>
-          <Link
-            to="/courses"
-            className="text-black text-lg font-semibold hover:text-gray-200"
-          >
-            Courses
-          </Link>
-          <Link
-            to="/discussions"
-            className="text-black text-lg font-semibold hover:text-gray-200"
-          >
-            Discussions
-          </Link>
+
+        {/* Mobile Menu Icon */}
+        <div className="md:hidden">
+          <button onClick={toggleMenu} className="focus:outline-none">
+            {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+          </button>
         </div>
       </div>
-      <div className="flex pr-4 space-x-4">
-        
-      <button
-          onClick={handleProfileClick}
-          className="text-black text-lg font-semibold hover:text-gray-200 flex items-center"
-        >
-          <img src={profileImage} alt="Profile" className="w-12 h-12" />
-        </button>
+    </div>
+
+    {/* Mobile Menu Dropdown */}
+    {isMenuOpen && (
+      <div className="md:hidden px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <a href="#" className="block text-center py-2 hover:bg-gray-700">
+          My Course
+        </a>
+        <a href="#" className="block text-center py-2 hover:bg-gray-700">
+          Discussion
+        </a>
+        <Link to={'/profile'} className="block text-center py-2 hover:bg-gray-700">
+            Profile
+          </Link>
       </div>
-    </nav>
+    )}
+  </nav>
   );
 };
 

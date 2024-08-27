@@ -1,30 +1,32 @@
-import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
-import TutorNavbar from '../../components/tutor/auth/TutorNavbar';
+import React from 'react';
+import TutorNavbar from '../../components/tutor/TutorNavbar';
+import TutorSidebar from '../../components/tutor/TutorSidebar';
+import TutorHeader from '../../components/tutor/TutorHeader';
+import TutorBarGraph from '../../components/tutor/TutorBarGraph';
+import TutorPieGraph from '../../components/tutor/TutorPieGraph';
+import Footer from './Footer';
 
 function TutorDashboard() {
-  const navigate = useNavigate();
-  const token = localStorage.getItem('tutorToken');
-
-  useEffect(()=>{
-    if(!token){
-      navigate('/tutor')
-    }else{
-      navigate('/tutor/dashboard')
-    }
-  })
-
   return (
-    <div>
-        <>
-        <TutorNavbar/>
-        </>
-        <div className='flex p-4 justify-center items-center'>
-        <p className='p-4'>Tutor Home</p> 
+    <div >
+      <TutorNavbar />
+      <TutorHeader />
+      <div className="flex mt-4 pt-4">
+        <TutorSidebar  />
+        <div className="flex-grow bg-white-100 mt-4 p-4">
+          <div className="grid grid-cols-1 md:grid-cols-2  p-4 gap-4">
+            <div className="bg-white shadow-lg flex items-center  rounded-lg ">
+              <TutorBarGraph />
+            </div>
+            <div className="bg-white flex items-center shadow-lg   rounded-lg ">
+              <TutorPieGraph />
+            </div>
+          </div>
         </div>
-      
+      </div>
+      <Footer />
     </div>
-  )
+  );
 }
 
-export default TutorDashboard
+export default TutorDashboard;
