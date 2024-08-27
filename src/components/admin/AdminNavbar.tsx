@@ -1,9 +1,8 @@
-import React from 'react';
-import { FaBars } from 'react-icons/fa';
+import React from "react";
+import { FaBars } from "react-icons/fa";
 
 interface AdminNavbarProps {
   toggleSidebar: () => void;
- 
 }
 
 const AdminNavbar: React.FC<AdminNavbarProps> = ({ toggleSidebar }) => {
@@ -22,20 +21,20 @@ const AdminNavbar: React.FC<AdminNavbarProps> = ({ toggleSidebar }) => {
       </div>
 
       {/* Navbar Toggle Button for Mobile */}
-      
 
       {/* Search Bar */}
-      
 
       {/* Desktop Menu */}
       <div className=" md:flex justify-center items-center  space-x-4">
-        <a href="#" className="hover:text-gray-400">My Course</a>
-        <a href="#" className="hover:text-gray-400">Discussion</a>
-        
+        <a href="#" className="hover:text-gray-400">
+          My Course
+        </a>
+        <a href="#" className="hover:text-gray-400">
+          Discussion
+        </a>
       </div>
 
       {/* Mobile Menu (Dropdown) */}
-      
     </nav>
   );
 };

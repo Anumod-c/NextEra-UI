@@ -28,18 +28,17 @@ const TutorNavbar = () => {
               className="w-full p-2 rounded-md shadow-lg text-black"
             />
           </div>
-          
 
           {/* Desktop Menu */}
           <div className="hidden justify-center items-center p-4 m-4 md:flex space-x-4">
-          <a href="#" className="hover:text-gray-400">
+            <a href="#" className="hover:text-gray-400">
               My Course
             </a>
             <a href="#" className="hover:text-gray-400">
               Discussion
             </a>
             <button className=" px-3 py-2 rounded-md flex items-center">
-            <img className="w-12 h-12" src={profileImage} alt="" />
+              <img className="w-12 h-12" src={profileImage} alt="" />
             </button>
           </div>
 
@@ -61,9 +60,9 @@ const TutorNavbar = () => {
           <a href="#" className="block text-center py-2 hover:bg-gray-700">
             Discussion
           </a>
-          <a  href="#" className="block text-center py-2 hover:bg-gray-700">
-              Profile
-            </a>
+          <a href="#" className="block text-center py-2 hover:bg-gray-700">
+            Profile
+          </a>
         </div>
       )}
     </nav>

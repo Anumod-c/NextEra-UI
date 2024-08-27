@@ -16,17 +16,17 @@ interface FormValues {
 
 function UserOtp() {
     const navigate = useNavigate();
-    useEffect(()=>{
+    useEffect(() => {
         const token = localStorage.getItem('userToken');
-        if(token){
-          navigate('/')
+        if (token) {
+            navigate('/')
         }
-      },[navigate]);
+    }, [navigate]);
     const location = useLocation();
     const { forgotPass, email } = location.state || { forgotPass: false, email: '' };
     const inputRef = useRef<(HTMLInputElement | null)[]>([]);
     const [countdown, setCountdown] = useState(60);
-    
+
     const [showResendButton, setShowResendButton] = useState(false);
     const formik = useFormik<FormValues>({
         initialValues: {
@@ -36,13 +36,13 @@ function UserOtp() {
             try {
                 console.log('otp response')
                 const otp = values.otp.join('');
-                
-                const response = await axios.post(userEndpoints.otp,{otp,forgotPass });
-                console.log('otp response',response)
+
+                const response = await axios.post(userEndpoints.otp, { otp, forgotPass });
+                console.log('otp response', response)
                 if (response.data.success) {
-                    if(response.data.forgotPass){
-                        navigate('/resetPassword',{ state: { email } })
-                    }else{
+                    if (response.data.forgotPass) {
+                        navigate('/resetPassword', { state: { email } })
+                    } else {
                         navigate('/login');
                     }
                 } else {

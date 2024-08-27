@@ -8,20 +8,20 @@ import { useLocation } from 'react-router-dom';
 import { tutorEndpoints } from '../../../constraints/endpoints/tutorEndpoints';
 
 
-interface FormValues{
-    otp:string[];
+interface FormValues {
+    otp: string[];
 }
 
 function TutorOTP() {
-    const navigate= useNavigate();
-    useEffect(()=>{
+    const navigate = useNavigate();
+    useEffect(() => {
         const token = localStorage.getItem('tutorToken');
-        if(token){
-          navigate('/tutor/dashboard')
-        }else{
+        if (token) {
+            navigate('/tutor/dashboard')
+        } else {
             navigate('/tutor')
         }
-      },[navigate]);
+    }, [navigate]);
     const location = useLocation();
     const { forgotPass, email } = location.state || { forgotPass: false, email: '' };
     const inputRef = useRef<(HTMLInputElement | null)[]>([]);
@@ -36,13 +36,13 @@ function TutorOTP() {
             try {
                 console.log('otp response')
                 const otp = values.otp.join('');
-                
-                const response = await axios.post(tutorEndpoints.otp,{otp,forgotPass });
-                console.log('otp response',response)
+
+                const response = await axios.post(tutorEndpoints.otp, { otp, forgotPass });
+                console.log('otp response', response)
                 if (response.data.success) {
-                    if(response.data.forgotPass){
-                        navigate('/tutor/resetPassword',{ state: { email } })
-                    }else{
+                    if (response.data.forgotPass) {
+                        navigate('/tutor/resetPassword', { state: { email } })
+                    } else {
                         navigate('/tutor/dashboard');
                     }
                 } else {

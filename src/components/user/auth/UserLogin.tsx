@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 // import { userAxios } from '../../../constraints/axios/userAxios';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faEye,faEyeSlash} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import axios from "axios";
-import {} from "@react-oauth/google";
+import { } from "@react-oauth/google";
 import { userEndpoints } from "../../../constraints/endpoints/userEndPoints";
 import * as Yup from "yup";
 import { Form, Formik, Field, ErrorMessage } from "formik";
@@ -15,10 +15,10 @@ import { useEffect, useState } from "react";
 
 const validationSchema = Yup.object({
   email: Yup.string()
-  .matches(
-    /^[a-zA-Z0-9._%+-]+@gmail\.com$/,
-    "Email must be a valid Gmail address"
-  ).required("Email is required"),
+    .matches(
+      /^[a-zA-Z0-9._%+-]+@gmail\.com$/,
+      "Email must be a valid Gmail address"
+    ).required("Email is required"),
   password: Yup.string().required("Password Required"),
 });
 
@@ -29,19 +29,19 @@ const initialValues = {
 
 function UserLogin() {
   const navigate = useNavigate();
-  const [showPassword,setShowPassword] =useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
 
-const togglePasswordVisiblility=()=>{
-  setShowPassword(!showPassword)
-}
+  const togglePasswordVisiblility = () => {
+    setShowPassword(!showPassword)
+  }
 
-  useEffect(()=>{
+  useEffect(() => {
     const token = localStorage.getItem('userToken');
-    if(token){
+    if (token) {
       navigate('/')
     }
-  },[navigate]);
+  }, [navigate]);
 
   const handleGoogleLogin = async (CredentialResponse: CredentialResponse) => {
     const { credential } = CredentialResponse;
@@ -52,7 +52,7 @@ const togglePasswordVisiblility=()=>{
       console.log(result, "lllllllllllllllllllllllllllllllllll");
 
       if (result.data.success) {
-        localStorage.setItem('userToken',result.data.token);
+        localStorage.setItem('userToken', result.data.token);
         navigate("/");
       } else {
         toast.info("Couldnt login with google");
@@ -71,7 +71,7 @@ const togglePasswordVisiblility=()=>{
       const result = await axios.post(userEndpoints.login, values);
       if (result.data.success) {
         console.log(result.data);
-        localStorage.setItem('userToken',result.data.token);
+        localStorage.setItem('userToken', result.data.token);
         navigate("/");
         toast.success("Logged in Successfully");
       } else {
@@ -132,7 +132,7 @@ const togglePasswordVisiblility=()=>{
                   className='text-red-500 text-xs mx-2 px-2'
                 />
               </div>
-              
+
 
               <a
                 className="flex justify-end text-blue-800"

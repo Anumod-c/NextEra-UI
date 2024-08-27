@@ -27,29 +27,39 @@ const validationSchema = Yup.object({
 
 const UserResetPass: React.FC = () => {
   const navigate = useNavigate();
-  useEffect(()=>{
-    const token = localStorage.getItem('userToken');
-    if(token){
-      navigate('/')
+  useEffect(() => {
+    const token = localStorage.getItem("userToken");
+    if (token) {
+      navigate("/");
     }
-  },[navigate]);
-  const location = useLocation()
-  const { email } = location.state || { email: '' };
+  }, [navigate]);
+  const location = useLocation();
+  const { email } = location.state || { email: "" };
   const handleSubmit = async (
     values: typeof intitalValues,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
     try {
-      const response = await axios.post(userEndpoints.resetPassword, { email, password: values.password });
+      const response = await axios.post(userEndpoints.resetPassword, {
+        email,
+        password: values.password,
+      });
       if (response.data.success) {
         navigate("/login");
-        toast.success("Password reset successful! You can now log in with your new password.");
+        toast.success(
+          "Password reset successful! You can now log in with your new password."
+        );
       } else {
-        toast.error(response.data.message || "Something went wrong. Please try again later.");
+        toast.error(
+          response.data.message ||
+            "Something went wrong. Please try again later."
+        );
       }
     } catch (error) {
       console.log("Reset password error");
-      toast.error("An error occurred while resetting your password. Please try again.");
+      toast.error(
+        "An error occurred while resetting your password. Please try again."
+      );
     } finally {
       setSubmitting(false);
     }
@@ -91,7 +101,10 @@ const UserResetPass: React.FC = () => {
                 component="div"
                 className="text-red-500 mx-2 px-2  text-xs"
               />
-              <button type="submit" className="w-full p-3 m-4 bg-[#000000]  text-white rounded-2xl hover:bg-[#44237a] ">
+              <button
+                type="submit"
+                className="w-full p-3 m-4 bg-[#000000]  text-white rounded-2xl hover:bg-[#44237a] "
+              >
                 {isSubmitting ? "Submitting..." : "Submit"}
               </button>
               {isSubmitting && (

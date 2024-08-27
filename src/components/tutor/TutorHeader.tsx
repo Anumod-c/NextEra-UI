@@ -1,6 +1,6 @@
-import React from 'react';
-import { FaStar, FaUserGraduate, FaBookOpen } from 'react-icons/fa';
-import tutorImage from '../../assets/profile.png';
+import React from "react";
+import { FaStar, FaUserGraduate, FaBookOpen } from "react-icons/fa";
+import tutorImage from "../../assets/profile.png";
 
 function TutorHeader() {
   return (
@@ -13,19 +13,18 @@ function TutorHeader() {
           alt="Tutor"
         />
       </div>
-      
-      
 
       {/* Tutor Info */}
       <div className="flex-grow flex flex-col justify-between ml-4">
         <div className="hidden  pl-2 sm:block font-bold text-3xl">Aaliya</div>
         <div className="flex flex-col sm:flex-row justify-evenly items-center m-4 space-y-4 sm:space-y-0">
           <ul className="flex space-x-4 text-lg">
-          <li className="flex items-center">
+            <li className="flex items-center">
               <FaStar className="text-yellow-500 mr-2" /> 0/5
             </li>
             <li className="flex items-center">
-              <FaUserGraduate className="text-green-500 mr-2" /> 4 Enrolled Students
+              <FaUserGraduate className="text-green-500 mr-2" /> 4 Enrolled
+              Students
             </li>
             <li className="flex items-center">
               <FaBookOpen className="text-orange-500 mr-2" /> 2 Courses
@@ -35,11 +34,10 @@ function TutorHeader() {
             Create Course
           </button>
           <button className="block   sm:hidden rounded-lg p-2 bg-green-500 text-white">
-          Create Course
-        </button>
+            Create Course
+          </button>
         </div>
       </div>
-      
     </div>
   );
 }

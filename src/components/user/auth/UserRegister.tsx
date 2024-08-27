@@ -1,8 +1,8 @@
 import userRegisterImage from "../../../assets/tutorlogin.png";
 import { useNavigate } from "react-router-dom";
 // import { userAxios } from '../../../constraints/axios/userAxios';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import{faEye,faEyeSlash} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 import { userEndpoints } from "../../../constraints/endpoints/userEndPoints";
 import * as Yup from "yup";
@@ -49,10 +49,10 @@ const validationSchema = Yup.object({
 });
 const UserRegister: React.FC = () => {
   const navigate = useNavigate();
-  const [showPassword,setShowPassword] =useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
 
-  const togglePasswordVisiblility=()=>{
+  const togglePasswordVisiblility = () => {
     setShowPassword(!showPassword)
   }
   useEffect(() => {
@@ -136,7 +136,7 @@ const UserRegister: React.FC = () => {
                 className="text-red-500 mx-2 px-2  text-xs"
               />
 
-<div className='relative'>
+              <div className='relative'>
                 <Field
                   type={showPassword ? 'text' : 'password'}
                   name='password'
