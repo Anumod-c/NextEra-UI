@@ -1,14 +1,37 @@
-import React from 'react'
+import React, { useState } from 'react'
 import AdminSideBar from '../../components/admin/AdminSideBar'
+import AdminNavbar from '../../components/admin/AdminNavbar';
+import AdminHeader from '../../components/admin/AdminHeader';
 
 function TutorPage()  {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
     return (
-      <div className='main flex'>
-        <AdminSideBar />
-        <div className='right-side-body flex-1  p-8 ml-[16.67%]  flex justify-center'>
-          <h1 className='text-2xl'>Welcome To Admin userList</h1>
+      <div className="flex">
+      {/* Sidebar */}
+      <AdminSideBar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+
+      {/* Main Content */}
+      <div className={`flex-1 transition-all duration-300 ease-in-out ${isSidebarOpen ? 'ml-64' : 'ml-0'} md:ml-64`}>
+        {/* Navbar */}
+        <AdminNavbar/>
+        <>
+        <AdminHeader/>
+        <div className='flex justify-center text-3xl font-semibold m-4 p-4'>
+        Instructor list
         </div>
+        <div className="flex-grow bg-white mt-4 p-4">
+          <h1>Table wll be llisted ere shortly</h1>
+        </div>
+        
+        </>
+        
       </div>
+     
+    </div>
     )
   }
 

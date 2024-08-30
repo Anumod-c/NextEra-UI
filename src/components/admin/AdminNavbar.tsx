@@ -1,40 +1,29 @@
 import React from "react";
-import { FaBars } from "react-icons/fa";
 
-interface AdminNavbarProps {
-  toggleSidebar: () => void;
-}
 
-const AdminNavbar: React.FC<AdminNavbarProps> = ({ toggleSidebar }) => {
+const AdminNavbar: React.FC = () => {
   return (
-    <nav className="shadow-lg text-black flex justify-evenly items-center p-4 bg-white relative">
-      {/* Sidebar Toggle Button for Mobile */}
-      <button onClick={toggleSidebar} className="md:hidden">
-        <FaBars size={24} />
-      </button>
-
+    <nav className="shadow-lg text-black flex justify-between items-center p-4 bg-white relative">
+     
       {/* Logo */}
       <div className="flex-shrink-0">
-        <a href="/" className="text-xl font-bold">
+        <a href="/" className="text-xl  p-4  ml-4 font-bold">
           Nextera
         </a>
       </div>
 
-      {/* Navbar Toggle Button for Mobile */}
-
-      {/* Search Bar */}
-
-      {/* Desktop Menu */}
-      <div className=" md:flex justify-center items-center  space-x-4">
+      {/* Desktop Navigation Links */}
+      {/* <div className="hidden md:flex md:space-x-6">
         <a href="#" className="hover:text-gray-400">
-          My Course
+          Profile
         </a>
         <a href="#" className="hover:text-gray-400">
           Discussion
         </a>
-      </div>
+      </div> */}
 
       {/* Mobile Menu (Dropdown) */}
+      {/* Add mobile menu if needed here */}
     </nav>
   );
 };

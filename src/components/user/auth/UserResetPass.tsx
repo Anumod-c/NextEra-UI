@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
-import axios from "axios";
+import React from "react";
 import { toast } from "sonner";
 import * as Yup from "yup";
 import { Form, Formik, ErrorMessage, Field } from "formik";
 import UserforgotImage from "../../../assets/tutorlogin.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { userEndpoints } from "../../../constraints/endpoints/userEndPoints";
+import userAxios from "../../../constraints/axios/userAxios";
 
 const intitalValues = {
   password: "",
@@ -27,12 +27,12 @@ const validationSchema = Yup.object({
 
 const UserResetPass: React.FC = () => {
   const navigate = useNavigate();
-  useEffect(() => {
-    const token = localStorage.getItem("userToken");
-    if (token) {
-      navigate("/");
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   const token = localStorage.getItem("userToken");
+  //   if (token) {
+  //     navigate("/");
+  //   }
+  // }, [navigate]);
   const location = useLocation();
   const { email } = location.state || { email: "" };
   const handleSubmit = async (
@@ -40,7 +40,7 @@ const UserResetPass: React.FC = () => {
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
     try {
-      const response = await axios.post(userEndpoints.resetPassword, {
+      const response = await userAxios.post(userEndpoints.resetPassword, {
         email,
         password: values.password,
       });

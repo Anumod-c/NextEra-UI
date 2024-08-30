@@ -1,5 +1,7 @@
 // import React from 'react';
-import tutorLoginImage from "../../../assets/tutorlogin.png";
+import { Player } from "@lottiefiles/react-lottie-player";
+import Cookies from 'js-cookie'
+
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
@@ -7,12 +9,13 @@ import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import axios from "axios";
+
 import { } from "@react-oauth/google";
 import { userEndpoints } from "../../../constraints/endpoints/userEndPoints";
 import * as Yup from "yup";
 import { Form, Formik, Field, ErrorMessage } from "formik";
 import { useEffect, useState } from "react";
-
+import  {userAxios}  from "../../../constraints/axios/userAxios";
 const validationSchema = Yup.object({
   email: Yup.string()
     .matches(
@@ -68,10 +71,13 @@ function UserLogin() {
     { setSubmitting }: { setSubmitting: (isSumbitting: boolean) => void }
   ) => {
     try {
-      const result = await axios.post(userEndpoints.login, values);
-      if (result.data.success) {
-        console.log(result.data);
-        localStorage.setItem('userToken', result.data.token);
+      const result = await userAxios.post(userEndpoints.login, values);
+      console.log('resukteeeeee',result.data);
+      
+      if (result.data.result.success) {
+        console.log(result.data.token.accessToken);
+        Cookies.set('accessToken',JSON.stringify(result.data.token.accessToken), { expires: 15 / 1440 }); // Expires in 15 minutes
+        Cookies.set('refreshToken', JSON.stringify(result.data.token.refreshToken), { expires: 7 }); // Expires in 7 days        // localStorage.setItem('userToken', result.data.token);
         navigate("/");
         toast.success("Logged in Successfully");
       } else {
@@ -86,9 +92,14 @@ function UserLogin() {
   };
   return (
     <div className="flex h-screen">
+      
       <div className="flex-1 bg-[#6227c2] flex justify-center items-center">
-        <img src={tutorLoginImage} alt="login-img" className="w-4/5 max-w-lg" />
-      </div>
+      <Player
+              autoplay
+              loop
+              src="https://lottie.host/d7d79707-db33-4538-b2a0-2437d31f0cca/lyH67nxXFp.json"
+              style={{ height: "80%", width: "80%" }}
+            />      </div>
       <div className="flex-1   flex flex-col justify-center items-center p-6">
         <h2 className="text-2xl font-bold mb-2">User Login</h2>
         <p className="text-gray-600 mb-4">
