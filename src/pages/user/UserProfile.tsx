@@ -1,17 +1,8 @@
-import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
+import React from 'react'
 import UserNavbar from '../../components/user/UserNavbar';
 
 function UserProfile() {
-const navigate = useNavigate();
-    useEffect(()=>{
-        const token = localStorage.getItem('userToken');
-        if(!token){
-          navigate('/')
-        }else{
-            navigate('/profile')
-        }
-      },[navigate]);
+   
   return (
     <div>
         <UserNavbar/>

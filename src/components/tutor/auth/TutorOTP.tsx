@@ -14,14 +14,7 @@ interface FormValues {
 
 function TutorOTP() {
     const navigate = useNavigate();
-    useEffect(() => {
-        const token = localStorage.getItem('tutorToken');
-        if (token) {
-            navigate('/tutor/dashboard')
-        } else {
-            navigate('/tutor')
-        }
-    }, [navigate]);
+    
     const location = useLocation();
     const { forgotPass, email } = location.state || { forgotPass: false, email: '' };
     const inputRef = useRef<(HTMLInputElement | null)[]>([]);

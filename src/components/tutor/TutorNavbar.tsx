@@ -10,7 +10,7 @@ const TutorNavbar = () => {
   };
 
   return (
-    <nav className="shadow-lg bg-gradient-to-b from-blue-200 to-purple-200 text-black">
+    <nav className="shadow-lg bg-gradient-to-b  from-blue-200 to-purple-200 text-black">
       <div className="  mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-center items-center h-16">
           {/* Logo */}

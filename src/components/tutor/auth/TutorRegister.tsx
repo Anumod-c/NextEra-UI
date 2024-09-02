@@ -54,7 +54,7 @@ const TutorRegister: React.FC = () => {
     console.log("data send from client");
     if (response.data.success) {
       console.log("register client andd navigate to otp", response.data);
-      navigate(`/tutor/otp`);
+      navigate('/tutor/otp');
     } else {
       toast.info(response.data.message);
     }

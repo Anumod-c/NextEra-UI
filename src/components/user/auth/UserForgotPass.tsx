@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import tutorLoginImage from '../../../assets/tutorlogin.png'
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie'
 import { toast } from 'sonner';
 import { userEndpoints } from '../../../constraints/endpoints/userEndPoints';
 import * as Yup from 'yup';
@@ -21,12 +22,16 @@ const UserForgotPass: React.FC=()=> {
   const otpCountdown= localStorage.getItem('otpCountdown');
   
     const navigate =  useNavigate()
-    useEffect(()=>{
-      const token = localStorage.getItem('userToken');
+    useEffect(() => {
+      const token = Cookies.get('accessToken');
+      console.log('acesssss',token);
       if(token){
-        navigate('/')
+        navigate('/home')
       }
-    },[navigate]);
+      if (token) {
+        navigate('/home')
+      }
+    }, [navigate]);
     const handleSubmit=async(values : typeof initialValues,{setSubmitting}:{setSubmitting:(isSubmitting:boolean)=>void})=>{
       try{
         if(otpCountdown==='0'){

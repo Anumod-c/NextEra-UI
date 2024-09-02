@@ -27,7 +27,7 @@ const TutorForgotPass: React.FC=()=> {
     try{
       const response = await axios.post(tutorEndpoints.forgotPassword,values);
       if(response.data.success){
-        console.log(response)
+        console.log(response,'ddd')
         navigate('/tutor/otp',{ state: { forgotPass: true,email: values.email } })
       }else{
         toast.error("Email not exist")

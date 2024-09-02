@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import UserforgotImage from '../../../assets/tutorlogin.png'
 import axios from "axios";
 import { toast } from "sonner";
@@ -28,12 +28,7 @@ const validationSchema = Yup.object({
 
 const TutorResetPass: React.FC = () => {
   const navigate = useNavigate();
-  useEffect(()=>{
-    const token = localStorage.getItem('tutorToken');
-    if(token){
-      navigate('/tutor/dashboard')
-    }
-  },[navigate]);
+  
   const location = useLocation()
   const { email } = location.state || { email: '' };
   const handleSubmit = async (

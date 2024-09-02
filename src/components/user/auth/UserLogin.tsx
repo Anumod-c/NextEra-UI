@@ -14,7 +14,7 @@ import { } from "@react-oauth/google";
 import { userEndpoints } from "../../../constraints/endpoints/userEndPoints";
 import * as Yup from "yup";
 import { Form, Formik, Field, ErrorMessage } from "formik";
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import  {userAxios}  from "../../../constraints/axios/userAxios";
 const validationSchema = Yup.object({
   email: Yup.string()
@@ -24,7 +24,6 @@ const validationSchema = Yup.object({
     ).required("Email is required"),
   password: Yup.string().required("Password Required"),
 });
-
 const initialValues = {
   email: "",
   password: "",
@@ -39,12 +38,7 @@ function UserLogin() {
     setShowPassword(!showPassword)
   }
 
-  useEffect(() => {
-    const token = localStorage.getItem('userToken');
-    if (token) {
-      navigate('/')
-    }
-  }, [navigate]);
+
 
   const handleGoogleLogin = async (CredentialResponse: CredentialResponse) => {
     const { credential } = CredentialResponse;
@@ -56,7 +50,7 @@ function UserLogin() {
 
       if (result.data.success) {
         localStorage.setItem('userToken', result.data.token);
-        navigate("/");
+        navigate("/home");
       } else {
         toast.info("Couldnt login with google");
       }
@@ -72,13 +66,13 @@ function UserLogin() {
   ) => {
     try {
       const result = await userAxios.post(userEndpoints.login, values);
-      console.log('resukteeeeee',result.data);
+      console.log('resulteeeeee',result.data);
       
       if (result.data.result.success) {
         console.log(result.data.token.accessToken);
         Cookies.set('accessToken',JSON.stringify(result.data.token.accessToken), { expires: 15 / 1440 }); // Expires in 15 minutes
         Cookies.set('refreshToken', JSON.stringify(result.data.token.refreshToken), { expires: 7 }); // Expires in 7 days        // localStorage.setItem('userToken', result.data.token);
-        navigate("/");
+        navigate("/home");
         toast.success("Logged in Successfully");
       } else {
         toast.error("User dont exist");
@@ -93,11 +87,11 @@ function UserLogin() {
   return (
     <div className="flex h-screen">
       
-      <div className="flex-1 bg-[#6227c2] flex justify-center items-center">
+      <div className="flex-1 bg-[#ecf5fb] flex justify-center items-center">
       <Player
               autoplay
               loop
-              src="https://lottie.host/d7d79707-db33-4538-b2a0-2437d31f0cca/lyH67nxXFp.json"
+              src="https://lottie.host/7100dd4f-826b-421f-801b-752477ccd826/vBS1LriaZx.json"
               style={{ height: "80%", width: "80%" }}
             />      </div>
       <div className="flex-1   flex flex-col justify-center items-center p-6">

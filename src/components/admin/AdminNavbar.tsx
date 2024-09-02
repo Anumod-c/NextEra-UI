@@ -1,7 +1,11 @@
 import React from "react";
+import { FaBars } from "react-icons/fa";
 
+interface AdminNavbarProps {
+  toggleSidebar: () => void;
+}
+const AdminNavbar: React.FC<AdminNavbarProps>= ({toggleSidebar}) => {
 
-const AdminNavbar: React.FC = () => {
   return (
     <nav className="shadow-lg text-black flex justify-between items-center p-4 bg-white relative">
      
@@ -10,6 +14,12 @@ const AdminNavbar: React.FC = () => {
         <a href="/" className="text-xl  p-4  ml-4 font-bold">
           Nextera
         </a>
+      </div>
+      {/* Hamburger Icon for Mobile View */}
+      <div className="md:hidden flex items-center">
+        <button onClick={toggleSidebar} className="text-black">
+          <FaBars size={24} />
+        </button>
       </div>
 
       {/* Desktop Navigation Links */}

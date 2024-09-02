@@ -10,15 +10,14 @@ const UserNavbar: React.FC = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-  const token = localStorage.getItem('userToken');
   const handleProfileClick = () => {
-    if (token) {
+    
       // Navigate to profile page if token is present
       navigate('/profile');
-    } else {
+    
       // Navigate to login page if token is not present
-      navigate('/login');
-    }
+      
+    
   };
   return (
     <nav className="bg-gray-800 text-white">
@@ -26,7 +25,7 @@ const UserNavbar: React.FC = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <a href="/" className="text-xl font-bold">
+            <a href="/tutor" className="text-xl font-bold">
               Nextera
             </a>
           </div>

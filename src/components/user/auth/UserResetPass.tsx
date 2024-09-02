@@ -11,7 +11,7 @@ const intitalValues = {
   password: "",
   confirmPassword: "",
 };
-
+localStorage.removeItem('otpCountdown')
 const validationSchema = Yup.object({
   password: Yup.string()
     .min(8, "Password must be at least 8 characters")

@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import tutorLoginImage from '../../../assets/tutorlogin.png';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
@@ -16,10 +17,19 @@ function UserOtp() {
   const location = useLocation();
   const { forgotPass, email } = location.state || { forgotPass: false, email: '' };
   const inputRef = useRef<(HTMLInputElement | null)[]>([]);
-  
+  useEffect(() => {
+    const token = Cookies.get('accessToken');
+    console.log('acesssss',token);
+    if(token){
+      navigate('/home')
+    }
+    if (token) {
+      navigate('/home')
+    }
+  }, [navigate]);
   const [countdown, setCountdown] = useState<number>(() => {
     const savedCountdown = localStorage.getItem('otpCountdown');
-    return savedCountdown ? Number(savedCountdown) : 10;
+    return savedCountdown ? Number(savedCountdown) : 60;
   });
   
   const [showResendButton, setShowResendButton] = useState<boolean>(false);
@@ -33,7 +43,8 @@ function UserOtp() {
         const otp = values.otp.join('');
         const response = await axios.post(userEndpoints.otp, { otp, forgotPass });
         console.log('ereeeeeee',response);
-        
+        localStorage.removeItem('otpCountdown')
+
         if (response.data.success) {
           if (response.data.forgotPass) {
             navigate('/resetPassword', { state: { email } });
@@ -54,9 +65,9 @@ function UserOtp() {
       const response = await axios.post(userEndpoints.resendOtp,{email,forgotPass});
       if(response.data.success){
         toast.success('OTP resend successfully');
-        setCountdown(10);
+        setCountdown(60);
         setShowResendButton(false);
-        localStorage.setItem('otpCountdown','10');
+        localStorage.setItem('otpCountdown','60');
       }else{
         toast.error(response.data.message)
       }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import tutorLoginImage from "../../../assets/tutorlogin.png";
+import { Player } from "@lottiefiles/react-lottie-player";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import * as Yup from "yup";
@@ -59,7 +59,7 @@ function TutorLogin() {
     try {
       const result = await axios.post(tutorEndpoints.login, values);
       if (result.data.success) {
-        console.log(result.data);
+        console.log(result.data,'gg');
         localStorage.setItem("tutorToken", result.data.token);
         navigate("/tutor/dashboard");
         toast.success("tutor logged in successfull");
@@ -74,8 +74,13 @@ function TutorLogin() {
   };
   return (
     <div className="flex h-screen">
-      <div className="flex-1 bg-[#6227c2] flex justify-center items-center">
-        <img src={tutorLoginImage} alt="login-img" className="w-4/5 max-w-lg" />
+      <div className="flex-1 bg-[#cbe5ff] flex justify-center items-center">
+      <Player
+              autoplay
+              loop
+              src="https://lottie.host/d7d79707-db33-4538-b2a0-2437d31f0cca/lyH67nxXFp.json"
+              style={{ height: "80%", width: "80%" }}
+            /> 
       </div>
       <div className="flex-1   flex flex-col justify-center items-center p-6">
         <h2 className="text-2xl font-bold mb-2">Tutor Login</h2>

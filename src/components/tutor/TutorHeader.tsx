@@ -1,8 +1,13 @@
 import React from "react";
 import { FaStar, FaUserGraduate, FaBookOpen } from "react-icons/fa";
 import tutorImage from "../../assets/profile.png";
+import { useNavigate } from "react-router-dom";
 
 function TutorHeader() {
+const navigate = useNavigate()
+  const handleAddCourse=()=>{
+    navigate('/tutor/addcourse')
+  }
   return (
     <div className="flex flex-wrap bg-gradient-to-b from-gray-100 to-white shadow-md justify-center items-center md:justify-normal md:items-normal p-4">
       {/* Profile Image */}
@@ -30,10 +35,10 @@ function TutorHeader() {
               <FaBookOpen className="text-orange-500 mr-2" /> 2 Courses
             </li>
           </ul>
-          <button className="disabled sm:rounded-lg p-2 sm:bg-green-500 text-white">
+          <button onClick={handleAddCourse} className="disabled sm:rounded-lg p-2 sm:bg-green-500 text-white">
             Create Course
           </button>
-          <button className="block   sm:hidden rounded-lg p-2 bg-green-500 text-white">
+          <button  onClick={handleAddCourse} className="block   sm:hidden rounded-lg p-2 bg-green-500 text-white">
             Create Course
           </button>
         </div>
