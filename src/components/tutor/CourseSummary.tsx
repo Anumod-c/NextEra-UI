@@ -9,10 +9,10 @@ interface Lesson {
 interface CourseSummaryProps {
   courseName: string;
   coursePrice: number;
-  courseDiscountPrice:number;
+  courseDiscountPrice: number;
   courseDescription: string;
   courseCategory: string;
-  courseLevel: string; 
+  courseLevel: string;
   demoUrl: string;
   benefits: string[];
   prerequisites: string[];
@@ -32,13 +32,13 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({
   lessons,
 }) => {
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gray-100 p-4">
-      <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg overflow-hidden">
+    <div className="flex flex-col items-center min-h-screen bg-gradient-to-b from-gray-100 to-gray-300 p-6">
+      <div className="w-full max-w-5xl bg-white shadow-2xl rounded-lg overflow-hidden">
         <div className="flex flex-col lg:flex-row">
           {/* Video/Media Section */}
-          <div className="lg:w-1/2">
-            <div className="w-full h-64 bg-gray-200">
-              <video className="w-full h-full object-cover" controls>
+          <div className="lg:w-1/2 bg-black">
+            <div className="w-full h-64 lg:h-full">
+              <video className="w-full h-full object-cover rounded-t-lg lg:rounded-none lg:rounded-l-lg" controls>
                 <source src={lessons[0]?.video || demoUrl} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
@@ -46,29 +46,29 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({
           </div>
 
           {/* Course Details Section */}
-          <div className="lg:w-1/2 p-6">
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">{courseName}</h2>
-            <p className="text-lg text-gray-600 mb-4">Category: {courseCategory}</p>
-            <p className="text-lg text-gray-600 mb-4">Level: {courseLevel}</p>
-            <p className="text-lg font-semibold text-gray-800 mb-4">Price: {coursePrice}</p>
-            <p className="text-lg font-semibold text-gray-800 mb-4">Discount Price: {courseDiscountPrice}</p>
+          <div className="lg:w-1/2 p-8">
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">{courseName}</h2>
+            <p className="text-lg text-gray-600 mb-2"><strong>Category:</strong> {courseCategory}</p>
+            <p className="text-lg text-gray-600 mb-2"><strong>Level:</strong> {courseLevel}</p>
+            <p className="text-xl font-semibold text-green-600 mb-2"><strong>Price:</strong> ${coursePrice}</p>
+            <p className="text-xl font-semibold text-red-600 mb-4"><strong>Discount Price:</strong> ${courseDiscountPrice}</p>
 
-            <p className="text-gray-700 mb-4">{courseDescription}</p>
-            
-            <div className="mb-4">
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Benefits</h3>
-              <ul className="list-disc list-inside pl-5">
+            <p className="text-gray-700 leading-relaxed mb-6">{courseDescription}</p>
+
+            <div className="mb-6">
+              <h3 className="text-2xl font-semibold text-gray-800 mb-3">Benefits</h3>
+              <ul className="list-disc list-inside pl-5 text-gray-700">
                 {benefits.map((benefit, index) => (
-                  <li key={index} className="text-gray-700">** {benefit}</li>
+                  <li key={index} className="mb-2">✨ {benefit}</li>
                 ))}
               </ul>
             </div>
-            
-            <div className="mb-4">
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Prerequisites</h3>
-              <ul className="list-disc list-inside pl-5">
+
+            <div className="mb-6">
+              <h3 className="text-2xl font-semibold text-gray-800 mb-3">Prerequisites</h3>
+              <ul className="list-disc list-inside pl-5 text-gray-700">
                 {prerequisites.map((prerequisite, index) => (
-                  <li key={index} className="text-gray-700">** {prerequisite}</li>
+                  <li key={index} className="mb-2">📘 {prerequisite}</li>
                 ))}
               </ul>
             </div>
@@ -76,18 +76,18 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({
         </div>
 
         {/* Lessons Section */}
-        <div className="p-6">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">Lessons</h3>
+        <div className="p-8 bg-gray-50">
+          <h3 className="text-2xl font-semibold text-gray-800 mb-6">Lessons</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {lessons.map((lesson, index) => (
-              <div key={index} className="bg-white shadow-md rounded-lg p-4">
+              <div key={index} className="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300">
                 {lesson.video ? (
-                  <video className="w-full h-32 object-cover mb-2" controls>
+                  <video className="w-full h-40 object-cover rounded-lg mb-4" controls>
                     <source src={lesson.video} type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>
                 ) : (
-                  <div className="w-full h-32 bg-gray-200 mb-2"></div>
+                  <div className="w-full h-40 bg-gray-200 rounded-lg mb-4"></div>
                 )}
                 <h4 className="text-lg font-semibold text-gray-800 mb-2">{lesson.title}</h4>
                 <p className="text-gray-700">{lesson.description}</p>
@@ -100,6 +100,4 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({
   );
 };
 
-
-
-export default CourseSummary
+export default CourseSummary;

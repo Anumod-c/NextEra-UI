@@ -13,8 +13,8 @@ const AdminSideBar: React.FC<AdminSideBarProps> = ({ isSidebarOpen, toggleSideba
   // const isAuthenticated = !!localStorage.getItem('authToken'); // Check if authenticated
 
   const handleLogout = () => {
-    localStorage.removeItem('authToken'); // Clear the token
-    navigate('/admin/login'); // Redirect to login page
+    localStorage.removeItem('adminToken'); // Clear the token
+    navigate('/admin'); // Redirect to login page
   };
 
 
