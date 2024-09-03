@@ -5,10 +5,11 @@ interface UserState{
     id:string;
     name:string;
     email:string;
-    profilePicture:string|null;
-    bio:string;
-    coursesEnrolled:string[];
-    completedCourses:string[];
+    profilePicture?:string|null;
+    bio?:string;
+    phone:string;
+    coursesEnrolled?:string[];
+    completedCourses?:string[];
 }
 
 const initialState:UserState={
@@ -16,6 +17,7 @@ const initialState:UserState={
     name:'',
     email:'',
     bio:'',
+    phone:'',
     completedCourses:[],
     coursesEnrolled:[],
     profilePicture:null,
@@ -32,18 +34,18 @@ const userSlice=createSlice({
           updateProfilePicture: (state, action: PayloadAction<string>) => {
             state.profilePicture = action.payload;
           },
-          updateBio: (state, action: PayloadAction<string>) => {
-            state.bio = action.payload;
-          },
-          addCourse: (state, action: PayloadAction<string>) => {
-            state.coursesEnrolled.push(action.payload);
-          },
-          completeCourse: (state, action: PayloadAction<string>) => {
-            state.completedCourses.push(action.payload);
-          },
+        //   updateBio: (state, action: PayloadAction<string>) => {
+        //     state.bio = action.payload;
+        //   },
+        //   addCourse: (state, action: PayloadAction<string>) => {
+        //     state.coursesEnrolled.push(action.payload);
+        //   },
+        //   completeCourse: (state, action: PayloadAction<string>) => {
+        //     state.completedCourses.push(action.payload);
+        //   },
     }
 
 })
-export const { setUser, updateProfilePicture, updateBio, addCourse, completeCourse } = userSlice.actions;
+export const { setUser, updateProfilePicture } = userSlice.actions;
 
 export default userSlice.reducer;

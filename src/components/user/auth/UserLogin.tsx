@@ -1,7 +1,6 @@
 // import React from 'react';
 import { Player } from "@lottiefiles/react-lottie-player";
 import Cookies from 'js-cookie'
-
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
@@ -16,6 +15,8 @@ import * as Yup from "yup";
 import { Form, Formik, Field, ErrorMessage } from "formik";
 import {useState } from "react";
 import  {userAxios}  from "../../../constraints/axios/userAxios";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../../redux/userSlice";
 const validationSchema = Yup.object({
   email: Yup.string()
     .matches(
@@ -30,6 +31,7 @@ const initialValues = {
 };
 
 function UserLogin() {
+  const dispatch= useDispatch()
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -69,6 +71,10 @@ function UserLogin() {
       console.log('resulteeeeee',result.data);
       
       if (result.data.result.success) {
+          const {_id,name,email,phone}=result.data.result.userData;
+          dispatch(setUser({id:_id,name,email,phone}));
+
+
         console.log(result.data.token.accessToken);
         Cookies.set('accessToken',JSON.stringify(result.data.token.accessToken), { expires: 15 / 1440 }); // Expires in 15 minutes
         Cookies.set('refreshToken', JSON.stringify(result.data.token.refreshToken), { expires: 7 }); // Expires in 7 days        // localStorage.setItem('userToken', result.data.token);

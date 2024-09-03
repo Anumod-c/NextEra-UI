@@ -10,6 +10,8 @@ import { tutorEndpoints } from "../../../constraints/endpoints/tutorEndpoints";
 import { toast } from "sonner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch } from "react-redux";
+import { setTutor } from "../../../redux/tutorSlice";
 const initialValues = {
   email: "",
   password: "",
@@ -26,6 +28,7 @@ const validationSchema = Yup.object({
 });
 
 function TutorLogin() {
+  const dispatch = useDispatch()
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -59,6 +62,9 @@ function TutorLogin() {
     try {
       const result = await axios.post(tutorEndpoints.login, values);
       if (result.data.success) {
+        const {_id,name,email,phone} = result.data.tutorData
+
+        dispatch(setTutor({id:_id,email,name,phone}))
         console.log(result.data,'gg');
         localStorage.setItem("tutorToken", result.data.token);
         navigate("/tutor/dashboard");

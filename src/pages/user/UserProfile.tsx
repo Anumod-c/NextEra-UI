@@ -1,7 +1,10 @@
 import React from 'react';
 import profileImage from '../../assets/profile.png'
 import UserNavbar from '../../components/user/UserNavbar';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 const UserProfile: React.FC = () => {
+  const {name,email,phone} = useSelector((state:RootState)=>state.user)
   return (
 
     <>
@@ -15,8 +18,10 @@ const UserProfile: React.FC = () => {
           className="w-24 h-24 rounded-full border-2 border-gray-300"
         />
         <div className="ml-6">
-          <h1 className="text-3xl font-bold text-gray-800">John Doe</h1>
-          <p className="text-lg text-gray-600">johndoe@example.com</p>
+          <h1 className="text-3xl font-bold text-gray-800">{name}</h1>
+          <p className="text-lg text-gray-600">{email}</p>
+          <p className="text-lg text-gray-600">{phone}</p>
+
           <p className="text-md text-gray-500 mt-2">Bio: Enthusiastic learner and educator.</p>
         </div>
       </div>
