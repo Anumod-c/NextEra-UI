@@ -1,22 +1,24 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+
+  
+
 interface CourseState {
     addCourse: {
         courseTitle: string;
         courseDesc: string;
-        coursePrice: string;
+        coursePrice: number;
+        courseDiscountPrice:number;
         courseCategory: string;
         courseLevel: string;
         demoURL: string;
-        thumbnail: string;
+        thumbnail:File| null;
     };
     addCourse2: {
         prerequisites: string[];
         benefits: string[];
     };
-    addLesson: {
-        lessons: { title: string; video: File | null; description: string }[];
-    };
+
 }
 
 const initialState: CourseState = {
@@ -25,17 +27,16 @@ const initialState: CourseState = {
         courseCategory: '',
         courseDesc: '',
         courseLevel: '',
-        coursePrice: '',
+        coursePrice: 0,
+        courseDiscountPrice:0,
         demoURL: '',
-        thumbnail: '',
+        thumbnail: null,
     },
     addCourse2: {
         benefits:[],
         prerequisites: [],
     },
-    addLesson: {
-        lessons: [{ title: '', video: null, description: '' }],
-    },
+
 };
 
 const courseSlice = createSlice({
@@ -48,11 +49,9 @@ const courseSlice = createSlice({
         saveAddCourse2(state, action: PayloadAction<CourseState['addCourse2']>) {
             state.addCourse2 = action.payload;
         },
-        saveAddLessons(state, action: PayloadAction<CourseState['addLesson']>) {
-            state.addLesson = action.payload;
-        },
+        
     },
 });
 
-export const { saveAddCourse, saveAddCourse2, saveAddLessons } = courseSlice.actions;
+export const { saveAddCourse, saveAddCourse2 } = courseSlice.actions;
 export default courseSlice.reducer;

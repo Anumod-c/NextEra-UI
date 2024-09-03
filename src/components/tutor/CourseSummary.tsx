@@ -8,10 +8,11 @@ interface Lesson {
 
 interface CourseSummaryProps {
   courseName: string;
-  coursePrice: string;
+  coursePrice: number;
+  courseDiscountPrice:number;
   courseDescription: string;
   courseCategory: string;
-  courseLevel: string;
+  courseLevel: string; 
   demoUrl: string;
   benefits: string[];
   prerequisites: string[];
@@ -21,6 +22,7 @@ interface CourseSummaryProps {
 const CourseSummary: React.FC<CourseSummaryProps> = ({
   courseName,
   coursePrice,
+  courseDiscountPrice,
   courseDescription,
   courseCategory,
   courseLevel,
@@ -37,7 +39,7 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({
           <div className="lg:w-1/2">
             <div className="w-full h-64 bg-gray-200">
               <video className="w-full h-full object-cover" controls>
-                <source src={lessons[0]?.video} type="video/mp4" />
+                <source src={lessons[0]?.video || demoUrl} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </div>
@@ -49,6 +51,8 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({
             <p className="text-lg text-gray-600 mb-4">Category: {courseCategory}</p>
             <p className="text-lg text-gray-600 mb-4">Level: {courseLevel}</p>
             <p className="text-lg font-semibold text-gray-800 mb-4">Price: {coursePrice}</p>
+            <p className="text-lg font-semibold text-gray-800 mb-4">Discount Price: {courseDiscountPrice}</p>
+
             <p className="text-gray-700 mb-4">{courseDescription}</p>
             
             <div className="mb-4">
@@ -96,46 +100,6 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({
   );
 };
 
-// Example dummy data
-const dummyData = {
-  courseName: "Advanced React Development",
-  coursePrice: "$199",
-  courseDescription: "This course provides an in-depth understanding of advanced React concepts.",
-  courseCategory: "React",
-  courseLevel: "Intermediate",
-  demoUrl: "https://example.com/demo",
-  benefits: [
-    "Learn advanced React techniques",
-    "Understand state management with Redux",
-    "Build complex React applications"
-  ],
-  prerequisites: [
-    "Basic understanding of JavaScript",
-    "Experience with React fundamentals"
-  ],
-  lessons: [
-    {
-      title: "Introduction to Advanced React",
-      video: "intro-to-advanced-react.mp4",
-      description: "Overview of advanced React concepts and practices."
-    },
-    {
-      title: "State Management with Redux",
-      video: "state-management-with-redux.mp4",
-      description: "Learn how to manage application state using Redux."
-    },
-    {
-      title: "Building Complex Applications",
-      video: "building-complex-applications.mp4",
-      description: "Practical examples of building large-scale React applications."
-    }
-  ]
-};
 
-const App: React.FC = () => {
-  return (
-    <CourseSummary {...dummyData} />
-  );
-};
 
-export default App;
+export default CourseSummary

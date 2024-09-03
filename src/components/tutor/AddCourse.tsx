@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -9,18 +9,21 @@ interface AddCourseProps {
 }
 
 const validationSchema = Yup.object({
-    courseTitle: Yup.string().required("Course name is required"),
-    coursePrice: Yup.string().required("Course price is required"),
+  courseTitle: Yup.string().required("Course name is required"),
+  coursePrice: Yup.number().required("Course price is required"),
+  courseDiscountPrice: Yup.number().required("Discount price is required"),
   courseDesc: Yup.string().required("Course description is required"),
   courseCategory: Yup.string().required("Course category is required"),
   courseLevel: Yup.string().required("Course level is required"),
   demoURL: Yup.string().url("Invalid URL").required("Demo URL is required"),
-  thumbnail: Yup.string().required("Thumbnail is required"), 
+  thumbnail: Yup.string().required("Thumbnail is required"),
 });
 
 const AddCourse: React.FC<AddCourseProps> = ({ onNext }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
+
+  const [previewImage, setPreviewImage] = useState<string | null>(null); // State for image preview
 
   const handleUploadClick = () => {
     if (fileInputRef.current) {
@@ -36,13 +39,13 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext }) => {
         <Formik
           initialValues={{
             courseTitle: "",
-            coursePrice: "",
+            coursePrice: 0,
+            courseDiscountPrice: 0,
             courseDesc: "",
             courseCategory: "",
             courseLevel: "",
             demoURL: "",
-            thumbnail:'',
-
+            thumbnail: null,
           }}
           validationSchema={validationSchema}
           onSubmit={(values) => {
@@ -53,27 +56,38 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext }) => {
           {({ setFieldValue }) => (
             <Form>
               <section className="flex flex-col gap-8">
+                <div className="flex-1 flex flex-col gap-4">
+                  <label className="text-lg font-medium text-gray-700">Course Name</label>
+                  <Field
+                    name="courseTitle"
+                    type="text"
+                    className="w-full h-12 rounded-md bg-gray-100 px-4 py-2 text-gray-700 border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter Course Name"
+                  />
+                  <ErrorMessage name="courseTitle" component="div" className="text-red-600" />
+                </div>
+                
                 <div className="flex flex-col md:flex-row gap-8 w-full">
-                  <div className="flex-1 flex flex-col gap-4">
-                    <label className="text-lg font-medium text-gray-700">Course Name</label>
-                    <Field
-                      name="courseTitle"
-                      type="text"
-                      className="w-full h-12 rounded-md bg-gray-100 px-4 py-2 text-gray-700 border border-gray-300 focus:ring-2 focus:ring-blue-500"
-                      placeholder="Enter Course Name"
-                    />
-                    <ErrorMessage name="courseTitle" component="div" className="text-red-600" />
-                  </div>
-
                   <div className="flex-1 flex flex-col gap-4">
                     <label className="text-lg font-medium text-gray-700">Course Price</label>
                     <Field
                       name="coursePrice"
-                      type="text"
+                      type="number"
                       className="w-full h-12 rounded-md bg-gray-100 px-4 py-2 text-gray-700 border border-gray-300 focus:ring-2 focus:ring-blue-500"
                       placeholder="Enter Course Price"
                     />
                     <ErrorMessage name="coursePrice" component="div" className="text-red-600" />
+                  </div>
+
+                  <div className="flex-1 flex flex-col gap-4">
+                    <label className="text-lg font-medium text-gray-700">Discount Price</label>
+                    <Field
+                      name="courseDiscountPrice"
+                      type="number"
+                      className="w-full h-12 rounded-md bg-gray-100 px-4 py-2 text-gray-700 border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                      placeholder="Enter Discount Price"
+                    />
+                    <ErrorMessage name="courseDiscountPrice" component="div" className="text-red-600" />
                   </div>
                 </div>
 
@@ -130,11 +144,22 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext }) => {
                     Drag and Drop Thumbnail or click here
                   </label>
                   <div
-                    className="w-full h-40 rounded-md bg-gray-100 flex items-center justify-center border-2 border-dashed border-gray-300 hover:bg-gray-200 cursor-pointer"
-                    onClick={handleUploadClick}
-                  >
-                    <span className="text-gray-500">Upload Image</span>
-                  </div>
+  className="w-full sm:max-w-[400px] h-0 lg:pb-[14.25%] md:pb-[32.25%] pb-[55.25%]   relative rounded-md bg-gray-100 border-2 border-dashed border-gray-300 hover:bg-gray-200 cursor-pointer"
+  onClick={handleUploadClick}
+>
+  {previewImage ? (
+    <img
+      src={previewImage}
+      alt="Thumbnail Preview"
+      className="absolute inset-0 w-full h-full object-cover rounded-md"
+    />
+  ) : (
+    <span className="absolute inset-0 flex items-center justify-center text-gray-500">
+      Upload Image
+    </span>
+  )}
+</div>
+
                   <input
                     type="file"
                     ref={fileInputRef}
@@ -143,7 +168,7 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext }) => {
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) {
-                        console.log(`Selected file: ${file.name}`);
+                        setPreviewImage(URL.createObjectURL(file)); // Set the preview image
                         setFieldValue('thumbnail', file.name);
                       }
                     }}

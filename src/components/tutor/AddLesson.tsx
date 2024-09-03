@@ -1,149 +1,131 @@
-import React, { useRef } from 'react';
-import { Formik, Field, Form, FieldArray, ErrorMessage, FormikHelpers } from 'formik';
+import React, { useRef, useState } from 'react';
+import { Formik, Form, Field, FieldArray, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { useDispatch } from 'react-redux';
-import { saveAddLessons } from '../../redux/courseSlice'; // Adjust the path as needed
 
-interface AddLessonProps {
-  onNext: () => void;
-}
-
+// Define the type for a lesson
 interface Lesson {
   title: string;
   video: File | null;
   description: string;
 }
 
-interface FormValues {
-  lessons: Lesson[];
-}
-
+// Define the validation schema
 const validationSchema = Yup.object().shape({
   lessons: Yup.array().of(
     Yup.object().shape({
       title: Yup.string().required('Title is required'),
-      video: Yup.mixed().required('Video file is required'),
+      video: Yup.mixed().required('Video is required'),
       description: Yup.string().required('Description is required'),
     })
-  ).min(1, 'At least one lesson is required'),
+  ),
 });
 
+interface AddLessonProps {
+  onNext: (data: Lesson[]) => void;
+}
+
 const AddLesson: React.FC<AddLessonProps> = ({ onNext }) => {
-  const dispatch = useDispatch();
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
-  const handleFileChange = (index: number, setFieldValue: (field: string, value: unknown) => void) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0] || null; // Ensure `file` is either a `File` or `null`
-    setFieldValue(`lessons.${index}.video`, file);
-  };
-
-  const handleUploadClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
+  // Handle file change and preview
+  const handleFileChange = (index: number, setFieldValue: (field: string, value: File | null) => void) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.currentTarget.files?.[0] ?? null;
+    if (file) {
+      setFieldValue(`lessons.${index}.video`, file);
+      const url = URL.createObjectURL(file);
+      setPreviewUrls(prevUrls => {
+        const newUrls = [...prevUrls];
+        newUrls[index] = url;
+        return newUrls;
+      });
     }
   };
 
+  // Handle upload button click
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="w-[90%] bg-white shadow-lg rounded-lg px-8 py-6">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-6">Add Lessons</h2>
-
-        <Formik
-          initialValues={{
-            lessons: [{ title: '', video: null, description: '' }],
-          } as FormValues}
-          validationSchema={validationSchema}
-          onSubmit={(values: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => {
-            dispatch(saveAddLessons(values));
-            onNext();
-            setSubmitting(false);
-          }}
-        >
-          {({ setFieldValue, values }) => (
-            <Form>
-              <FieldArray name="lessons">
-                {({ remove, push }) => (
-                  <>
-                    {values.lessons.map((lesson, index) => (
-                      <div key={index} className="mb-6">
-                        <div className="flex flex-col gap-4">
-                          <div className="flex flex-col gap-4">
-                            <label className="text-lg font-medium text-gray-700">Lesson Title</label>
-                            <Field
-                              name={`lessons.${index}.title`}
-                              type="text"
-                              className="w-full h-12 rounded-md bg-gray-100 px-4 py-2 text-gray-700 border border-gray-300 focus:ring-2 focus:ring-blue-500"
-                              placeholder="Enter Lesson Title"
-                            />
-                            <ErrorMessage name={`lessons.${index}.title`} component="div" className="text-red-600" />
-                          </div>
-
-                          <div className="flex flex-col gap-4">
-                            <label className="text-lg font-medium text-gray-700">Lesson Description</label>
-                            <Field
-                              as="textarea"
-                              name={`lessons.${index}.description`}
-                              rows={4}
-                              className="w-full h-24 rounded-md bg-gray-100 px-4 py-2 text-gray-700 border border-gray-300 focus:ring-2 focus:ring-blue-500"
-                              placeholder="Write lesson description here..."
-                            />
-                            <ErrorMessage name={`lessons.${index}.description`} component="div" className="text-red-600" />
-                          </div>
-
-                          <div className="flex flex-col items-center justify-center">
-                            <label className="text-lg font-medium text-gray-700 mb-2">
-                              Upload Lesson Video
-                            </label>
-                            <div
-                              className="w-full h-40 rounded-md bg-gray-100 flex items-center justify-center border-2 border-dashed border-gray-300 hover:bg-gray-200 cursor-pointer"
-                              onClick={handleUploadClick}
-                            >
-                              <span className="text-gray-500">Upload Video</span>
-                            </div>
-                            <input
-                              type="file"
-                              ref={fileInputRef}
-                              className="hidden"
-                              accept="video/*"
-                              onChange={handleFileChange(index, setFieldValue)}
-                            />
-                            <ErrorMessage name={`lessons.${index}.video`} component="div" className="text-red-600" />
-                          </div>
-
-                          <button
-                            type="button"
-                            className="p-2 text-red-600 hover:text-red-800"
-                            onClick={() => remove(index)}
-                          >
-                            Remove Lesson
-                          </button>
-                        </div>
+    <div className="p-6">
+      <h2 className="text-xl font-semibold mb-4">Add Lessons</h2>
+      <Formik
+        initialValues={{ lessons: [{ title: '', video: null, description: '' }] }}
+        validationSchema={validationSchema}
+        onSubmit={(values) => {
+          onNext(values.lessons);
+        }}
+      >
+        {({ setFieldValue, values }) => (
+          <Form>
+            <FieldArray name="lessons">
+              {({ remove, push }) => (
+                <>
+                  {values.lessons.map((_, index) => (
+                    <div key={index} className="mb-4">
+                      <div className="flex flex-col">
+                        <Field name={`lessons.${index}.title`} placeholder="Lesson Title" className="border p-2 rounded-md" />
+                        <ErrorMessage name={`lessons.${index}.title`} component="div" className="text-red-600" />
                       </div>
-                    ))}
-
-                    <button
-                      type="button"
-                      className="flex items-center justify-center py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
-                      onClick={() => push({ title: '', video: null, description: '' })}
-                    >
-                      Add Another Lesson
-                    </button>
-                  </>
-                )}
-              </FieldArray>
-
-              <div className="w-full flex justify-end mt-6">
-                <button
-                  type="submit"
-                  className="py-2 px-8 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
-                >
-                  Next
-                </button>
-              </div>
-            </Form>
-          )}
-        </Formik>
-      </div>
+                      <div className="flex flex-col">
+                        <Field as="textarea" name={`lessons.${index}.description`} placeholder="Lesson Description" className="border p-2 rounded-md" />
+                        <ErrorMessage name={`lessons.${index}.description`} component="div" className="text-red-600" />
+                      </div>
+                      <div className="flex flex-col items-center">
+                        <label className="text-lg font-medium text-gray-700">Lesson Video</label>
+                        <button
+                          type="button"
+                          onClick={handleUploadClick}
+                          className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-md"
+                        >
+                          Upload Video
+                        </button>
+                        <input
+                          type="file"
+                          ref={fileInputRef}
+                          className="hidden"
+                          onChange={handleFileChange(index, setFieldValue)}
+                        />
+                        {previewUrls[index] && (
+                          <video
+                            src={previewUrls[index]}
+                            controls
+                            className="mt-2 w-full h-32 object-cover"
+                          />
+                        )}
+                        <ErrorMessage name={`lessons.${index}.video`} component="div" className="text-red-600" />
+                      </div>
+                      <div className="flex gap-4">
+                        <button
+                          type="button"
+                          onClick={() => remove(index)}
+                          className="mt-4 px-4 py-2 bg-red-600 text-white rounded-md"
+                        >
+                          Remove Lesson
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => push({ title: '', video: null, description: '' })}
+                          className="mt-4 px-4 py-2 bg-green-600 text-white rounded-md"
+                        >
+                          Add Another Lesson
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                  <button
+                    type="submit"
+                    className="w-full px-4 py-2 bg-blue-600 text-white rounded-md"
+                  >
+                    Next
+                  </button>
+                </>
+              )}
+            </FieldArray>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };

@@ -16,6 +16,7 @@ const persistedReducer = persistReducer(persistConfig, courseReducer);
 const store = configureStore({
   reducer: {
     course: persistedReducer,
+    
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
