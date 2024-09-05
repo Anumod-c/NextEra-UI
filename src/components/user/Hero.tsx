@@ -16,6 +16,7 @@ const Hero = () => {
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}>
+          <h1 className='text-5xl'>NEXTERA</h1>
         <h1 className="text-5xl font-bold">Empower Your Learning Journey with Nextera</h1>
         <p className="mt-4 text-lg">Courses, Live Classes, Chat, and an Integrated IDE — All in One Platform</p>
         <motion.button onClick={handleClick}

@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import profileImage from "../../assets/profile.png";
-
+import { useNavigate } from "react-router-dom";
 const TutorNavbar = () => {
+  const navigate= useNavigate()
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+const handleLogout=()=>{
+  navigate('/tutor')
+}
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -40,6 +43,7 @@ const TutorNavbar = () => {
             <button className=" px-3 py-2 rounded-md flex items-center">
               <img className="w-12 h-12" src={profileImage} alt="" />
             </button>
+            <button onClick={handleLogout}>Logout</button>
           </div>
 
           {/* Mobile Menu Icon */}

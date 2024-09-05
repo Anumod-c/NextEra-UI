@@ -2,11 +2,20 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import profileImage from "../../assets/profile.png";
 import { FaBars, FaTimes } from "react-icons/fa";
+import Cookies from "js-cookie";
 
 const UserNavbar: React.FC = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+
+  const handleLogout =()=>{
+   
+    Cookies.remove('accessToken')
+    
+      navigate('/login')
+    
+  }
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -51,6 +60,7 @@ const UserNavbar: React.FC = () => {
             <button onClick={handleProfileClick} className=" w-16 h-16 px-3 py-2 rounded-md ">
               <img src={profileImage} alt="" />
             </button>
+            <button onClick={handleLogout}>Logout</button>
           </div>
 
           {/* Mobile Menu Icon */}

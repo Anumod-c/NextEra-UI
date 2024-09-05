@@ -7,7 +7,6 @@ import TutorOTP from "../components/tutor/auth/TutorOTP"
 import TutorResetPass from "../components/tutor/auth/TutorResetPass"
 import TutorProfile from "../components/tutor/TutorProfile"
 import Course from "../pages/tutor/Course"
-import AddCourse2 from "../components/tutor/AddCourse2"
 
 const TutorRoutes=()=>{
 return(
@@ -20,7 +19,6 @@ return(
         <Route path="/resetpassword" element={<TutorResetPass/>}/>
         <Route path="/profile" element={<TutorProfile /> } />
         <Route path="/addcourse" element={<Course /> } />
-        <Route path="/add-course-2" element={<AddCourse2 /> } />
 
        
 

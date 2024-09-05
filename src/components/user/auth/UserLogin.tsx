@@ -48,10 +48,10 @@ function UserLogin() {
       const result = await axios.post(userEndpoints.googleLogin, {
         credential,
       });
-      console.log(result, "lllllllllllllllllllllllllllllllllll");
+      console.log(result.data.result, "lllllllllllllllllllllllllllllllllll");
 
-      if (result.data.success) {
-        localStorage.setItem('userToken', result.data.token);
+      if (result.data.result.success) {
+        Cookies.set('accessToken',JSON.stringify(result.data.token), { expires: 15 / 1440 }); //
         navigate("/home");
       } else {
         toast.info("Couldnt login with google");

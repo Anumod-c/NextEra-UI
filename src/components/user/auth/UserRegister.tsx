@@ -114,7 +114,7 @@ const UserRegister: React.FC = () => {
               />
               <Field
                 name="email"
-                type="email"
+                type="text"
                 placeholder="Email"
                 className="w-full p-3 m-4 border shadow-lg rounded"
               />

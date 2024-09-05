@@ -3,9 +3,12 @@ import { useDispatch } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { saveAddCourse } from "../../redux/courseSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 interface AddCourseProps {
   onNext: () => void;
+  onBack:()=>void;
 }
 
 const validationSchema = Yup.object({
@@ -19,9 +22,10 @@ const validationSchema = Yup.object({
   thumbnail: Yup.string().required("Thumbnail is required"),
 });
 
-const AddCourse: React.FC<AddCourseProps> = ({ onNext }) => {
+const AddCourse: React.FC<AddCourseProps> = ({ onNext ,onBack}) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
+  const formData = useSelector((state:RootState)=>state.course.addCourse);
 
   const [previewImage, setPreviewImage] = useState<string | null>(null); // State for image preview
 
@@ -37,7 +41,7 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext }) => {
         <h2 className="text-2xl font-semibold text-gray-800 mb-6">Add New Course</h2>
 
         <Formik
-          initialValues={{
+          initialValues={formData||{
             courseTitle: "",
             coursePrice: 0,
             courseDiscountPrice: 0,
@@ -176,6 +180,13 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext }) => {
                 </div>
 
                 <div className="w-full flex justify-end">
+                <button
+                  type="button"
+                  onClick={onBack}
+                  className="py-2 mb-4 px-8 bg-gray-600 text-white font-semibold rounded-md hover:bg-gray-700 transition"
+                >
+                  Back
+                </button>
                   <button
                     type="submit"
                     className="py-2 mb-4 px-8 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"

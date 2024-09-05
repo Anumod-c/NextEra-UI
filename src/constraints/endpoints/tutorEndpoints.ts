@@ -7,6 +7,7 @@ export const tutorEndpoints ={
     login : `${API_GATEWAY_BASE_URL}/login`,
     forgotPassword:`${API_GATEWAY_BASE_URL}/forgotPassword`,
      resetPassword: `${API_GATEWAY_BASE_URL}/resetPassword`,
-    googleLogin: `${API_GATEWAY_BASE_URL}/google_login`
+    googleLogin: `${API_GATEWAY_BASE_URL}/google_login`,
+    getPresignedUrl:`${API_GATEWAY_BASE_URL}/get-presigned-url`
 
 }

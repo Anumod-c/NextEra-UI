@@ -57,16 +57,7 @@ const UserProfile: React.FC = () => {
       </div>
 
       {/* Activity History */}
-      <div>
-        <h2 className="text-2xl font-semibold text-gray-700 mb-4">Activity History</h2>
-        <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-800 mb-2">Recent Activity</h3>
-          <ul className="list-disc list-inside pl-5 text-gray-600">
-            <li>Commented on Course 1</li>
-            <li>Completed Quiz in Course 2</li>
-          </ul>
-        </div>
-      </div>
+      
     </div>
     </>
 

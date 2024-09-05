@@ -4,9 +4,12 @@ import * as Yup from "yup";
 import { FaPlus, FaTrash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { saveAddCourse2 } from "../../redux/courseSlice"; // Adjust the path as needed
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 interface AddCourse2Props {
   onNext: () => void;
+  onBack:()=>void
 }
 
 const validationSchema = Yup.object({
@@ -18,9 +21,9 @@ const validationSchema = Yup.object({
     .min(1, "At least one benefit is required"),
 });
 
-const AddCourse2: React.FC<AddCourse2Props> = ({ onNext }) => {
+const AddCourse2: React.FC<AddCourse2Props> = ({ onNext,onBack }) => {
   const dispatch = useDispatch();
-
+  const formData2= useSelector((state:RootState)=>state.course.addCourse2)
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="w-[90%] bg-white shadow-lg rounded-lg px-8 py-6">
@@ -29,7 +32,7 @@ const AddCourse2: React.FC<AddCourse2Props> = ({ onNext }) => {
         </h2>
 
         <Formik
-          initialValues={{
+          initialValues={formData2||{
             prerequisites: [""],
             benefits: [""],
           }}
@@ -133,6 +136,13 @@ const AddCourse2: React.FC<AddCourse2Props> = ({ onNext }) => {
                 </div>
 
                 <div className="w-full flex justify-end mt-6">
+                <button
+                  type="button"
+                  onClick={onBack}
+                  className="py-2 mb-4 px-8 bg-gray-600 text-white font-semibold rounded-md hover:bg-gray-700 transition"
+                >
+                  Back
+                </button>
                   <button
                     type="submit"
                     className="py-2 px-8 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
