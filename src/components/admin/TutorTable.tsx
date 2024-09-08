@@ -7,7 +7,7 @@ interface Tutor{
   name: string;
   email: string;
   phone: string;
-  status: string;
+  status: boolean;
 }
 const  TutorTable:React.FC=()=> {
 
@@ -46,7 +46,7 @@ const  TutorTable:React.FC=()=> {
             <td className="p-2">{tutor.name}</td>
             <td className="p-2">{tutor.email}</td>
             <td className="p-2">{tutor.phone}</td>
-            <td className="p-2">{tutor.phone}</td>
+            <td className="p-2">{tutor.status ? 'Active' : 'Inactive'}</td>
             {/* Add more cells as needed */}
           </tr>
          ))}

@@ -20,7 +20,7 @@ interface CourseState {
     courseCategory: string;
     courseLevel: string;
     demoURL: string;
-    thumbnail: File | null;
+    thumbnail: string
   };
   addCourse2: {
     prerequisites: string[];
@@ -37,7 +37,7 @@ interface CourseState {
     courseCategory: string;
     courseLevel: string;
     demoURL: string;
-    thumbnail: File | null;
+    thumbnail:string
     prerequisites: string[];
     benefits: string[];
     sections: Section[];
@@ -53,7 +53,7 @@ const initialState: CourseState = {
     coursePrice: 0,
     courseDiscountPrice: 0,
     demoURL: '',
-    thumbnail: null,
+    thumbnail: '',
   },
   addCourse2: {
     benefits: [],
@@ -70,7 +70,7 @@ const initialState: CourseState = {
     courseCategory: '',
     courseLevel: '',
     demoURL: '',
-    thumbnail: null,
+    thumbnail:'',
     prerequisites: [],
     benefits: [],
     sections: [],

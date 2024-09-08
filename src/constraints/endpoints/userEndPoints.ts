@@ -10,7 +10,8 @@ export const userEndpoints = {
     resetPassword: `${API_GATEWAY_BASE_URL}/resetPassword`,
     googleLogin: `${API_GATEWAY_BASE_URL}/google_login`,
     resendOtp: `${API_GATEWAY_BASE_URL}/resendOtp`,
-    logout: `${API_GATEWAY_BASE_URL}/logout`
+    logout: `${API_GATEWAY_BASE_URL}/logout`,
+   
     
     
 }

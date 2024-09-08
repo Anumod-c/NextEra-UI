@@ -5,10 +5,14 @@ import * as Yup from "yup";
 import { saveAddCourse } from "../../redux/courseSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import axios from "axios";
+import { courseEndpoints } from "../../constraints/endpoints/courseEndpoints";
+import { toast } from "sonner";
+import { tutorEndpoints } from "../../constraints/endpoints/tutorEndpoints";
 
 interface AddCourseProps {
   onNext: () => void;
-  onBack:()=>void;
+  onBack: () => void;
 }
 
 const validationSchema = Yup.object({
@@ -22,16 +26,78 @@ const validationSchema = Yup.object({
   thumbnail: Yup.string().required("Thumbnail is required"),
 });
 
-const AddCourse: React.FC<AddCourseProps> = ({ onNext ,onBack}) => {
+const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
-  const formData = useSelector((state:RootState)=>state.course.addCourse);
+  const formData = useSelector((state: RootState) => state.course.addCourse);
 
   const [previewImage, setPreviewImage] = useState<string | null>(null); // State for image preview
+  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null); // State for storing the presigned URL
 
   const handleUploadClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
+    }
+  };
+
+  const getPresignedUrlForUpload = async (fileName: string, fileType: string) => {
+    try {
+      const response = await axios.get(tutorEndpoints.getPresignedUrlForUpload, {
+        params: {
+          filename: fileName,
+          fileType: fileType
+        }
+      });
+      return response.data.url;
+    } catch (error) {
+      console.error("Error fetching presigned URL", error);
+      toast.error("Error fetching upload URL");
+      return null;
+    }
+  };
+
+  const handleFileUpload = async (file: File) => {
+    const fileName = file.name;
+    const fileType = file.type.startsWith('video') ? 'video' : 'image';
+
+    // Get upload URL
+  const uploadUrl = await getPresignedUrlForUpload(fileName, fileType);
+  if (uploadUrl) {
+    try {
+      // Upload the file
+      await axios.put(uploadUrl, file, {
+        headers: {
+          'Content-Type': file.type,
+        }
+      });
+      const viewUrl = await getPresignedUrlForDownload(fileName);
+      
+      setThumbnailUrl(viewUrl); // Set the URL used for viewing
+        toast.success("Thumbnail uploaded successfully");
+        
+        console.log('thumbnail url which i will modify  now',viewUrl);
+        
+        setPreviewImage(URL.createObjectURL(file))
+      } catch (error) {
+        console.error("Error uploading file", error);
+        toast.error("Error uploading thumbnail");
+      }
+      
+    }
+    
+  };
+  const getPresignedUrlForDownload = async (filename: string) => {
+    try {
+      const response = await axios.get(tutorEndpoints.getPresignedUrlForDownload, {
+        params: {
+          filename: filename,
+        }
+      });
+      return response.data.url;
+    } catch (error) {
+      console.error("Error fetching download URL", error);
+      toast.error("Error fetching download URL");
+      return null;
     }
   };
 
@@ -41,7 +107,7 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext ,onBack}) => {
         <h2 className="text-2xl font-semibold text-gray-800 mb-6">Add New Course</h2>
 
         <Formik
-          initialValues={formData||{
+          initialValues={formData || {
             courseTitle: "",
             coursePrice: 0,
             courseDiscountPrice: 0,
@@ -49,12 +115,23 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext ,onBack}) => {
             courseCategory: "",
             courseLevel: "",
             demoURL: "",
-            thumbnail: null,
+            thumbnail: "",
           }}
           validationSchema={validationSchema}
-          onSubmit={(values) => {
-            dispatch(saveAddCourse(values));
-            onNext();
+          onSubmit={async (values) => {
+
+            const courseData ={...values,thumbnail:thumbnailUrl||''}
+            console.log(thumbnailUrl,'thumbanuil url which i will modify now');
+            
+            // Here, 'thumbnail' will be the file name and you can handle saving it to your server as needed
+          const result = await axios.post(courseEndpoints.addCourse,courseData);
+            dispatch(saveAddCourse(courseData));
+            console.log('data send to apigateway', values);
+            if (result.data.success) {
+              onNext();
+            } else {
+              toast.error("Could not save the data. Please try again.");
+            }
           }}
         >
           {({ setFieldValue }) => (
@@ -148,21 +225,21 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext ,onBack}) => {
                     Drag and Drop Thumbnail or click here
                   </label>
                   <div
-  className="w-full sm:max-w-[400px] h-0 lg:pb-[14.25%] md:pb-[32.25%] pb-[55.25%]   relative rounded-md bg-gray-100 border-2 border-dashed border-gray-300 hover:bg-gray-200 cursor-pointer"
-  onClick={handleUploadClick}
->
-  {previewImage ? (
-    <img
-      src={previewImage}
-      alt="Thumbnail Preview"
-      className="absolute inset-0 w-full h-full object-cover rounded-md"
-    />
-  ) : (
-    <span className="absolute inset-0 flex items-center justify-center text-gray-500">
-      Upload Image
-    </span>
-  )}
-</div>
+                    className="w-full sm:max-w-[400px] h-0 lg:pb-[14.25%] md:pb-[32.25%] pb-[55.25%] relative rounded-md bg-gray-100 border-2 border-dashed border-gray-300 hover:bg-gray-200 cursor-pointer"
+                    onClick={handleUploadClick}
+                  >
+                    {previewImage ? (
+                      <img
+                        src={previewImage}
+                        alt="Thumbnail Preview"
+                        className="absolute inset-0 w-full h-full object-cover rounded-md"
+                      />
+                    ) : (
+                      <span className="absolute inset-0 flex items-center justify-center text-gray-500">
+                        Upload Image
+                      </span>
+                    )}
+                  </div>
 
                   <input
                     type="file"
@@ -172,21 +249,24 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext ,onBack}) => {
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) {
-                        setPreviewImage(URL.createObjectURL(file)); // Set the preview image
-                        setFieldValue('thumbnail', file.name);
+                        setPreviewImage(URL.createObjectURL(file));
+                        handleFileUpload(file);
+                        setFieldValue('thumbnail', file.name); // Setting file name as thumbnail
                       }
                     }}
                   />
+                  
                 </div>
+                
 
                 <div className="w-full flex justify-end">
-                <button
-                  type="button"
-                  onClick={onBack}
-                  className="py-2 mb-4 px-8 bg-gray-600 text-white font-semibold rounded-md hover:bg-gray-700 transition"
-                >
-                  Back
-                </button>
+                  <button
+                    type="button"
+                    onClick={onBack}
+                    className="py-2 mb-4 px-8 bg-gray-600 text-white font-semibold rounded-md hover:bg-gray-700 transition"
+                  >
+                    Back
+                  </button>
                   <button
                     type="submit"
                     className="py-2 mb-4 px-8 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
@@ -194,6 +274,8 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext ,onBack}) => {
                     Next
                   </button>
                 </div>
+                
+               
               </section>
             </Form>
           )}
