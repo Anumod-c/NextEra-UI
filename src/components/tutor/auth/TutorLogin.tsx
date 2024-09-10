@@ -46,7 +46,7 @@ function TutorLogin() {
       console.log(result, "result of googlelogin");
       if (result.data.success) {
         localStorage.setItem("tutorToken", result.data.token);
-        navigate("/tutor");
+        navigate("/tutor/dashboard");
       } else {
         toast.info("Couldnt login with google");
       }
@@ -67,7 +67,7 @@ function TutorLogin() {
         dispatch(setTutor({id:_id,email,name,phone}))
         console.log(result.data,'gg');
         localStorage.setItem("tutorToken", result.data.token);
-        navigate("/tutor");
+        navigate("/tutor/dashboard");
         toast.success("tutor logged in successfull");
       } else {
         toast.error("User dont exist");

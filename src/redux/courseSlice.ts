@@ -1,15 +1,17 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 
 interface Lesson {
-  lessonTitle: string;
-  lessonDesc: string;
-  videoKey?: string;
+  title: string;
+  video: File | null; // Store only the file name
+  description: string;
 }
 
 interface Section {
-  sectionTitle: string;
+  title: string;
   lessons: Lesson[];
 }
+
 
 interface CourseState {
   addCourse: {
@@ -20,15 +22,14 @@ interface CourseState {
     courseCategory: string;
     courseLevel: string;
     demoURL: string;
-    thumbnail: string
+    thumbnail: string;
   };
   addCourse2: {
     prerequisites: string[];
     benefits: string[];
   };
-  addLessons: {
-    sections: Section[];
-  };
+  sections: Section[];
+
   courseDetails: {
     courseTitle: string;
     courseDesc: string;
@@ -37,99 +38,76 @@ interface CourseState {
     courseCategory: string;
     courseLevel: string;
     demoURL: string;
-    thumbnail:string
+    thumbnail: string;
     prerequisites: string[];
     benefits: string[];
-    sections: Section[];
+    sections:Section[]
   };
 }
 
 const initialState: CourseState = {
   addCourse: {
-    courseTitle: '',
-    courseCategory: '',
-    courseDesc: '',
-    courseLevel: '',
+    courseTitle: "",
+    courseDesc: "",
     coursePrice: 0,
     courseDiscountPrice: 0,
-    demoURL: '',
-    thumbnail: '',
+    courseCategory: "",
+    courseLevel: "",
+    demoURL: "",
+    thumbnail: "",
   },
   addCourse2: {
-    benefits: [],
     prerequisites: [],
+    benefits: [],
   },
-  addLessons: {
-    sections: [],
-  },
+  sections: [
+    {
+      title: "",
+      lessons: [{ title: "", video: null, description: "" }],
+    },
+  ],
+ 
   courseDetails: {
-    courseTitle: '',
-    courseDesc: '',
+    courseTitle: "",
+    courseDesc: "",
     coursePrice: 0,
     courseDiscountPrice: 0,
-    courseCategory: '',
-    courseLevel: '',
-    demoURL: '',
-    thumbnail:'',
+    courseCategory: "",
+    courseLevel: "",
+    demoURL: "",
+    thumbnail: "",
     prerequisites: [],
     benefits: [],
-    sections: [],
+    sections:[],
+
   },
 };
 
 const courseSlice = createSlice({
-  name: 'course',
+  name: "course",
   initialState,
   reducers: {
-    saveAddCourse(state, action: PayloadAction<CourseState['addCourse']>) {
+    saveAddCourse(state, action: PayloadAction<CourseState["addCourse"]>) {
       state.addCourse = action.payload;
       state.courseDetails = {
         ...state.courseDetails,
         ...action.payload,
       };
     },
-    saveAddCourse2(state, action: PayloadAction<CourseState['addCourse2']>) {
+    saveAddCourse2(state, action: PayloadAction<CourseState["addCourse2"]>) {
       state.addCourse2 = action.payload;
       state.courseDetails = {
         ...state.courseDetails,
         ...action.payload,
       };
     },
-    setLessons(state, action: PayloadAction<CourseState['addLessons']>) {
-      state.addLessons = action.payload;
-      state.courseDetails.sections = action.payload.sections;
+    saveLessons(state, action: PayloadAction<Section[]>) {
+      state.sections = action.payload;
     },
-    addSection(state, action: PayloadAction<Section>) {
-      state.addLessons.sections.push(action.payload);
-      state.courseDetails.sections.push(action.payload);
-    },
-    updateLesson(
-      state,
-      action: PayloadAction<{
-        sectionIndex: number;
-        lessonIndex: number;
-        lessonData: Lesson;
-      }>
-    ) {
-      const { sectionIndex, lessonIndex, lessonData } = action.payload;
-      const section = state.addLessons.sections[sectionIndex];
-      if (section) {
-        section.lessons[lessonIndex] = { ...section.lessons[lessonIndex], ...lessonData };
-        state.courseDetails.sections[sectionIndex].lessons[lessonIndex] = {
-          ...section.lessons[lessonIndex],
-          ...lessonData,
-        };
-      }
-    },
+
   },
 });
 
-export const {
-  saveAddCourse,
-  saveAddCourse2,
-  addSection,
-  setLessons,
-  updateLesson,
-} = courseSlice.actions;
+export const { saveAddCourse, saveAddCourse2,saveLessons } = courseSlice.actions;
 
 export default courseSlice.reducer;

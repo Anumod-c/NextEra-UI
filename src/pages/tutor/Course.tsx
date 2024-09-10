@@ -27,7 +27,7 @@ const Course: React.FC = () => {
   const [sections, setSections] = useState<Section[]>([]); // Updated to handle sections
 
   const totalSteps = 4;
-  const { addCourse, addCourse2 } = useSelector((state: RootState) => state.course);
+  const { addCourse, addCourse2,addLessons } = useSelector((state: RootState) => state.course);
 
   // Handle lesson data and proceed to next step
   const handleLessonData = (data: Section[]) => {
@@ -65,6 +65,7 @@ const Course: React.FC = () => {
               <AddCourse2
                 onNext={handleNext}
                 onBack={handleBack} // Pass back handler
+                
               />
             </>
           )}

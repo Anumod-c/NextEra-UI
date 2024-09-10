@@ -6,15 +6,19 @@ import { saveAddCourse } from "../../redux/courseSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import axios from "axios";
-import { courseEndpoints } from "../../constraints/endpoints/courseEndpoints";
 import { toast } from "sonner";
 import { tutorEndpoints } from "../../constraints/endpoints/tutorEndpoints";
+import CryptoJS from "crypto-js";
+
+
+
+
 
 interface AddCourseProps {
   onNext: () => void;
   onBack: () => void;
 }
-
+const randomImageName = (): string => CryptoJS.SHA256(Date.now().toString()).toString(CryptoJS.enc.Hex);
 const validationSchema = Yup.object({
   courseTitle: Yup.string().required("Course name is required"),
   coursePrice: Yup.number().required("Course price is required"),
@@ -25,11 +29,12 @@ const validationSchema = Yup.object({
   demoURL: Yup.string().url("Invalid URL").required("Demo URL is required"),
   thumbnail: Yup.string().required("Thumbnail is required"),
 });
-
 const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const formData = useSelector((state: RootState) => state.course.addCourse);
+  const tutorId = useSelector((state:RootState)=>state.tutor.id);
+  console.log('tutorId',tutorId);
 
   const [previewImage, setPreviewImage] = useState<string | null>(null); // State for image preview
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null); // State for storing the presigned URL
@@ -57,7 +62,7 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
   };
 
   const handleFileUpload = async (file: File) => {
-    const fileName = file.name;
+    const fileName = `${randomImageName()}_${file.name}`;
     const fileType = file.type.startsWith('video') ? 'video' : 'image';
 
     // Get upload URL
@@ -104,8 +109,9 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="w-[90%] bg-white shadow-lg rounded-lg px-8 py-6">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-6">Add New Course</h2>
-
+      <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+          Add New Course
+        </h2>
         <Formik
           initialValues={formData || {
             courseTitle: "",
@@ -120,18 +126,11 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
           validationSchema={validationSchema}
           onSubmit={async (values) => {
 
-            const courseData ={...values,thumbnail:thumbnailUrl||''}
-            console.log(thumbnailUrl,'thumbanuil url which i will modify now');
-            
-            // Here, 'thumbnail' will be the file name and you can handle saving it to your server as needed
-          const result = await axios.post(courseEndpoints.addCourse,courseData);
-            dispatch(saveAddCourse(courseData));
-            console.log('data send to apigateway', values);
-            if (result.data.success) {
+            const courseData ={tutorId,...values,thumbnail:thumbnailUrl||''}
+            console.log(thumbnailUrl,'thumbanuil url which i will modify now');          
+            dispatch(saveAddCourse(courseData));            
               onNext();
-            } else {
-              toast.error("Could not save the data. Please try again.");
-            }
+           
           }}
         >
           {({ setFieldValue }) => (

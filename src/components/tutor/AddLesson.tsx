@@ -5,7 +5,8 @@ import axios from 'axios';
 import { tutorEndpoints } from "../../constraints/endpoints/tutorEndpoints";
 import { toast } from "sonner";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai"; // Icons for collapse/expand
-
+import { saveLessons } from "../../redux/courseSlice";
+import { useDispatch } from "react-redux";
 // Define the type for a lesson
 interface Lesson {
   title: string;
@@ -45,6 +46,8 @@ interface AddLessonProps {
 }
 
 const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
+  const dispatch =useDispatch()
+
   const fileInputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
   const [previewUrls, setPreviewUrls] = useState<{ [key: string]: string }>({});
   const [expandedSections, setExpandedSections] = useState<number[]>([]); // Track expanded sections
@@ -52,25 +55,26 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
 
   // Handle file change and preview
   const handleFileChange =
-    (
-      sectionIndex: number,
-      lessonIndex: number,
-      setFieldValue: (field: string, value: File | null) => void
-    ) =>
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const file = event.currentTarget.files?.[0] ?? null;
-      if (file) {
-        setFieldValue(
-          `sections.${sectionIndex}.lessons.${lessonIndex}.video`,
-          file
-        );
-        const url = URL.createObjectURL(file);
-        setPreviewUrls((prevUrls) => ({
-          ...prevUrls,
-          [`${sectionIndex}-${lessonIndex}`]: url,
-        }));
-      }
-    };
+  (
+    sectionIndex: number,
+    lessonIndex: number,
+    setFieldValue: (field: string, value: any) => void
+  ) =>
+  (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.currentTarget.files?.[0];
+    if (file) {
+      setFieldValue(
+        `sections.${sectionIndex}.lessons.${lessonIndex}.video`,
+        file // Store the file object
+      );
+      const url = URL.createObjectURL(file);
+      setPreviewUrls((prevUrls) => ({
+        ...prevUrls,
+        [`${sectionIndex}-${lessonIndex}`]: url,
+      }))
+    }
+  };
+
 
   // Toggle section expansion
   const toggleSection = (index: number) => {
@@ -78,8 +82,7 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
       prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
     );
   };
-
-  // Toggle lesson expansion
+  
   const toggleLesson = (sectionIndex: number, lessonIndex: number) => {
     const key = `${sectionIndex}-${lessonIndex}`;
     setExpandedLessons((prev) => ({
@@ -87,39 +90,44 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
       [key]: !prev[key],
     }));
   };
+  
 
   // Handle the video upload to S3
   const handleUploadClick = async (
     sectionIndex: number,
     lessonIndex: number,
-    video: File | null
+    videoName: string | null
   ) => {
-    if (!video) {
+    if (!videoName) {
       alert("Please select a video first!");
       return;
     }
-
+  
     try {
-      console.log(":Button clicked");
       // Request a pre-signed URL from the API Gateway
-      const response = await axios.get(tutorEndpoints.getPresignedUrl, {
+      const response = await axios.get(tutorEndpoints.getPresignedUrlForUpload, {
         params: {
-          filename: video.name,
-          fileType:video.type
+          filename: videoName,
+          fileType: "video/*", // Or the actual file type if known
         },
       });
       const { url } = response.data;
-      console.log("Presigned URL:", url);
       if (!url) {
         throw new Error("Presigned URL is not provided");
       }
+      // You need to ensure you have the file object to upload
+      const file = fileInputRefs.current[`${sectionIndex}-${lessonIndex}`]?.files?.[0];
+      if (!file) {
+        throw new Error("File object not found");
+      }
+  
       // Upload the file directly to S3 using the presigned URL
-      await axios.put(url, video, {
+      await axios.put(url, file, {
         headers: {
-          "Content-Type": video.type,
+          "Content-Type": file.type, // Use the actual file type
         },
       });
-
+  
       toast.success(
         `Lesson ${lessonIndex + 1} in section ${sectionIndex + 1} uploaded successfully!`
       );
@@ -128,23 +136,38 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
       toast.error("Failed to upload video.");
     }
   };
+  
+  
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Add Lessons</h2>
       <Formik
-        initialValues={{
-          sections: [
-            {
-              title: "",
-              lessons: [{ title: "", video: null, description: "" }],
-            },
-          ],
-        }}
-        validationSchema={validationSchema}
-        onSubmit={(values) => {
-          onNext(values.sections);
-        }}
+  initialValues={{
+    sections: [
+      {
+        title: "",
+        lessons: [{ title: "", video: null, description: "" }],
+      },
+    ],
+  }}
+  validationSchema={validationSchema}
+  onSubmit={(values) => {
+    // Directly use the values since video remains as File or null
+    const updatedSections: Section[] = values.sections.map((section) => ({
+      ...section,
+      lessons: section.lessons.map((lesson) => ({
+        ...lesson,
+        // Keep video as File or null, as expected
+        video: lesson.video,
+      })),
+    }));
+
+    // Dispatch the action to save the lessons
+    dispatch(saveLessons(updatedSections));
+    onNext(updatedSections);
+  }}
+        
       >
         {({ setFieldValue, values }) => (
           <Form>
@@ -265,20 +288,30 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
                                               Upload Video
                                             </label>
                                             <input
-                                              ref={(el) =>
-                                                (fileInputRefs.current[
-                                                  `${sectionIndex}-${lessonIndex}`
-                                                ] = el)
-                                              }
-                                              type="file"
-                                              accept="video/*"
-                                              onChange={handleFileChange(
-                                                sectionIndex,
-                                                lessonIndex,
-                                                setFieldValue
-                                              )}
-                                              className="border border-gray-300 p-2 rounded-md"
-                                            />
+  ref={(ref) =>
+    (fileInputRefs.current[
+      `${sectionIndex}-${lessonIndex}`
+    ] = ref)
+  }
+  type="file"
+  accept="video/*"
+  onChange={handleFileChange(
+    sectionIndex,
+    lessonIndex,
+    setFieldValue
+  )}
+  className="border border-gray-300 p-2 rounded-md"
+/>{previewUrls[
+  `${sectionIndex}-${lessonIndex}`
+] && (
+  <video
+    controls
+    src={previewUrls[
+      `${sectionIndex}-${lessonIndex}`
+    ]}
+    className="mt-2 border border-gray-300 rounded-md"
+  />
+)}
                                             <ErrorMessage
                                               name={`sections.${sectionIndex}.lessons.${lessonIndex}.video`}
                                               component="div"

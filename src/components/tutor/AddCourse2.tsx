@@ -6,9 +6,6 @@ import { useDispatch } from "react-redux";
 import { saveAddCourse2 } from "../../redux/courseSlice"; // Adjust the path as needed
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import axios from "axios";
-import { courseEndpoints } from "../../constraints/endpoints/courseEndpoints";
-import { toast } from "sonner";
 
 interface AddCourse2Props {
   onNext: () => void;
@@ -42,13 +39,9 @@ const AddCourse2: React.FC<AddCourse2Props> = ({ onNext,onBack }) => {
           validationSchema={validationSchema}
           onSubmit={async(values) => {
             dispatch(saveAddCourse2(values));
-            const result = await axios.post(courseEndpoints.addCourse2,values);
-            if(result.data.success){
-
+            console.log('values of prequisite and benifits',values);
               onNext();
-            }else{
-              toast.error("Couldnt update the data,Please try again")
-            }
+            
           }}
         >
           {({ values }) => (
@@ -143,6 +136,7 @@ const AddCourse2: React.FC<AddCourse2Props> = ({ onNext,onBack }) => {
                     </FieldArray>
                   </div>
                 </div>
+                
 
                 <div className="w-full flex justify-end mt-6">
                 <button
