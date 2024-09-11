@@ -1,15 +1,24 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
+import axios from 'axios';
+import { courseEndpoints } from '../../constraints/endpoints/courseEndpoints';
+import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 interface CourseSummaryProps {
   onBack: () => void;
 }
 
 const CourseSummary: React.FC<CourseSummaryProps> = ({ onBack }) => {
+const tutorId= useSelector((state:RootState)=>state.tutor.id)
+const navigate=useNavigate()
+
+
   // Access the state using useSelector
   const {
     courseTitle,
+    thumbnail,
     courseDesc,
     coursePrice,
     courseDiscountPrice,
@@ -20,6 +29,40 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({ onBack }) => {
     benefits,
     sections
   } = useSelector((state: RootState) => state.course.courseDetails);
+
+  const UploadCourse=async()=>{
+    const courseData = {
+      tutorId:tutorId,
+      thumbnail:thumbnail,
+      title: courseTitle,
+      description: courseDesc,
+      price: coursePrice,
+      discountPrice: courseDiscountPrice,
+      category: courseCategory,
+      level: courseLevel,
+      demoURL: demoURL,
+      prerequisites: prerequisites,
+      benefits: benefits,
+      sections: sections
+    };
+    try{
+      console.log('courseData',courseData);
+      
+      const response = await axios.post(courseEndpoints.addCourse, courseData);
+      if(response.data.success){
+        toast.success(response.data.message) 
+        navigate('/tutor/dashboard')
+      }else{
+        toast.error(response.data.message)
+      }
+    }catch(error){
+      console.error('Error uploading course:', error);
+    }
+    
+    
+  }
+  
+
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
@@ -61,6 +104,12 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({ onBack }) => {
         className="px-6 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 mt-6"
       >
         Back
+      </button>
+      <button
+        onClick={UploadCourse}
+        className="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-300 mt-6"
+      >
+        Upload Course
       </button>
     </div>
   );

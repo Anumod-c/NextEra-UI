@@ -6,28 +6,14 @@ import AddCourse2 from '../../components/tutor/AddCourse2';
 import CourseProgress from '../../components/tutor/CourseProgress';
 import AddLesson from '../../components/tutor/AddLesson';
 import CourseSummary from '../../components/tutor/CourseSummary';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
 
 // Define the type for a lesson
-interface Lesson {
-  title: string;
-  videoName: string | null;
-  description: string;
-}
-
-// Define the type for a section
-interface Section {
-  title: string;
-  lessons: Lesson[];
-}
 
 const Course: React.FC = () => {
   const [step, setStep] = useState<number>(1);
   // const [sections, setSections] = useState<Section[]>([]); // Updated to handle sections
 
   const totalSteps = 4;
-  const { addCourse, addCourse2, sections} = useSelector((state: RootState) => state.course);
 
   // Handle lesson data and proceed to next step
   // const handleLessonData = (data: Section[]) => {
@@ -80,15 +66,15 @@ const Course: React.FC = () => {
           {step === 4 && (
             <CourseSummary
               onBack={handleBack}
-              courseName={addCourse.courseTitle}
-              coursePrice={addCourse.coursePrice.toString()}
-              courseDiscountPrice={addCourse.courseDiscountPrice.toString()}
-              courseDescription={addCourse.courseDesc}
-              courseCategory={addCourse.courseCategory}
-              courseLevel={addCourse.courseLevel}
-              demoUrl={addCourse.demoURL}
-              benefits={addCourse2.benefits}
-              prerequisites={addCourse2.prerequisites}
+              // courseNa={addCourse.courseTitle}
+              // coursePrice={addCourse.coursePrice.toString()}
+              // courseDiscountPrice={addCourse.courseDiscountPrice.toString()}
+              // courseDescription={addCourse.courseDesc}
+              // courseCategory={addCourse.courseCategory}
+              // courseLevel={addCourse.courseLevel}
+              // demoUrl={addCourse.demoURL}
+              // benefits={addCourse2.benefits}
+              // prerequisites={addCourse2.prerequisites}
               // sections={sections.map(section => ({
               //   title: section.title,
               //   lessons: section.lessons.map(lesson => ({

@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface Lesson {
   title: string;
-  videoName: string | null; // Store only the file name
+  video: string | null; // Store only the file name
   description: string;
 }
 
@@ -63,7 +63,7 @@ const initialState: CourseState = {
   sections: [
     {
       title: "",
-      lessons: [{ title: "", videoName: null, description: "" }],
+      lessons: [{ title: "", video: null, description: "" }],
     },
   ],
  

@@ -1,13 +1,51 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import axios from 'axios';
+import { courseEndpoints } from '../../constraints/endpoints/courseEndpoints';
 
-const courses = [
-  { title: 'Web Development', description: 'Learn HTML, CSS, and JavaScript' },
-  { title: 'Data Science', description: 'Master Python and machine learning' },
-  { title: 'UI/UX Design', description: 'Design beautiful and usable interfaces' },
-];
+interface Course {
+  _id: string;
+  title: string;
+  price:number;
+  discountPrice: number;
+  thumbnail: string;
+}
 
-const Courses = () => {
+const Courses: React.FC = () => {
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await axios.get(courseEndpoints.fetchAllCourse);
+        console.log('response from fetching courses', response.data.courses);
+
+        // Assuming response.data.courses is an array of courses
+        const coursesData: Course[] = response.data.courses.map((course: Course) => ({
+          _id: course._id,
+          title: course.title,
+          price:course.price,
+          discountPrice: course.discountPrice,
+          thumbnail: course.thumbnail, // Ensure imgUrl is correctly mapped
+        }));
+        
+        setCourses(coursesData);
+        setLoading(false);
+      } catch (err) {
+        console.error('Failed to fetch courses', err);
+        setError('Failed to fetch courses');
+        setLoading(false);
+      }
+    };
+
+    fetchCourses();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+
   return (
     <section className="py-16 bg-white ">
       <div className="container mx-auto text-center">
@@ -18,16 +56,25 @@ const Courses = () => {
           className="mb-8">
           <h2 className="text-4xl font-bold">Explore Our Courses</h2>
         </motion.div>
-        <div className="grid grid-cols-1 md:grid-cols-3  gap-8">
+        <div className="grid  grid-cols-1 md:grid-cols-4 gap-8">
           {courses.map((course, index) => (
             <motion.div 
-              key={index}
+              key={course._id}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: index * 0.2 }}
-              className="p-6 bg-gray-100 rounded-lg shadow-lg h-72">
-              <h3 className="text-xl font-semibold mb-4">{course.title}</h3>
-              <p>{course.description}</p>
+              className="p-4 bg-gray-100 rounded-lg shadow-lg ">
+              <img 
+                src={course.thumbnail} 
+                alt={course.title} 
+                className=" object-cover mb-4 rounded"
+              />
+              <h3 className="text-xl  font-semibold mb-4">{course.title}</h3>
+              <div className='flex '>
+              <p className='text-red-600  font-sans line-through px-4'>${course.price}</p>
+
+              <p className='font-semibold'>${course.discountPrice}</p>
+              </div>
             </motion.div>
           ))}
         </div>
