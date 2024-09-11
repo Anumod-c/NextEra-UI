@@ -4,17 +4,17 @@ import * as Yup from "yup";
 import axios from 'axios';
 import { tutorEndpoints } from "../../constraints/endpoints/tutorEndpoints";
 import { toast } from "sonner";
-import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai"; // Icons for collapse/expand
+import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import { saveLessons } from "../../redux/courseSlice";
 import { useDispatch } from "react-redux";
-// Define the type for a lesson
+
+
 interface Lesson {
   title: string;
   video: File | null;
   description: string;
 }
 
-// Define the type for a section
 interface Section {
   title: string;
   lessons: Lesson[];
@@ -41,13 +41,13 @@ const validationSchema = Yup.object().shape({
 });
 
 interface AddLessonProps {
-  onNext: (data: Section[]) => void;
+  onNext: () => void;
   onBack: () => void;
 }
 
 const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
   const dispatch =useDispatch()
-
+  
   const fileInputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
   const [previewUrls, setPreviewUrls] = useState<{ [key: string]: string }>({});
   const [expandedSections, setExpandedSections] = useState<number[]>([]); // Track expanded sections
@@ -65,7 +65,7 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
     if (file) {
       setFieldValue(
         `sections.${sectionIndex}.lessons.${lessonIndex}.video`,
-        file // Store the file object
+        file.name // Store the file name
       );
       const url = URL.createObjectURL(file);
       setPreviewUrls((prevUrls) => ({
@@ -165,14 +165,14 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
 
     // Dispatch the action to save the lessons
     dispatch(saveLessons(updatedSections));
-    onNext(updatedSections);
+    onNext();
   }}
         
       >
         {({ setFieldValue, values }) => (
           <Form>
             <FieldArray name="sections">
-              {({ remove, push }) => (
+              {({ push }) => (
                 <div className="space-y-6">
                   {values.sections.map((section, sectionIndex) => (
                     <div
@@ -216,7 +216,7 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
 
                           {/* Lessons */}
                           <FieldArray name={`sections.${sectionIndex}.lessons`}>
-                            {({ remove: removeLesson, push: pushLesson }) => (
+                            {({  push: pushLesson }) => (
                               <div className="space-y-4">
                                 {section.lessons.map((lesson, lessonIndex) => (
                                   <div key={lessonIndex}>

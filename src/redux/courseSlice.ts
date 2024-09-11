@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 
-interface Lesson {
+export interface Lesson {
   title: string;
-  video: File | null; // Store only the file name
+  videoName: string | null; // Store only the file name
   description: string;
 }
 
-interface Section {
+export interface Section {
   title: string;
   lessons: Lesson[];
 }
@@ -63,7 +63,7 @@ const initialState: CourseState = {
   sections: [
     {
       title: "",
-      lessons: [{ title: "", video: null, description: "" }],
+      lessons: [{ title: "", videoName: null, description: "" }],
     },
   ],
  
@@ -103,6 +103,7 @@ const courseSlice = createSlice({
     },
     saveLessons(state, action: PayloadAction<Section[]>) {
       state.sections = action.payload;
+      state.courseDetails.sections = action.payload;
     },
 
   },

@@ -12,7 +12,7 @@ import { RootState } from '../../redux/store';
 // Define the type for a lesson
 interface Lesson {
   title: string;
-  video: File | null;
+  videoName: string | null;
   description: string;
 }
 
@@ -24,16 +24,16 @@ interface Section {
 
 const Course: React.FC = () => {
   const [step, setStep] = useState<number>(1);
-  const [sections, setSections] = useState<Section[]>([]); // Updated to handle sections
+  // const [sections, setSections] = useState<Section[]>([]); // Updated to handle sections
 
   const totalSteps = 4;
-  const { addCourse, addCourse2,addLessons } = useSelector((state: RootState) => state.course);
+  const { addCourse, addCourse2, sections} = useSelector((state: RootState) => state.course);
 
   // Handle lesson data and proceed to next step
-  const handleLessonData = (data: Section[]) => {
-    setSections(data);
-    handleNext();
-  };
+  // const handleLessonData = (data: Section[]) => {
+  //   setSections(data);
+  //   handleNext();
+  // };
 
   const handleNext = () => {
     setStep(prev => prev + 1);
@@ -72,7 +72,7 @@ const Course: React.FC = () => {
           {step === 3 && (
             <>
               <AddLesson
-                onNext={handleLessonData}
+                onNext={handleNext}
                 onBack={handleBack} // Pass back handler
               />
             </>
@@ -89,14 +89,15 @@ const Course: React.FC = () => {
               demoUrl={addCourse.demoURL}
               benefits={addCourse2.benefits}
               prerequisites={addCourse2.prerequisites}
-              sections={sections.map(section => ({
-                title: section.title,
-                lessons: section.lessons.map(lesson => ({
-                  title: lesson.title,
-                  video: lesson.video ? URL.createObjectURL(lesson.video) : null,
-                  description: lesson.description,
-                }))
-              }))}
+              // sections={sections.map(section => ({
+              //   title: section.title,
+              //   lessons: section.lessons.map(lesson => ({
+              //     title: lesson.title,
+              //     videoName:lesson.videoName,
+              //     // video: lesson.videoName ? URL.createObjectURL(lesson.video) : null,
+              //     description: lesson.description,
+              //   }))
+              // }))}
             />
           )}
         </div>
