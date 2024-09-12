@@ -30,6 +30,8 @@ const validationSchema = Yup.object({
   thumbnail: Yup.string().required("Thumbnail is required"),
 });
 const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
+  const bucketName = import.meta.env.VITE_AWS_BUCKET_NAME
+  const region = import.meta.env.VITE_AWS_REGION
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const formData = useSelector((state: RootState) => state.course.addCourse);
@@ -75,7 +77,10 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
           'Content-Type': file.type,
         }
       });
-      const viewUrl = await getPresignedUrlForDownload(fileName);
+      const viewUrl = `https://${bucketName}.s3.${region}.amazonaws.com/${fileName}`
+      console.log('View URL:', viewUrl);
+  
+      // const viewUrl = await getPresignedUrlForDownload(fileName);
       
       setThumbnailUrl(viewUrl); // Set the URL used for viewing
         toast.success("Thumbnail uploaded successfully");
@@ -91,20 +96,20 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
     }
     
   };
-  const getPresignedUrlForDownload = async (filename: string) => {
-    try {
-      const response = await axios.get(tutorEndpoints.getPresignedUrlForDownload, {
-        params: {
-          filename: filename,
-        }
-      });
-      return response.data.url;
-    } catch (error) {
-      console.error("Error fetching download URL", error);
-      toast.error("Error fetching download URL");
-      return null;
-    }
-  };
+  // const getPresignedUrlForDownload = async (filename: string) => {
+  //   try {
+  //     const response = await axios.get(tutorEndpoints.getPresignedUrlForDownload, {
+  //       params: {
+  //         filename: filename,
+  //       }
+  //     });
+  //     return response.data.url;
+  //   } catch (error) {
+  //     console.error("Error fetching download URL", error);
+  //     toast.error("Error fetching download URL");
+  //     return null;
+  //   }
+  // };
 
   return (
     <div className="flex items-center justify-center min-h-screen">

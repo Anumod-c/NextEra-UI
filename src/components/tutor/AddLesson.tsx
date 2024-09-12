@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import {v4 as uuidv4} from 'uuid'
 import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from 'axios';
@@ -11,8 +12,9 @@ import { useDispatch } from "react-redux";
 
 interface Lesson {
   title: string;
-  video: File | null;
+  video: string | null;
   description: string;
+ 
 }
 
 interface Section {
@@ -23,21 +25,21 @@ interface Section {
 // Define the validation schema
 const validationSchema = Yup.object().shape({
   sections: Yup.array()
-    .of(
-      Yup.object().shape({
-        title: Yup.string().required("Section title is required"),
-        lessons: Yup.array()
-          .of(
-            Yup.object().shape({
-              title: Yup.string().required("Lesson title is required"),
-              video: Yup.mixed().required("Video is required"),
-              description: Yup.string().required("Description is required"),
-            })
-          )
-          .min(1, "At least one lesson is required"),
-      })
-    )
-    .min(1, "At least one section is required"),
+  .of(
+    Yup.object().shape({
+      title: Yup.string().required("Section title is required"),
+      lessons: Yup.array()
+        .of(
+          Yup.object().shape({
+            title: Yup.string().required("Lesson title is required"),
+            video: Yup.string().url("Invalid URL").required("Video URL is required"),
+            description: Yup.string().required("Description is required"),
+          })
+        )
+        .min(1, "At least one lesson is required"),
+    })
+  )
+  .min(1, "At least one section is required"),
 });
 
 interface AddLessonProps {
@@ -46,6 +48,14 @@ interface AddLessonProps {
 }
 
 const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
+
+
+  const generateUniqueFileName = (originalName: string): string => {
+    const uniqueId = uuidv4();
+    const extension = originalName.split('.').pop(); // Get the file extension
+    return `${uniqueId}.${extension}`; // Return unique name with extension
+  };
+
   const dispatch =useDispatch()
   
   const fileInputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
@@ -63,10 +73,18 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
   (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files?.[0];
     if (file) {
-      setFieldValue(
-        `sections.${sectionIndex}.lessons.${lessonIndex}.video`,
-        file.name // Store the file name
-      );
+      const uniqueFileName = generateUniqueFileName(file.name); // Generate unique name
+
+      // const bucketName = import.meta.env.VITE_AWS_BUCKET_NAME;
+      // const region = import.meta.env.VITE_AWS_REGION;
+
+      // const viewUrl=`https://${bucketName}.s3.${region}.amazonaws.com/${uniqueFileName}`;
+
+      
+      setFieldValue(`sections.${sectionIndex}.lessons.${lessonIndex}.video`, uniqueFileName); // Store the file name
+
+
+
       const url = URL.createObjectURL(file);
       setPreviewUrls((prevUrls) => ({
         ...prevUrls,
@@ -96,7 +114,8 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
   const handleUploadClick = async (
     sectionIndex: number,
     lessonIndex: number,
-    videoName: string | null
+    videoName: string | null,
+    setFieldValue: (field: string, value: any) => void
   ) => {
     if (!videoName) {
       alert("Please select a video first!");
@@ -127,6 +146,12 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
           "Content-Type": file.type, // Use the actual file type
         },
       });
+      const bucketName = import.meta.env.VITE_AWS_BUCKET_NAME;
+      const region = import.meta.env.VITE_AWS_REGION;
+      const viewUrl = `https://${bucketName}.s3.${region}.amazonaws.com/${videoName}`;
+      console.log('viewewwwwwurl',viewUrl);
+      setFieldValue(`sections.${sectionIndex}.lessons.${lessonIndex}.video`, viewUrl);
+  
   
       toast.success(
         `Lesson ${lessonIndex + 1} in section ${sectionIndex + 1} uploaded successfully!`
@@ -162,6 +187,9 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
         video: lesson.video,
       })),
     }));
+
+    console.log('dddddddddd',updatedSections);
+    
 
     // Dispatch the action to save the lessons
     dispatch(saveLessons(updatedSections));
@@ -347,7 +375,8 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
                                               handleUploadClick(
                                                 sectionIndex,
                                                 lessonIndex,
-                                                lesson.video
+                                                values.sections[sectionIndex].lessons[lessonIndex].video,
+                                                setFieldValue
                                               )
                                             }
                                           >
