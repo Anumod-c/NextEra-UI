@@ -10,11 +10,12 @@ import UserHome from "../../pages/user/UserHome"
 import PrivateRoute from "./PrivateRoute"
 import PrivateRouteUser from "./PrivateRouteUser"
 import UserTutorSelection from "../../components/user/UserTutorSelection"
+import SingleCoursePage from "../../pages/user/SingleCoursePage.tsx/SingleCoursePage"
 
 const UserRoutes:React.FC=()=>{
     return(
 <Routes>
-<Route path="/" element={<UserLandingPage/>}/>
+<Route path="/" element={<SingleCoursePage/>}/>
 <Route path="/UserTutorSelection" element={<UserTutorSelection/>}/>
 
 

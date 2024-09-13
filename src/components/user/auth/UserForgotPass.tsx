@@ -7,7 +7,7 @@ import { userEndpoints } from '../../../constraints/endpoints/userEndPoints';
 import * as Yup from 'yup';
 import {Form,Formik,ErrorMessage, Field} from 'formik';
 // import { userAxios } from '../../../constraints/axios/userAxios';
-import userAxios from '../../../constraints/axios/userAxios';
+import axios from 'axios';
 
 const validationSchema =Yup.object({
   email:Yup.string().matches(
@@ -28,9 +28,7 @@ const UserForgotPass: React.FC=()=> {
       if(token){
         navigate('/home')
       }
-      if (token) {
-        navigate('/home')
-      }
+     
     }, [navigate]);
     const handleSubmit=async(values : typeof initialValues,{setSubmitting}:{setSubmitting:(isSubmitting:boolean)=>void})=>{
       try{
@@ -39,7 +37,7 @@ const UserForgotPass: React.FC=()=> {
         }
         console.log('llll',otpCountdown);
         
-        const response = await userAxios.post(userEndpoints.forgotPasword,values);
+        const response = await axios.post(userEndpoints.forgotPasword,values);
         if(response.data.success){
           console.log(response)
           navigate('/otp',{ state: { forgotPass: true,email: values.email } })
