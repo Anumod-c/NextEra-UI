@@ -1,52 +1,70 @@
-import React from 'react'
+import React from 'react';
 import StarIcon from '@mui/icons-material/Star';
+import TutorImage from '../../../assets/profile.png';
 
-import  TutorImage from '../../../assets/profile.png'
-export const PayementSection: React.FC = () => {
+
+
+interface PaymentProps {
+    course: {
+      price: number;
+      discountPrice?: number;
+      sections: { title: string; description: string }[];
+      level?: string;
+      language: string;
+      instructor: string;
+      rating: number;
+    };
+  }
+
+
+export const PaymentSection: React.FC<PaymentProps> = ({ course }) => {
     return (
-        <div className='payement section col-span-1  p-2 flex-col shadow-xl '>
-            <div className='price flex justify-start m-4 p-4 '>
-                <h1 className='text-4xl'>$4500</h1>
-            </div>
-            <div className='addtional information flex flex-col p-2 m-2 shadow-xl'>
-                <div className='text-2xl p-4 m-2'>This course includes</div>
-                <div className='flex  justify-between p-4'>
-                    <p className='text-xl'>Lectures</p>
-                    <p className='text-xl'>1</p>
-                </div>
-                <div className='flex  justify-between p-4'>
-                    <p className='text-xl'>Duration</p>
-                    <p className='text-xl'>1hr  0min</p>
-                </div>
-                <div className='flex  justify-between p-4'>
-                <p className='text-xl'>Level</p>
-                <p className='text-xl'>Beginner</p>
-                </div>
-                <div className='flex  justify-between p-4'>
-                <p className='text-xl'>Lanugage</p>
-                <p className='text-xl'>English</p>
-                </div>
+    <div className='payment-section p-4 col-span-1 flex flex-col shadow-xl rounded-lg bg-white md:max-w-xs max-w-full'>
+       {/* Price Section */}
+       <div className='price mb-4 text-center'>
+       <h1 className='text-4xl font-bold'>${course.discountPrice || course.price}</h1>
+      </div>
 
-            </div>
-            <div className='button flex bg-green-500 justify-center '>
-                <button className=' p-2 m-2  w-full'>Buy Now</button>
-            </div>
-            <div className='tutor details bg-gray-100 shadow-xl p-4 m-2'>
-                <div className='img/name p-4 m-2 flex '>
-                    {/* image yet to be added */}
-                    <img className='rounded-full w-28 h-28' src={TutorImage} alt="" />
-                    <div className='flex items-center px-4 mx-2 text-3xl'>
-                    Anumod
-                    </div>
-                </div>
-                <div className='rating px-4 mx-2'>
-                <StarIcon style={{ color: 'gold' }} />
-                  <StarIcon style={{ color: 'gold' }} />
-                  <StarIcon style={{ color: 'gold' }} />
-                  <StarIcon style={{ color: 'gold' }} />
-                  <StarIcon style={{ color: 'gold' }} />
-                </div>
-            </div>
+      {/* Additional Information Section */}
+      <div className='additional-information mb-4 bg-gray-50 p-4 rounded-lg shadow-sm'>
+        <h2 className='text-xl font-semibold mb-2'>This course includes:</h2>
+        <div className='flex justify-between mb-2'>
+          <p className='text-md'>Lectures</p>
+          <p className='text-md'>{course.sections.length}</p>
         </div>
-    )
-}
+        <div className='flex justify-between mb-2'>
+          <p className='text-md'>Level</p>
+          <p className='text-md'>{course.level || 'N/A'}</p>
+        </div>
+        <div className='flex justify-between mb-2'>
+          <p className='text-md'>Language</p>
+          <p className='text-md'>{course.language}</p>
+        </div>
+      </div>
+
+       {/* Buy Now Button */}
+       <div className='button mb-4'>
+        <button className='w-full bg-green-500 text-white py-2 rounded-md text-lg shadow hover:bg-green-600'>
+          Buy Now
+        </button>
+      </div>
+
+
+       {/* Tutor Details Section */}
+       <div className='tutor-details bg-gray-50 p-4 rounded-lg shadow-sm'>
+        <div className='img-name flex items-center mb-4'>
+          <img className='rounded-full w-16 h-16 mr-4' src={TutorImage} alt='Tutor' />
+          <div className='text-lg font-semibold'>{course.instructor || 'Instructor Name'}</div>
+        </div>
+        <div className='rating flex items-center'>
+          <StarIcon style={{ color: 'gold' }} />
+          <StarIcon style={{ color: 'gold' }} />
+          <StarIcon style={{ color: 'gold' }} />
+          <StarIcon style={{ color: 'gold' }} />
+          <StarIcon style={{ color: 'gold' }} />
+          <p className='ml-2 text-md'>{course.rating || 'N/A'}</p>
+        </div>
+      </div>
+    </div>
+  );
+};

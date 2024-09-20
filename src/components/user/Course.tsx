@@ -4,6 +4,7 @@ import axios from 'axios';
 import StarIcon from '@mui/icons-material/Star';
 
 import { courseEndpoints } from '../../constraints/endpoints/courseEndpoints';
+import { useNavigate } from 'react-router-dom';
 
 interface Course {
   _id: string;
@@ -17,6 +18,8 @@ const Courses: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -45,6 +48,12 @@ const Courses: React.FC = () => {
     fetchCourses();
   }, []);
 
+  const handleCourseClick =(coruseId:string)=>{
+    navigate(`/courses/${coruseId}`);
+  }
+
+
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
@@ -67,7 +76,8 @@ const Courses: React.FC = () => {
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: index * 0.2 }}
-              className="p-6 bg-white rounded-lg shadow-lg flex flex-col justify-between h-full"
+              className="p-6 bg-white rounded-lg shadow-lg flex flex-col justify-between h-full cursor-pointer"
+              onClick={()=>handleCourseClick(course._id)}
             >
               <img
                 src={course.thumbnail}
@@ -92,99 +102,9 @@ const Courses: React.FC = () => {
               </div>
             </motion.div>
           ))}
-          {courses.map((course, index) => (
-            <motion.div
-              key={course._id}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: index * 0.2 }}
-              className="p-6 bg-white rounded-lg shadow-lg flex flex-col justify-between h-full"
-            >
-              <img
-                src={course.thumbnail}
-                alt={course.title}
-                className="w-full  md:h-40 object-cover rounded-md mb-4"
-              />
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">{course.title}</h3>
-              <h6 className="text-sm text-gray-500 mb-4">Instructor: Malavika K</h6>
-              <div className="flex items-center mb-4">
-                <p className="text-xl font-semibold text-yellow-500 mr-2">4.8</p>
-                <div className="flex">
-                  <StarIcon style={{ color: 'gold' }} />
-                  <StarIcon style={{ color: 'gold' }} />
-                  <StarIcon style={{ color: 'gold' }} />
-                  <StarIcon style={{ color: 'gold' }} />
-                  <StarIcon style={{ color: 'gold' }} />
-                </div>
-              </div>
-              <div className="flex justify-between items-center mt-auto">
-                <p className="text-xl font-bold text-gray-900">${course.discountPrice}</p>
-                <p className="text-sm text-red-600 line-through">${course.price}</p>
-              </div>
-            </motion.div>
-          ))}
-          {courses.map((course, index) => (
-            <motion.div
-              key={course._id}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: index * 0.2 }}
-              className="p-6 bg-white rounded-lg shadow-lg flex flex-col justify-between h-full"
-            >
-              <img
-                src={course.thumbnail}
-                alt={course.title}
-                className="w-full  md:h-40 object-cover rounded-md mb-4"
-              />
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">{course.title}</h3>
-              <h6 className="text-sm text-gray-500 mb-4">Instructor: Malavika K</h6>
-              <div className="flex items-center mb-4">
-                <p className="text-xl font-semibold text-yellow-500 mr-2">4.8</p>
-                <div className="flex">
-                  <StarIcon style={{ color: 'gold' }} />
-                  <StarIcon style={{ color: 'gold' }} />
-                  <StarIcon style={{ color: 'gold' }} />
-                  <StarIcon style={{ color: 'gold' }} />
-                  <StarIcon style={{ color: 'gold' }} />
-                </div>
-              </div>
-              <div className="flex justify-between items-center mt-auto">
-                <p className="text-xl font-bold text-gray-900">${course.discountPrice}</p>
-                <p className="text-sm text-red-600 line-through">${course.price}</p>
-              </div>
-            </motion.div>
-          ))}
-          {courses.map((course, index) => (
-            <motion.div
-              key={course._id}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: index * 0.2 }}
-              className="p-6 bg-white rounded-lg shadow-lg flex flex-col justify-between h-full"
-            >
-              <img
-                src={course.thumbnail}
-                alt={course.title}
-                className="w-full md:h-40 object-cover rounded-md mb-4"
-              />
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">{course.title}</h3>
-              <h6 className="text-sm text-gray-500 mb-4">Instructor: Malavika K</h6>
-              <div className="flex items-center mb-4">
-                <p className="text-xl font-semibold text-yellow-500 mr-2">4.8</p>
-                <div className="flex">
-                  <StarIcon style={{ color: 'gold' }} />
-                  <StarIcon style={{ color: 'gold' }} />
-                  <StarIcon style={{ color: 'gold' }} />
-                  <StarIcon style={{ color: 'gold' }} />
-                  <StarIcon style={{ color: 'gold' }} />
-                </div>
-              </div>
-              <div className="flex justify-between items-center mt-auto">
-                <p className="text-xl font-bold text-gray-900">${course.discountPrice}</p>
-                <p className="text-sm text-red-600 line-through">${course.price}</p>
-              </div>
-            </motion.div>
-          ))}
+         
+         
+          
           
           
         </div>

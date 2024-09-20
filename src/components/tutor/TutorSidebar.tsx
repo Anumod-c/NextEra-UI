@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { FaTachometerAlt, FaBook, FaUserGraduate, FaMoneyCheckAlt, FaUserEdit, FaLock, FaSignOutAlt, FaBars } from 'react-icons/fa';
 import { useLocation } from 'react-router-dom'; // Import useLocation
+
+
 
 function TutorSidebar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -27,7 +29,7 @@ function TutorSidebar() {
           className={`md:w-64 w-64 shadow-lg bg-white text-black rounded-md flex-col h-full transition-transform transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:relative z-50`}
         >
           <ul className='m-2 p-2 text-lg font-semibold'>
-            <li className={`p-2 m-2 flex items-center rounded-lg transition duration-300 ease-in-out ${isActive('/tutor/dashboard') ? 'bg-green-100 text-green-600' : 'hover:bg-green-100 hover:text-green-600'}`}>
+            <li  className={`p-2 m-2 flex items-center rounded-lg transition duration-300 ease-in-out ${isActive('/tutor/dashboard') ? 'bg-green-100 text-green-600' : 'hover:bg-green-100 hover:text-green-600'}`}>
               <FaTachometerAlt className='mr-2 transition-transform duration-300 ease-in-out hover:scale-110' />
               Dashboard
             </li>
