@@ -27,6 +27,8 @@ interface PaymentProps {
 
 
 export const PaymentSection: React.FC<PaymentProps> = ({ course }) => {
+
+  const totalLessons = course.sections.reduce((count,section)=>count +section.lessons.length,0)
     return (
     <div className='payment-section p-4 col-span-1 flex flex-col shadow-xl rounded-lg bg-white md:max-w-xs max-w-full'>
        {/* Price Section */}
@@ -39,7 +41,7 @@ export const PaymentSection: React.FC<PaymentProps> = ({ course }) => {
         <h2 className='text-xl font-semibold mb-2'>This course includes:</h2>
         <div className='flex justify-between mb-2'>
           <p className='text-md'>Lectures</p>
-          <p className='text-md'>{course.sections.length}</p>
+          <p className='text-md'>{totalLessons}</p>
         </div>
         <div className='flex justify-between mb-2'>
           <p className='text-md'>Level</p>
