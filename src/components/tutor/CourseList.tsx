@@ -4,7 +4,6 @@ import { tutorEndpoints } from '../../constraints/endpoints/tutorEndpoints';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { useNavigate } from 'react-router-dom';
-import userAxios from '../../constraints/axios/userAxios';
 import { userEndpoints } from '../../constraints/endpoints/userEndPoints';
 
 
@@ -20,7 +19,7 @@ const CourseList:React.FC=()=> {
   const handleDetailView = async(courseId: string) => {
    
    
-    const response = await userAxios.get(`${userEndpoints.singleCourse}/${courseId}`);
+    const response = await axios.get(`${userEndpoints.courseDetails}/${courseId}`);
     console.log('response from singlecourse',response.data);
 
     //#######################################################        Please note                //#######################################################

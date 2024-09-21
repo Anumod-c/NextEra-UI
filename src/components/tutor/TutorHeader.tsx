@@ -1,4 +1,3 @@
-import React from "react";
 import { FaStar, FaUserGraduate, FaBookOpen } from "react-icons/fa";
 import tutorImage from "../../assets/profile.png";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +6,7 @@ import { RootState } from "../../redux/store";
 
 
 function TutorHeader() {
-  const {name,email,phone} = useSelector((state:RootState)=>state.tutor)
+  const {name} = useSelector((state:RootState)=>state.tutor)
 const navigate = useNavigate()
   const handleAddCourse=()=>{
     navigate('/tutor/addcourse')
@@ -27,9 +26,8 @@ const navigate = useNavigate()
       <div className="flex-grow flex flex-col justify-between ml-4">
         <div className="hidden  pl-2 sm:block font-bold text-3xl">{name}</div>
         <div className="flex flex-col sm:flex-row justify-evenly items-center m-4 space-y-4 sm:space-y-0">
-          <h1>{email}</h1>
-          <h1>{phone}</h1>
-          <ul className="flex space-x-4 text-lg">
+          
+          <ul className="flex space-x-12  text-lg">
             <li className="flex items-center">
               <FaStar className="text-yellow-500 mr-2" /> 0/5
             </li>

@@ -20,7 +20,7 @@ return(
         <Route path="/resetpassword" element={<TutorResetPass/>}/>
         <Route path="/profile" element={<TutorProfile /> } />
         <Route path="/addcourse" element={<Course /> } />
-        <Route  path="/courseList" element={<CourseListPage /> }/>
+        <Route  path="/courselist" element={<CourseListPage /> }/>
        
 
 
