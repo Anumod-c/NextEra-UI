@@ -38,7 +38,7 @@ export const PaymentSection: React.FC<PaymentProps> = ({ course }) => {
         </div>
         <div className='flex justify-between mb-2'>
           <p className='text-md'>Language</p>
-          <p className='text-md'>{course.language}</p>
+          <p className='text-md'>{course.language||'English'}</p>
         </div>
       </div>
 
