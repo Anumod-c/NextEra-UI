@@ -4,7 +4,6 @@ import { tutorEndpoints } from '../../constraints/endpoints/tutorEndpoints';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { useNavigate } from 'react-router-dom';
-import { userEndpoints } from '../../constraints/endpoints/userEndPoints';
 
 
  interface CourseList{
@@ -17,22 +16,8 @@ import { userEndpoints } from '../../constraints/endpoints/userEndPoints';
 const CourseList:React.FC=()=> {
   const navigate = useNavigate(); 
   const handleDetailView = async(courseId: string) => {
-   
-   
-    const response = await axios.get(`${userEndpoints.courseDetails}/${courseId}`);
-    console.log('response from singlecourse',response.data);
-
-    //#######################################################        Please note                //#######################################################
-
-      // here i want to set the state and store the details of  the course and display it in ui
-
-
-
-    //#######################################################                        //#######################################################
-
-
-
-    navigate(`/user/courses/${courseId}`);
+  
+    navigate(`/tutor/courses-details/${courseId}`);
   };
 
   const tutorId = useSelector((state:RootState)=>state.tutor.id)

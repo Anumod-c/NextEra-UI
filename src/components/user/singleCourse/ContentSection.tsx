@@ -112,52 +112,53 @@ const ContentSection: React.FC<CourseProps> = ({ course }) => {
         </div>
 
        {/* Course Sections */}
-       <div className="bg-gray-50 p-4 rounded-lg">
-          <h3 className="text-2xl font-semibold mb-4">Sections</h3>
-          {course.sections.map((section, index) => (
-            <div className="section-card mb-4" key={index}>
-              <div
-                className="flex justify-between items-center cursor-pointer p-4 bg-white shadow-md rounded-md"
-                onClick={() => toggleSection(index)}
-              >
-                <div className="text-lg font-medium">{section.title}</div>
-                {openSection === index ? <CloseIcon /> : <ArrowDropDownIcon />}
-              </div>
-              {openSection === index && (
-                <div className="p-4 bg-white mt-2 shadow-md rounded-md">
-                  {section.lessons.map((lesson, lessonIndex) => (
-                    <div
-                      className="lesson-card  mb-4 p-4 border-b  w-full border-gray-200"
-                      key={lessonIndex}
-                    >
-                      
-                      <div className="flex justify-center items-center space-x-4">
-                        
-                      <div className="w-1/2">
-                      <video
-                        className="w-full rounded-lg shadow-lg mt-2"
-                        height="400"
-                        controls
-                      >
-                        <source src={lesson.video} type="video/mp4" />
-                        Your browser does not support the video tag.
-                      </video>
-                      </div>
-                      <div className="w-1/2
-                      ">
-                        <h4 className="text-xl text-center font-semibold">{lesson.title}</h4>
-                      <p className="mt-2">{lesson.description}</p>
-
-                      </div>
-                      </div>
-
-                    </div>
-                  ))}
+<div className="bg-gray-50 p-4 rounded-lg">
+  <h3 className="text-2xl font-semibold mb-4">Sections</h3>
+  {course.sections.map((section, index) => (
+    <div className="section-card mb-4" key={index}>
+      <div
+        className="flex justify-between items-center cursor-pointer p-4 bg-white shadow-md rounded-md"
+        onClick={() => toggleSection(index)}
+      >
+        <div className="text-lg font-medium">{section.title}</div>
+        {openSection === index ? <CloseIcon /> : <ArrowDropDownIcon />}
+      </div>
+      {openSection === index && (
+        <div className="p-4 bg-white mt-2 shadow-md rounded-md">
+          {section.lessons.map((lesson, lessonIndex) => (
+            <div
+              className="lesson-card mb-4 p-4 border-b w-full border-gray-200"
+              key={lessonIndex}
+            >
+              {/* For small devices: Video first, then title, then description */}
+              <div className="flex flex-col md:flex-row justify-center items-center md:space-x-4">
+                
+                {/* Video Section */}
+                <div className="w-full md:w-1/2 mb-4 md:mb-0">
+                  <video
+                    className="w-full rounded-lg shadow-lg"
+                    height="250"
+                    controls
+                  >
+                    <source src={lesson.video} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
                 </div>
-              )}
+
+                {/* Title and Description Section */}
+                <div className="w-full md:w-1/2 text-center md:text-left">
+                  <h4 className="text-xl font-semibold mt-2 md:mt-0">{lesson.title}</h4>
+                  <p className="mt-2">{lesson.description}</p>
+                </div>
+              </div>
             </div>
           ))}
         </div>
+      )}
+    </div>
+  ))}
+</div>
+
       </div>
     </div>
   );

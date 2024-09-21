@@ -8,6 +8,7 @@ import TutorResetPass from "../../components/tutor/auth/TutorResetPass"
 import TutorProfile from "../../components/tutor/TutorProfile"
 import Course from "../../pages/tutor/Course"
 import CourseListPage from "../../pages/tutor/CourseListPage"
+import CourseDetailsPage from "../../pages/tutor/CourseDetailsPage"
 
 const TutorRoutes=()=>{
 return(
@@ -21,7 +22,9 @@ return(
         <Route path="/profile" element={<TutorProfile /> } />
         <Route path="/addcourse" element={<Course /> } />
         <Route  path="/courselist" element={<CourseListPage /> }/>
-       
+        <Route  path="/courses-details/:courseId" element={<CourseDetailsPage /> }/>
+
+        
 
 
 
