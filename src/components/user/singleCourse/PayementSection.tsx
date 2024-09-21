@@ -3,16 +3,25 @@ import StarIcon from '@mui/icons-material/Star';
 import TutorImage from '../../../assets/profile.png';
 
 
+interface Lesson {
+  title: string;
+  video: string;
+  description: string;
+}
+interface Section {
+  title: string;
+  lessons: Lesson[];
+}
 
 interface PaymentProps {
     course: {
       price: number;
-      discountPrice?: number;
-      sections: { title: string; description: string }[];
-      level?: string;
-      language: string;
-      instructor: string;
-      rating: number;
+      discountPrice: number;
+      sections: Section[];
+      level: string;
+      language?: string;
+      instructor?: string;
+      rating?: number;
     };
   }
 

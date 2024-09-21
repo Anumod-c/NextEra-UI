@@ -22,7 +22,16 @@ import axios from 'axios';
 
 function SingleCoursePage() {
 
-
+  interface Lesson {
+    title: string;
+    video: string;
+    description: string;
+  }
+  interface Section {
+    title: string;
+    lessons: Lesson[];
+  }
+  
   interface Course {
     _id?: string;
     title: string;
@@ -30,13 +39,14 @@ function SingleCoursePage() {
     price: number;
     discountPrice: number;
     thumbnail: string;
+    level:string;
     instructor?: string;
     rating?: number;
-    demoURL?: string;
-    benefits?: string[];
-    prerequisites?: string[];
-    sections?: { title: string; description: string }[];
-  }
+    demoURL: string;
+    benefits: string[];
+    prerequisites: string[];
+    sections: Section[];
+    }
 
   const {courseId} =  useParams<{ courseId: string }>();
   const [course, setCourse] = useState<Course | null>(null);

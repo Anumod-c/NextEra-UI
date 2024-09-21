@@ -26,9 +26,9 @@ interface CourseProps {
     benefits: string[];
     prerequisites: string[];
     sections: Section[];
-    rating?: number;
-    enrolled?: number;
-    language?: string;
+    // rating?: number;
+    // enrolled?: number;
+    // language?: string;
   };
 }
 
