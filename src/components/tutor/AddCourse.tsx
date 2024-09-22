@@ -194,6 +194,7 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
                     <Field as="select" name="courseCategory" className="w-full h-12 rounded-md bg-gray-100 px-4 py-2 text-gray-700 border border-gray-300 focus:ring-2 focus:ring-blue-500">
                       <option value="">Select Category</option>
                       <option value="DataScience">Data Science</option>
+                      <option value="AI&ML">Artificial Intelligence</option>
                       <option value="NodeJS">NodeJS</option>
                       <option value="React">React</option>
                       <option value="JavaScript">JavaScript</option>

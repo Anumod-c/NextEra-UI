@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import CloseIcon from '@mui/icons-material/Close';
 import { RiCheckDoubleLine } from 'react-icons/ri';
+import { useDispatch } from 'react-redux';
+import { clearCourseData } from '../../redux/courseSlice';
 
 interface CourseSummaryProps {
   onBack: () => void;
@@ -15,6 +17,8 @@ interface CourseSummaryProps {
 
 const CourseSummary: React.FC<CourseSummaryProps> = ({ onBack }) => {
   const tutorId = useSelector((state: RootState) => state.tutor.id);
+  const dispatch =useDispatch()
+
   const navigate = useNavigate();
   const [openSection, setOpenSection] = useState<number | null>(null);
 
@@ -55,6 +59,7 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({ onBack }) => {
       const response = await axios.post(courseEndpoints.addCourse, courseData);
       if (response.data.success) {
         toast.success(response.data.message);
+        dispatch(clearCourseData())
         navigate('/tutor/dashboard');
       } else {
         toast.error(response.data.message);

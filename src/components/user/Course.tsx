@@ -5,6 +5,7 @@ import StarIcon from '@mui/icons-material/Star';
 
 import { courseEndpoints } from '../../constraints/endpoints/courseEndpoints';
 import { useNavigate } from 'react-router-dom';
+import SkeltonCourse from './skelton/SkeltonCourse';
 
 interface Course {
   _id: string;
@@ -27,7 +28,7 @@ const navigate = useNavigate();
         const response = await axios.get(courseEndpoints.fetchAllCourse);
         console.log('response from fetching courses', response.data.courses);
 
-        // Assuming response.data.courses is an array of courses
+        //  response.data.courses is an array of courses
         const coursesData: Course[] = response.data.courses.map((course: Course) => ({
           _id: course._id,
           title: course.title,
@@ -37,7 +38,10 @@ const navigate = useNavigate();
         }));
 
         setCourses(coursesData);
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+
+        }, 500);
       } catch (err) {
         console.error('Failed to fetch courses', err);
         setError('Failed to fetch courses');
@@ -54,7 +58,7 @@ const navigate = useNavigate();
 
 
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <SkeltonCourse/>;
   if (error) return <p>{error}</p>;
 
   return (
@@ -69,7 +73,7 @@ const navigate = useNavigate();
           <h2 className="text-4xl font-bold py-2">Featured Courses</h2>
           <h4 className="text-xl text-gray-500">Explore the top picks</h4>
         </motion.div>
-        <div className="grid  grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div className="grid  grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
           {courses.map((course, index) => (
             <motion.div
               key={course._id}

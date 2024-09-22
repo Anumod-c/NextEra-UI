@@ -19,6 +19,7 @@ import UserNavbar from '../../../components/user/UserNavbar';
 import { useParams } from 'react-router-dom';
 import { courseEndpoints } from '../../../constraints/endpoints/courseEndpoints';
 import axios from 'axios';
+import SkeltonSingleCourse from '../../../components/user/skelton/SkeltonSingleCourse';
 
 function SingleCoursePage() {
 
@@ -63,7 +64,10 @@ useEffect(()=>{
       } else {
         setError('Failed to fetch course details');
       }
-      setLoading(false); // Set loading to false after fetching
+      setTimeout(() => {
+        setLoading(false); // Set loading to false after fetching
+
+      }, 500);
     } catch (error) {
       console.error('Failed to fetch course details', error);
       setError('Failed to fetch course details');
@@ -82,7 +86,7 @@ useEffect(() => {
   }
 }, [course]);
 
-if (loading) return <p>Loading...</p>;
+if (loading) return <SkeltonSingleCourse/>;
 if (error) return <p>{error}</p>;
 if (!course) return <p>No course found.</p>;
 
@@ -95,9 +99,10 @@ if (!course) return <p>No course found.</p>;
           <ContentSection course={course} />
         </div>
 
-        {/* Payment Section: Fixed position on larger screens, full width on small screens */}
         <div className='col-span-1 md:col-span-1  mt-4 p-6'>
-          <PaymentSection course={course} />
+          <div className='md:sticky md:top-4'>
+            <PaymentSection course={course} />
+          </div>
         </div>
       </div>
     </>

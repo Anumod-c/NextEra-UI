@@ -105,10 +105,15 @@ const courseSlice = createSlice({
       state.sections = action.payload;
       state.courseDetails.sections = action.payload;
     },
-
+    clearCourseData(state) {
+      state.addCourse = initialState.addCourse;
+      state.addCourse2 = initialState.addCourse2;
+      state.sections = initialState.sections;
+      state.courseDetails = initialState.courseDetails;
+    },
   },
 });
 
-export const { saveAddCourse, saveAddCourse2,saveLessons } = courseSlice.actions;
+export const { saveAddCourse, saveAddCourse2,saveLessons,clearCourseData } = courseSlice.actions;
 
 export default courseSlice.reducer;
