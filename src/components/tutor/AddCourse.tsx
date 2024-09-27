@@ -35,6 +35,8 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const formData = useSelector((state: RootState) => state.course.addCourse);
+  console.log('formdata',formData);
+  
   const tutorId = useSelector((state:RootState)=>state.tutor.id);
   console.log('tutorId',tutorId);
 
@@ -84,10 +86,11 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
       
       setThumbnailUrl(viewUrl); // Set the URL used for viewing
         toast.success("Thumbnail uploaded successfully");
-        
+        console.log(typeof(viewUrl),'typeofff')
         console.log('thumbnail url which i will modify  now',viewUrl);
         
-        setPreviewImage(URL.createObjectURL(file))
+        setPreviewImage(viewUrl)
+        return viewUrl
       } catch (error) {
         console.error("Error uploading file", error);
         toast.error("Error uploading thumbnail");
@@ -131,7 +134,7 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
           validationSchema={validationSchema}
           onSubmit={async (values) => {
 
-            const courseData ={tutorId,...values,thumbnail:thumbnailUrl||''}
+            const courseData ={tutorId,...values}
             console.log(thumbnailUrl,'thumbanuil url which i will modify now');          
             dispatch(saveAddCourse(courseData));            
               onNext();
@@ -234,9 +237,9 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
                     className="w-full sm:max-w-[400px] h-0 lg:pb-[14.25%] md:pb-[32.25%] pb-[55.25%] relative rounded-md bg-gray-100 border-2 border-dashed border-gray-300 hover:bg-gray-200 cursor-pointer"
                     onClick={handleUploadClick}
                   >
-                    {previewImage ? (
+                    {previewImage || formData.thumbnail ? (
                       <img
-                        src={previewImage}
+                        src={previewImage || formData.thumbnail}
                         alt="Thumbnail Preview"
                         className="absolute inset-0 w-full h-full object-cover rounded-md"
                       />
@@ -252,12 +255,13 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
                     ref={fileInputRef}
                     className="hidden"
                     accept="image/*"
-                    onChange={(e) => {
+                    onChange={async(e) => {
                       const file = e.target.files?.[0];
                       if (file) {
-                        setPreviewImage(URL.createObjectURL(file));
-                        handleFileUpload(file);
-                        setFieldValue('thumbnail', file.name); // Setting file name as thumbnail
+                       
+                        const s3url = await handleFileUpload(file);
+                      
+                        setFieldValue('thumbnail', s3url || formData.thumbnail); // Setting file name as thumbnail
                       }
                     }}
                   />

@@ -21,6 +21,7 @@ interface Section {
 interface CourseProps {
   course: {
     title: string;
+    
     description: string;
     demoURL: string;
     benefits: string[];

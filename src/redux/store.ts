@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage';
 import courseReducer from './courseSlice';
 import userReducer from './userSlice'; 
 import tutorreducer from './tutorSlice'
+import OrderDataSlice from './OrderDataSlice';
 
 // Configuration for redux-persist
 const persistConfig = {
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   tutor:tutorreducer,
   course: courseReducer,
+  order: OrderDataSlice,
   // Add other reducers here if you have more slices
 });
 

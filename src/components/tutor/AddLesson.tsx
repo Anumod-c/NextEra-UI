@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {v4 as uuidv4} from 'uuid'
 import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -8,6 +8,8 @@ import { toast } from "sonner";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import { saveLessons } from "../../redux/courseSlice";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 
 interface Lesson {
@@ -20,7 +22,7 @@ interface Lesson {
 interface Section {
   title: string;
   lessons: Lesson[];
-}
+}[]
 
 // Define the validation schema
 const validationSchema = Yup.object().shape({
@@ -49,14 +51,20 @@ interface AddLessonProps {
 
 const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
 
+  const dispatch =useDispatch()
+  const savedLessons = useSelector((state:RootState) => state.course.sections);
+  
+  console.log("savedddddddddddddddddddd",savedLessons);
+ 
 
   const generateUniqueFileName = (originalName: string): string => {
+    
     const uniqueId = uuidv4();
     const extension = originalName.split('.').pop(); // Get the file extension
     return `${uniqueId}.${extension}`; // Return unique name with extension
   };
 
-  const dispatch =useDispatch()
+ 
   
   const fileInputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
   const [previewUrls, setPreviewUrls] = useState<{ [key: string]: string }>({});
@@ -169,9 +177,9 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Add Lessons</h2>
       <Formik
   initialValues={{
-    sections: [
+    sections: savedLessons|| [
       {
-        title: "",
+        title:  "",
         lessons: [{ title: "", video: null, description: "" }],
       },
     ],

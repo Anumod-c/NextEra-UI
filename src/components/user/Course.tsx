@@ -41,7 +41,7 @@ const navigate = useNavigate();
         setTimeout(() => {
           setLoading(false);
 
-        }, 500);
+        }, 400);
       } catch (err) {
         console.error('Failed to fetch courses', err);
         setError('Failed to fetch courses');
@@ -62,7 +62,7 @@ const navigate = useNavigate();
   if (error) return <p>{error}</p>;
 
   return (
-    <section className="py-16 bg-white">
+    <section className=" m-2 px-8 bg-white">
       <div className="container mx-auto text-center">
         <motion.div
           initial={{ opacity: 0 }}
@@ -75,6 +75,7 @@ const navigate = useNavigate();
         </motion.div>
         <div className="grid  grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
           {courses.map((course, index) => (
+            //make  course component
             <motion.div
               key={course._id}
               initial={{ opacity: 0, y: 50 }}

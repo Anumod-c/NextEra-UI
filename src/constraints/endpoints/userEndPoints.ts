@@ -10,13 +10,16 @@ export const userEndpoints = {
     resetPassword: `${API_GATEWAY_BASE_URL}/resetPassword`,
     googleLogin: `${API_GATEWAY_BASE_URL}/google_login`,
     resendOtp: `${API_GATEWAY_BASE_URL}/resendOtp`,
-
-
-
-
-
-    logout: `${API_GATEWAY_BASE_URL}/logout`,
-   
     
+    logout: `${API_GATEWAY_BASE_URL}/logout`,
+
+    // added order along with the base url instead of creating seperate endpoints for payment
+    makepayement: `${API_GATEWAY_BASE_URL}/purchase/payment`,
+    saveOrder: `${API_GATEWAY_BASE_URL}/purchase/order`,
+
+
+
+
+
     
 }

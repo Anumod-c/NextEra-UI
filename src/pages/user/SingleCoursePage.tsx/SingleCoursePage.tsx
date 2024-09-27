@@ -34,8 +34,10 @@ function SingleCoursePage() {
   }
   
   interface Course {
-    _id?: string;
+    _id: string;
+    tutorId:string;
     title: string;
+    category:string;
     description: string;
     price: number;
     discountPrice: number;
