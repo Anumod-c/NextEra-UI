@@ -100,7 +100,7 @@ const navigate = useNavigate();
                 className="w-full  md:h-40 object-cover rounded-md mb-4"
               />
               <h3 className="text-xl font-semibold mb-2 text-gray-800">{course.title}</h3>
-              {/* <h6 className="text-sm text-gray-500 mb-4">Instructor: {course.tutorDetails.tutorDetails.name}</h6> */}
+              <h6 className="text-sm text-gray-500 mb-4">Instructor: {course.tutorDetails.tutorDetails.name}</h6>
               <div className="flex items-center mb-4">
                 <p className="text-xl font-semibold text-yellow-500 mr-2">4.8</p>
                 <div className="flex">
@@ -117,8 +117,6 @@ const navigate = useNavigate();
               </div>
             </motion.div>
           ))}
-         
-         
           
           
           

@@ -21,24 +21,27 @@ interface Section {
 }
 
 interface PaymentProps {
-    course: {
-      _id:string;
-      tutorId:string;
-      title?:string;
-      category?:string;
-      thumbnail:string;
-      price: number;
-      discountPrice: number;
-      sections: Section[];
-      level: string;
-      language?: string;
-      instructor?: string;
-      rating?: number;
-    };
-  }
+  course: {
+    _id: string;
+    tutorId: string;
+    title?: string;
+    category?: string;
+    thumbnail: string;
+    price: number;
+    discountPrice: number;
+    sections: Section[];
+    level: string;
+    language?: string;
+    instructor?: string;
+    rating?: number;
+  };
+  tutor?: {
+    name: string;
+  };
+}
 
 
-export const PaymentSection: React.FC<PaymentProps> = ({ course }) => {
+export const PaymentSection: React.FC<PaymentProps> = ({ course ,tutor}) => {
   console.log('coirseeeeeeeeprops',course);
   const dispatch = useDispatch()
   const user= useSelector((state:RootState)=>state.user)
@@ -58,7 +61,7 @@ export const PaymentSection: React.FC<PaymentProps> = ({ course }) => {
         price:course.price,
         level:course.level,
         totalLessons:totalLessons,
-        discourtPrice:course.discountPrice,
+        discountPrice:course.discountPrice,
        
 
       }
@@ -125,7 +128,7 @@ export const PaymentSection: React.FC<PaymentProps> = ({ course }) => {
        <div className='tutor-details bg-gray-50 p-4 rounded-lg shadow-sm'>
         <div className='img-name flex items-center mb-4'>
           <img className='rounded-full w-16 h-16 mr-4' src={TutorImage} alt='Tutor' />
-          <div className='text-lg font-semibold'>{course.instructor || 'Instructor Name'}</div>
+          <div className='text-lg font-semibold'>{tutor?.name || 'Instructor Name'}</div>
         </div>
         <div className='rating flex items-center'>
           <StarIcon style={{ color: 'gold' }} />

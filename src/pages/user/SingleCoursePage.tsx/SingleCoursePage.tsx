@@ -3,16 +3,7 @@
 
 
 
-
-
-//***************************  section and lesson not completed fully ******* */
-
-
-
-
-
-
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ContentSection from '../../../components/user/singleCourse/ContentSection';
 import { PaymentSection } from '../../../components/user/singleCourse/PayementSection';
 import UserNavbar from '../../../components/user/UserNavbar';
@@ -32,65 +23,75 @@ function SingleCoursePage() {
     title: string;
     lessons: Lesson[];
   }
-  
+
   interface Course {
     _id: string;
-    tutorId:string;
+    tutorId: string;
     title: string;
-    category:string;
+    category: string;
     description: string;
     price: number;
     discountPrice: number;
     thumbnail: string;
-    level:string;
+    level: string;
     instructor?: string;
     rating?: number;
     demoURL: string;
     benefits: string[];
     prerequisites: string[];
     sections: Section[];
-    }
+  }
 
-  const {courseId} =  useParams<{ courseId: string }>();
+  interface Tutor {
+    _id: string;
+    name: string;
+    email: string;
+    phone: number;
+  }
+
+  const { courseId } = useParams<{ courseId: string }>();
   const [course, setCourse] = useState<Course | null>(null);
+  const [tutor, setTutor] = useState<Tutor | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
 
-useEffect(()=>{
-  const fetchCourse= async ()=>{
-    try {
-      const response = await axios.get(`${courseEndpoints.fetchAllCourse}/${courseId}`);
-      if (response.data.success) {
-        setCourse(response.data.course);
-      } else {
+  useEffect(() => {
+    const fetchCourse = async () => {
+      try {
+        const response = await axios.get(`${courseEndpoints.fetchAllCourse}/${courseId}`);
+        console.log('singlecoursedetailswithtuor', response.data)
+        if (response.data.success) {
+          setCourse(response.data.course);
+          setTutor(response.data.tutor);  // Set the tutor data here
+        } else {
+          setError('Failed to fetch course details');
+        }
+        setTimeout(() => {
+          setLoading(false); // Set loading to false after fetching
+
+        }, 500);
+      } catch (error) {
+        console.error('Failed to fetch course details', error);
         setError('Failed to fetch course details');
+        setLoading(false);
       }
-      setTimeout(() => {
-        setLoading(false); // Set loading to false after fetching
-
-      }, 500);
-    } catch (error) {
-      console.error('Failed to fetch course details', error);
-      setError('Failed to fetch course details');
-      setLoading(false);
+    };
+    if (courseId) {
+      fetchCourse();
     }
-  };
-  if (courseId) {
-    fetchCourse();
-  }
-}, [courseId]);
+  }, [courseId]);
 
-useEffect(() => {
-  // Log course data whenever it changes
-  if (course) {
-    console.log('Course data updated:', course);
-  }
-}, [course]);
+  useEffect(() => {
+    // Log course data whenever it changes
+    if (course) {
+      console.log('Course data updated:', course);
+    }
+  }, [course]);
 
-if (loading) return <SkeltonSingleCourse/>;
-if (error) return <p>{error}</p>;
-if (!course) return <p>No course found.</p>;
+  if (loading) return <SkeltonSingleCourse />;
+  if (error) return <p>{error}</p>;
+  if (!course) return <p>No course found.</p>;
 
   return (
     <>
@@ -103,7 +104,7 @@ if (!course) return <p>No course found.</p>;
 
         <div className='col-span-1 md:col-span-1  mt-4 p-6'>
           <div className='md:sticky md:top-4'>
-            <PaymentSection course={course} />
+            <PaymentSection course={course} tutor={tutor} />
           </div>
         </div>
       </div>
