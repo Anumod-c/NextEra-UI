@@ -7,12 +7,20 @@ import { courseEndpoints } from '../../constraints/endpoints/courseEndpoints';
 import { useNavigate } from 'react-router-dom';
 import SkeltonCourse from './skelton/SkeltonCourse';
 
+
+interface TutorDetails {
+  tutorDetails:{
+    name: string;
+  }
+}
+
 interface Course {
   _id: string;
   title: string;
   price: number;
   discountPrice: number;
   thumbnail: string;
+  tutorDetails: TutorDetails;
 }
 
 const Courses: React.FC = () => {
@@ -26,7 +34,7 @@ const navigate = useNavigate();
     const fetchCourses = async () => {
       try {
         const response = await axios.get(courseEndpoints.fetchAllCourse);
-        console.log('response from fetching courses', response.data.courses);
+        console.log('response from fetching courses', response.data);
 
         //  response.data.courses is an array of courses
         const coursesData: Course[] = response.data.courses.map((course: Course) => ({
@@ -35,6 +43,8 @@ const navigate = useNavigate();
           price: course.price,
           discountPrice: course.discountPrice,
           thumbnail: course.thumbnail,
+          tutorDetails:course.tutorDetails
+          
         }));
 
         setCourses(coursesData);
@@ -90,7 +100,7 @@ const navigate = useNavigate();
                 className="w-full  md:h-40 object-cover rounded-md mb-4"
               />
               <h3 className="text-xl font-semibold mb-2 text-gray-800">{course.title}</h3>
-              <h6 className="text-sm text-gray-500 mb-4">Instructor: Malavika K</h6>
+              {/* <h6 className="text-sm text-gray-500 mb-4">Instructor: {course.tutorDetails.tutorDetails.name}</h6> */}
               <div className="flex items-center mb-4">
                 <p className="text-xl font-semibold text-yellow-500 mr-2">4.8</p>
                 <div className="flex">

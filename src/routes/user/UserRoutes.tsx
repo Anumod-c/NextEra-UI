@@ -11,7 +11,7 @@ import PrivateRoute from "./PrivateRoute"
 import PrivateRouteUser from "./PrivateRouteUser"
 import UserTutorSelection from "../../components/user/UserTutorSelection"
 import SingleCoursePage from "../../pages/user/SingleCoursePage.tsx/SingleCoursePage"
-import SuccessPage from "../../components/user/successPage"
+import SuccessPage from "../../components/user/SuccessPage"
 
 const UserRoutes:React.FC=()=>{
     return(
