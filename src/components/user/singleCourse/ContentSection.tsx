@@ -5,8 +5,7 @@ import TranslateIcon from "@mui/icons-material/Translate";
 import { RiCheckDoubleLine } from "react-icons/ri";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import CloseIcon from "@mui/icons-material/Close";
-
-
+import {MdOndemandVideo} from 'react-icons/md'
 interface Lesson {
   title: string;
   video?: string;
@@ -126,35 +125,32 @@ const ContentSection: React.FC<CourseProps> = ({ course }) => {
       </div>
       {openSection === index && (
         <div className="p-4 bg-white mt-2 shadow-md rounded-md">
-          {section.lessons.map((lesson, lessonIndex) => (
-            <div
-              className="lesson-card mb-4 p-4 border-b w-full border-gray-200"
-              key={lessonIndex}
-            >
-              {/* For small devices: Video first, then title, then description */}
-              <div className="flex flex-col md:flex-row justify-center items-center md:space-x-4">
-                
-                {/* Video Section */}
-                <div className="w-full md:w-1/2 mb-4 md:mb-0">
-                  <video
-                    className="w-full rounded-lg shadow-lg"
-                    height="250"
-                    controls
-                  >
-                    <source src={lesson.video} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                </div>
-
-                {/* Title and Description Section */}
-                <div className="w-full md:w-1/2 text-center md:text-left">
-                  <h4 className="text-xl font-semibold mt-2 md:mt-0">{lesson.title}</h4>
-                  <p className="mt-2">{lesson.description}</p>
+        {section.lessons.map((lesson, lessonIndex) => (
+          <div
+            className="lesson-card mb-4 p-4 border-b w-full border-gray-200"
+            key={lessonIndex}
+          >
+            {/* For small devices: Video first, then title, then description */}
+            <div className="flex flex-col md:flex-row justify-center items-center md:space-x-4">
+              
+              {/* Video Section with Icon Overlaid on Thumbnail */}
+              <div className="w-full md:w-1/3 mb-4 md:mb-0 relative">
+                {/* Placeholder video thumbnail */}
+                <div className="relative w-full h-40 bg-gray-200 rounded-md overflow-hidden shadow-md">
+                  <MdOndemandVideo className="absolute inset-0 m-auto text-6xl text-gray-600 opacity-70" />
                 </div>
               </div>
+      
+              {/* Title and Description Section */}
+              <div className="w-full md:w-2/3 text-center md:text-left">
+                <h4 className="text-xl font-semibold mt-2 md:mt-0">{lesson.title}</h4>
+                <p className="mt-2 text-gray-600">{lesson.description}</p>
+              </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+      </div>
+      
       )}
     </div>
   ))}

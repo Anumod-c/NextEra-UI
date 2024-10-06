@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import axios from 'axios';
 import StarIcon from '@mui/icons-material/Star';
 
-import { courseEndpoints } from '../../constraints/endpoints/courseEndpoints';
 import { useNavigate } from 'react-router-dom';
 import SkeltonCourse from './skelton/SkeltonCourse';
 
@@ -23,7 +22,13 @@ interface Course {
   tutorDetails: TutorDetails;
 }
 
-const Courses: React.FC = () => {
+interface CourseProps{
+  fetchUrl:string;
+  title:string;
+  subTitle?:string;
+}
+
+const Courses: React.FC<CourseProps> = ({fetchUrl,title,subTitle}) => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,7 +38,7 @@ const Courses: React.FC = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get(courseEndpoints.fetchAllCourse);
+        const response = await axios.get(fetchUrl);
         console.log('response from fetching courses', response.data);
         //  response.data.courses is an array of courses
         const coursesData: Course[] = response.data.courses.map((course: Course) => ({
@@ -58,7 +63,7 @@ const Courses: React.FC = () => {
     };
 
     fetchCourses();
-  }, []);
+  }, [fetchUrl]);
 
   const handleCourseClick = (coruseId: string) => {
     navigate(`/courses/${coruseId}`);
@@ -70,7 +75,7 @@ const Courses: React.FC = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <section className=" m-2 px-8 bg-white">
+    <section className=" m-4 p-4 bg-white">
       <div className="container mx-auto text-center">
         <motion.div
           initial={{ opacity: 0 }}
@@ -78,8 +83,8 @@ const Courses: React.FC = () => {
           transition={{ duration: 1 }}
           className="mb-8"
         >
-          <h2 className="text-4xl font-bold py-2">Featured Courses</h2>
-          <h4 className="text-xl text-gray-500">Explore the top picks</h4>
+          <h2 className="text-4xl font-bold py-2">{title}</h2>
+          <h4 className="text-xl text-gray-500">{subTitle}</h4>
         </motion.div>
         <div className="grid  grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
           {courses.map((course, index) => (
