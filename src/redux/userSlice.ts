@@ -42,10 +42,22 @@ const userSlice=createSlice({
         //   },
         //   completeCourse: (state, action: PayloadAction<string>) => {
         //     state.completedCourses.push(action.payload);
-        //   },
+        //   },,
+        clearUserDetails:(state)=>{
+            state.id='';
+            state.name='';
+            state.email='';
+            state.bio='';
+            state.phone='';
+            state.completedCourses=[];
+            state.coursesEnrolled=[];
+            state.profilePicture=null;
+        }
+
+
     }
 
 })
-export const { setUser, updateProfilePicture } = userSlice.actions;
+export const { setUser, updateProfilePicture ,clearUserDetails} = userSlice.actions;
 
 export default userSlice.reducer;

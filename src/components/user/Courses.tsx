@@ -9,7 +9,7 @@ import SkeltonCourse from './skelton/SkeltonCourse';
 
 
 interface TutorDetails {
-  tutorDetails:{
+  tutorDetails: {
     name: string;
   }
 }
@@ -27,7 +27,7 @@ const Courses: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -35,7 +35,6 @@ const navigate = useNavigate();
       try {
         const response = await axios.get(courseEndpoints.fetchAllCourse);
         console.log('response from fetching courses', response.data);
-
         //  response.data.courses is an array of courses
         const coursesData: Course[] = response.data.courses.map((course: Course) => ({
           _id: course._id,
@@ -43,8 +42,7 @@ const navigate = useNavigate();
           price: course.price,
           discountPrice: course.discountPrice,
           thumbnail: course.thumbnail,
-          tutorDetails:course.tutorDetails
-          
+          tutorDetails: course.tutorDetails
         }));
 
         setCourses(coursesData);
@@ -62,13 +60,13 @@ const navigate = useNavigate();
     fetchCourses();
   }, []);
 
-  const handleCourseClick =(coruseId:string)=>{
+  const handleCourseClick = (coruseId: string) => {
     navigate(`/courses/${coruseId}`);
   }
 
 
 
-  if (loading) return <SkeltonCourse/>;
+  if (loading) return <SkeltonCourse />;
   if (error) return <p>{error}</p>;
 
   return (
@@ -92,7 +90,7 @@ const navigate = useNavigate();
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: index * 0.2 }}
               className="p-6 bg-white rounded-lg shadow-lg flex flex-col justify-between h-full cursor-pointer"
-              onClick={()=>handleCourseClick(course._id)}
+              onClick={() => handleCourseClick(course._id)}
             >
               <img
                 src={course.thumbnail}
@@ -117,13 +115,10 @@ const navigate = useNavigate();
               </div>
             </motion.div>
           ))}
-          
-          
-          
         </div>
       </div>
     </section>
-    
+
   );
 };
 

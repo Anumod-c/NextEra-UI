@@ -1,13 +1,20 @@
-import  { useState } from "react";
+import { useState } from "react";
+import Cookies from "js-cookie";
 import { FaBars, FaTimes } from "react-icons/fa";
 import profileImage from "../../assets/profile.png";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { clearTutorDetails } from "../../redux/tutorSlice";
 const TutorNavbar = () => {
-  const navigate= useNavigate()
+  const navigate = useNavigate()
+  const dispatch= useDispatch()
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-const handleLogout=()=>{
-  navigate('/tutor')
-}
+  const handleLogout = () => {
+    Cookies.remove('tutorToken')
+    dispatch(clearTutorDetails())
+    navigate('/tutor')
+  }
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };

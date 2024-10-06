@@ -12,6 +12,7 @@ import PrivateRouteUser from "./PrivateRouteUser"
 import UserTutorSelection from "../../components/user/UserTutorSelection"
 import SingleCoursePage from "../../pages/user/SingleCoursePage.tsx/SingleCoursePage"
 import SuccessPage from "../../components/user/SuccessPage"
+import AllCoursePage from "../../pages/user/Courses/AllCoursePage"
 
 const UserRoutes:React.FC=()=>{
     return(
@@ -23,9 +24,11 @@ const UserRoutes:React.FC=()=>{
 
 
     <Route path="/home" element={<PrivateRouteUser><UserHome/></PrivateRouteUser>}/>
+    <Route path='/allCourse' element={<AllCoursePage/>} />
+
     <Route path="/login" element={ <PrivateRoute><UserLogin/></PrivateRoute> }/>
     <Route path='/forgotPassword' element={<PrivateRoute><UserForgotPass/></PrivateRoute>}/>
-    <Route path='/otp' element={ <Userotp/>}/>
+    <Route path='/otp' element={ <PrivateRoute><Userotp/></PrivateRoute>}/>
     <Route path='/register' element={<PrivateRoute><UserRegister/></PrivateRoute>}/>
     <Route path='/resetPassword' element={<PrivateRoute><UserResetPass/></PrivateRoute>}/>
     <Route path='/profile' element={<PrivateRouteUser><UserProfile/></PrivateRouteUser>} />

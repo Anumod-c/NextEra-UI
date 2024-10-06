@@ -1,9 +1,9 @@
 import axios from "axios";
-import Cookies from "js-cookie";
+ import Cookies from "js-cookie";
 
-import {API_GATEWAY_BASE_URL} from '../endpoints/adminEndpoints'
+import { API_GATEWAY_BASE_URL } from "../endpoints/tutorEndpoints";
 
-export const adminAxios = axios.create({
+ export const tutorAxios = axios.create({
     baseURL:API_GATEWAY_BASE_URL,
     headers:{
         "Content-Type":'application/json',
@@ -12,7 +12,7 @@ export const adminAxios = axios.create({
 });
 
 
-adminAxios.interceptors.response.use(
+tutorAxios.interceptors.response.use(
     response => response,
     async error => {
         const originalRequest = error.config;
@@ -26,12 +26,12 @@ adminAxios.interceptors.response.use(
                 const refreshResponse = await axios.get(`${API_GATEWAY_BASE_URL}/refresh-token`, { withCredentials: true });
                 if (refreshResponse.data.accessToken) {
                     // Retry the original request
-                    return adminAxios(originalRequest);
+                    return tutorAxios(originalRequest);
                   } else {
                     // Handle failed refresh (e.g., redirect to login)
                     console.log('Refresh token failed');
                   }
-                  return adminAxios(originalRequest);
+                  return tutorAxios(originalRequest);
                 } catch (refreshError) {
                     // Handle refresh token failure (e.g., redirect to login)
                     console.log('error in refreshtken tutorAxios');
@@ -44,8 +44,8 @@ adminAxios.interceptors.response.use(
     );
     
 
-    adminAxios.interceptors.request.use(config => {
-        const rawToken = Cookies.get('adminToken');
+    tutorAxios.interceptors.request.use(config => {
+        const rawToken = Cookies.get('tutorToken');
     
         if (rawToken) {
             const token =JSON.parse(rawToken); // No need to parse, it's already a string
@@ -62,5 +62,5 @@ adminAxios.interceptors.response.use(
     });
     
     
-    export default adminAxios;
+    export default tutorAxios;
     

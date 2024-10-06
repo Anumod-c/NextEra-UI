@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
 
 import { tutorEndpoints } from '../../constraints/endpoints/tutorEndpoints';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { toast } from 'sonner';
+import tutorAxios from '../../constraints/axios/tutorAxios';
 
 
 interface Payouts{
@@ -21,7 +21,7 @@ const Payouts:React.FC=()=> {
         console.log('useeffect worked')
         const fetchPayouts = async()=>{
             try {
-                const response = await axios.get(tutorEndpoints.payouts,{
+                const response = await tutorAxios.get(tutorEndpoints.payouts,{
                     params:{tutorId}
                 });
                 console.log(response.data)

@@ -5,7 +5,6 @@ import { Form, Formik, ErrorMessage, Field } from "formik";
 import UserforgotImage from "../../../assets/tutorlogin.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { userEndpoints } from "../../../constraints/endpoints/userEndPoints";
-// import userAxios from "../../../constraints/axios/userAxios";
 import axios from "axios";
 
 const intitalValues = {

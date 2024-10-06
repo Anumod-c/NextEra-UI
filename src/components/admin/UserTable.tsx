@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { adminEndpoints } from '../../constraints/endpoints/adminEndpoints';
+import adminAxios from '../../constraints/axios/adminAxios';
 
 interface User {
   _id: string;
@@ -19,7 +19,7 @@ const UsersTable: React.FC = () => {
     const fetchUsers = async () => {
       setLoading(true);
       try {
-        const response = await axios.get<User[]>(adminEndpoints.getUser);
+        const response = await adminAxios.get<User[]>(adminEndpoints.getUser);
         console.log(response.data, 'fetched users');
         setUsers(response.data);
       } catch (error) {
@@ -29,12 +29,12 @@ const UsersTable: React.FC = () => {
       }
     };
     fetchUsers();
-  }, []);
+  },[]);
 
   const handleBlockToggle = async (userId: string, currentStatus: boolean) => {
     try {
       // Call the API to change user status (block/unblock)
-      await axios.patch(adminEndpoints.changeStatus(userId), { status: !currentStatus });
+      await adminAxios.patch(adminEndpoints.changeStatus(userId), { status: !currentStatus });
 
       // Update the user list after toggling the status
       setUsers(prevUsers =>

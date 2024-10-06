@@ -1,6 +1,5 @@
 import userRegisterImage from "../../../assets/tutorlogin.png";
 import { useNavigate } from "react-router-dom";
-// import { userAxios } from '../../../constraints/axios/userAxios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
@@ -10,7 +9,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { toast } from "sonner";
 
 import axios from "axios";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 
 const intitalValues = {
   name: "",
@@ -55,12 +54,12 @@ const UserRegister: React.FC = () => {
   const togglePasswordVisiblility = () => {
     setShowPassword(!showPassword)
   }
-  useEffect(() => {
-    const token = localStorage.getItem("userToken");
-    if (token) {
-      navigate("/");
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   const token = localStorage.getItem("userToken");
+  //   if (token) {
+  //     navigate("/");
+  //   }
+  // }, [navigate]);
   const handleSubmit = async (
     values: typeof intitalValues,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }

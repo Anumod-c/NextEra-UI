@@ -9,7 +9,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 interface Lesson {
   title: string;
-  video: string;
+  video?: string;
   description: string;
 }
 

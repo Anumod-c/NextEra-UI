@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Cookies from "js-cookie";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -43,9 +44,12 @@ function TutorLogin() {
       const result = await axios.post(tutorEndpoints.googleLogin, {
         credential,
       });
-      console.log(result, "result of googlelogin");
+      console.log(result.data, "result of googlelogin");
       if (result.data.success) {
-        localStorage.setItem("tutorToken", result.data.token);
+        const {_id,name,email,phone} = result.data.tutor;
+        dispatch(setTutor({id:_id,name,email,phone}));
+        Cookies.set('tutorToken',JSON.stringify(result.data.token.accessToken)); //
+        
         navigate("/tutor/dashboard");
       } else {
         toast.info("Couldnt login with google");
@@ -63,10 +67,10 @@ function TutorLogin() {
       const result = await axios.post(tutorEndpoints.login, values);
       if (result.data.success) {
         const {_id,name,email,phone} = result.data.tutorData
-
+        Cookies.set('tutorToken',JSON.stringify(result.data.token.accessToken))
         dispatch(setTutor({id:_id,email,name,phone}))
         console.log(result.data,'gg');
-        localStorage.setItem("tutorToken", result.data.token);
+        // localStorage.setItem("tutorToken", result.data.token.accessToken);
         navigate("/tutor/dashboard");
         toast.success("tutor logged in successfull");
       } else {

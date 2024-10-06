@@ -3,15 +3,27 @@ import { Link, useNavigate } from "react-router-dom";
 import profileImage from "../../assets/profile.png";
 import { FaBars, FaTimes } from "react-icons/fa";
 import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import { clearUserDetails } from "../../redux/userSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+
 
 const UserNavbar: React.FC = () => {
   const navigate = useNavigate();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+const dispatch= useDispatch()
+
+const userId = useSelector((state: RootState) => state.user.id);
+  const userToken = Cookies.get("userToken");
+
+  const isLoggedIn = !!userId || !!userToken; // Check if the user is logged in
 
   const handleLogout =()=>{
    
-    Cookies.remove('accessToken')
+    Cookies.remove('userToken')
+dispatch(clearUserDetails())
     
       navigate('/login')
     
@@ -20,13 +32,12 @@ const UserNavbar: React.FC = () => {
     setIsMenuOpen(!isMenuOpen);
   };
   const handleProfileClick = () => {
-    
-      // Navigate to profile page if token is present
-      navigate('/profile');
-    
-      // Navigate to login page if token is not present
-      
-    
+    // Navigate to profile page
+    if (isLoggedIn) {
+      navigate("/profile");
+    } else {
+      navigate("/login");
+    }
   };
   return (
     <nav className="bg-gray-800 text-white">
@@ -34,33 +45,58 @@ const UserNavbar: React.FC = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <a href="/tutor" className="text-xl font-bold">
+            <a href="/" className="text-xl font-bold">
               Nextera
             </a>
           </div>
 
           {/* Search Bar */}
-          <div className=" md:flex flex-grow mx-4">
+          {/* <div className=" md:flex flex-grow mx-4">
             <input
               type="text"
               placeholder="Search..."
               className="w-full p-2 rounded-md text-black"
             />
-          </div>
+          </div> */}
 
 
           {/* Desktop Menu */}
           <div className="hidden justify-center items-center p-4 m-4 md:flex space-x-4">
+          <a href="#" className="hover:text-gray-400">
+              Home
+            </a>
+            <Link to={'/allCourse'}>Courses</Link>
             <a href="#" className="hover:text-gray-400">
-              My Course
+               Contact
+            </a>
+            <a href="#" className="hover:text-gray-400">
+              About
             </a>
             <a href="#" className="hover:text-gray-400">
               Discussion
             </a>
-            <button onClick={handleProfileClick} className=" w-16 h-16 px-3 py-2 rounded-md ">
-              <img src={profileImage} alt="" />
-            </button>
-            <button onClick={handleLogout}>Logout</button>
+                        {/* Profile & Auth Buttons */}
+                        {isLoggedIn ? (
+              <>
+                <button
+                  onClick={handleProfileClick}
+                  className="w-16 h-16 px-3 py-2 rounded-md"
+                >
+                  <img src={profileImage} alt="Profile" />
+                </button>
+                <button onClick={handleLogout} className="hover:text-gray-400">
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link
+  to="/login"
+  className="border border-blue-500 p-2 mx-4 rounded-md hover:bg-blue-400  hover:text-white transition duration-300 ease-in-out"
+>
+  Login
+</Link>
+
+            )}
           </div>
 
           {/* Mobile Menu Icon */}

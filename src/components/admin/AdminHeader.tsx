@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { FaBookOpen, FaChalkboardTeacher, FaUsers, FaVideo } from "react-icons/fa";
 import { adminEndpoints } from "../../constraints/endpoints/adminEndpoints";
+import adminAxios from "../../constraints/axios/adminAxios";
 
 const AdminHeader: React.FC = () => {
   const [totalStudents, setTotalStudents] = useState<number>(0);
@@ -13,8 +13,8 @@ const AdminHeader: React.FC = () => {
     const fetchHeaderData = async () => {
       try {
         const [studentsResponse,instructorsResponse ] = await Promise.all([
-          axios.get<number>(adminEndpoints.getStudentsCount),
-          axios.get<number>(adminEndpoints.getInstructorsCount),
+          adminAxios.get<number>(adminEndpoints.getStudentsCount),
+          adminAxios.get<number>(adminEndpoints.getInstructorsCount),
           // axios.get<number>(adminEndpoints.getTotalCourses),
           // axios.get<number>(adminEndpoints.getTotalLiveCourses),
         ]);

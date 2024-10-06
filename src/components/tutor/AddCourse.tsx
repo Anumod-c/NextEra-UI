@@ -9,6 +9,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { tutorEndpoints } from "../../constraints/endpoints/tutorEndpoints";
 import CryptoJS from "crypto-js";
+import tutorAxios from "../../constraints/axios/tutorAxios";
 
 
 
@@ -51,7 +52,7 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
 
   const getPresignedUrlForUpload = async (fileName: string, fileType: string) => {
     try {
-      const response = await axios.get(tutorEndpoints.getPresignedUrlForUpload, {
+      const response = await tutorAxios.get(tutorEndpoints.getPresignedUrlForUpload, {
         params: {
           filename: fileName,
           fileType: fileType

@@ -10,21 +10,23 @@ import Course from "../../pages/tutor/Course"
 import CourseListPage from "../../pages/tutor/CourseListPage"
 import CourseDetailsPage from "../../pages/tutor/CourseDetailsPage"
 import PayoutListPage from "../../pages/tutor/PayoutListPage"
+import PrivateRoute from "./privateRoute"
+import PrivateRouteTutor from "./PrivateRouteTutor"
 
 const TutorRoutes=()=>{
 return(
     <Routes>
-        <Route path="/" element={<TutorLogin/>}/>
-        <Route path="/dashboard" element={ <TutorDashboard />} />
-        <Route path="/register" element={<TutorRegister/>}/>
-        <Route path="/forgotPassword" element={<TutorForgotPass/>}/>
-        <Route path="/otp" element={<TutorOTP/>}/>
-        <Route path="/resetpassword" element={<TutorResetPass/>}/>
-        <Route path="/profile" element={<TutorProfile /> } />
+        <Route path="/" element={<PrivateRoute><TutorLogin/></PrivateRoute>}/>
+        <Route path="/dashboard" element={ <PrivateRouteTutor><TutorDashboard /></PrivateRouteTutor>} />
+        <Route path="/register" element={<PrivateRoute><TutorRegister/></PrivateRoute>}/>
+        <Route path="/forgotPassword" element={<PrivateRoute><TutorForgotPass/></PrivateRoute>}/>
+        <Route path="/otp" element={<PrivateRoute><TutorOTP/></PrivateRoute>}/>
+        <Route path="/resetpassword" element={<PrivateRoute><TutorResetPass/></PrivateRoute>}/>
+        <Route path="/profile" element={<PrivateRouteTutor><TutorProfile /></PrivateRouteTutor> } />
         <Route path="/addcourse" element={<Course /> } />
-        <Route  path="/courselist" element={<CourseListPage /> }/>
-        <Route  path="/courses-details/:courseId" element={<CourseDetailsPage /> }/>
-        <Route  path="/payouts" element={<PayoutListPage/> }/>
+        <Route  path="/courselist" element={<PrivateRouteTutor><CourseListPage /></PrivateRouteTutor> }/>
+        <Route  path="/courses-details/:courseId" element={<PrivateRouteTutor><CourseDetailsPage /></PrivateRouteTutor> }/>
+        <Route  path="/payouts" element={<PrivateRouteTutor><PayoutListPage/></PrivateRouteTutor> }/>
 
         
 

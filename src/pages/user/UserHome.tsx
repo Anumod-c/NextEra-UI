@@ -1,5 +1,5 @@
 import UserNavbar from "../../components/user/UserNavbar";
-import Course from "../../components/user/Course";
+import Course from "../../components/user/Courses";
 
 function UserHome() {
   return (

@@ -1,4 +1,4 @@
-const API_GATEWAY_BASE_URL = 'http://localhost:5000/admin';
+export const API_GATEWAY_BASE_URL = 'http://localhost:5000/admin';
 
 
 
@@ -10,4 +10,5 @@ export const adminEndpoints={
     getStudentsCount:`${API_GATEWAY_BASE_URL}/getStudentsCount`,
     getInstructorsCount :`${API_GATEWAY_BASE_URL}/getInstructorsCount`,
     changeStatus: (userId: string) => `${API_GATEWAY_BASE_URL}/changeStatus/${userId}`,
+    payouts: `${API_GATEWAY_BASE_URL}/payouts`,
 }

@@ -1,19 +1,20 @@
 import React from 'react';
+import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { FaBars, FaTimes, FaUser, FaChalkboardTeacher, FaSignOutAlt } from 'react-icons/fa'; // FaDollarSign
 
 interface AdminSideBarProps {
   isSidebarOpen: boolean;
   toggleSidebar: () => void;
-  onSectionChange:(section:string)=>void; //new section for section change
+  onSectionChange: (section: string) => void; //new section for section change
 }
 
-const AdminSideBar: React.FC<AdminSideBarProps> = ({ isSidebarOpen, toggleSidebar ,onSectionChange}) => {
+const AdminSideBar: React.FC<AdminSideBarProps> = ({ isSidebarOpen, toggleSidebar, onSectionChange }) => {
   const navigate = useNavigate();
   // const isAuthenticated = !!localStorage.getItem('authToken'); // Check if authenticated
 
   const handleLogout = () => {
-    localStorage.removeItem('adminToken'); // Clear the token
+    Cookies.remove('adminToken') // Clear the token
     navigate('/admin'); // Redirect to login page
   };
 
@@ -21,10 +22,11 @@ const AdminSideBar: React.FC<AdminSideBarProps> = ({ isSidebarOpen, toggleSideba
 
 
   const navItems = [
-    { name: 'Users', icon: <FaUser className="mr-2" />, action:()=>onSectionChange('users')  },
-    { name: 'Tutor', icon: <FaChalkboardTeacher className="mr-2" /> , action:()=>onSectionChange('tutors')  },
-    { name: 'Courses', icon: <FaChalkboardTeacher className="mr-2"  />, action: ()=>onSectionChange('courses')   },
-    { name: 'Logout',  icon: <FaSignOutAlt className="mr-2" />, action: handleLogout },
+    { name: 'Users', icon: <FaUser className="mr-2" />, action: () => onSectionChange('users') },
+    { name: 'Tutor', icon: <FaChalkboardTeacher className="mr-2" />, action: () => onSectionChange('tutors') },
+    { name: 'Courses', icon: <FaChalkboardTeacher className="mr-2" />, action: () => onSectionChange('courses') },
+    { name: 'Payouts', icon: <FaChalkboardTeacher className="mr-2" />, action: () => onSectionChange('payouts') },
+    { name: 'Logout', icon: <FaSignOutAlt className="mr-2" />, action: handleLogout },
   ];
 
   return (

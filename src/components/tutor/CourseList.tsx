@@ -1,9 +1,9 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { tutorEndpoints } from '../../constraints/endpoints/tutorEndpoints';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { useNavigate } from 'react-router-dom';
+import tutorAxios from '../../constraints/axios/tutorAxios';
 
 
  interface CourseList{
@@ -30,7 +30,7 @@ const CourseList:React.FC=()=> {
             try{
               console.log('hyyyy');
               
-                const response = await axios.get(tutorEndpoints.courseList,{params:{tutorId}});
+                const response = await tutorAxios.get(tutorEndpoints.courseList,{params:{tutorId}});
                 console.log('data reached frontend',response.data.courses);
                 if(response.data)
                 setCourses(response.data.courses)

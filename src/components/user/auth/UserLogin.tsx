@@ -48,10 +48,13 @@ function UserLogin() {
       const result = await axios.post(userEndpoints.googleLogin, {
         credential,
       });
-      console.log(result.data.result, "lllllllllllllllllllllllllllllllllll");
+      console.log(result.data, "lllllllllllllllllllllllllllllllllll");
 
       if (result.data.result.success) {
-        Cookies.set('accessToken',JSON.stringify(result.data.token), { expires: 15 / 1440 }); //
+        const {_id,name,email,phone} = result.data.result.user;
+        dispatch(setUser({id:_id,name,email,phone}));
+
+        Cookies.set('userToken',JSON.stringify(result.data.token)); //
         navigate("/home");
       } else {
         toast.info("Couldnt login with google");
@@ -68,7 +71,7 @@ function UserLogin() {
   ) => {
     try {
       const result = await userAxios.post(userEndpoints.login, values);
-      console.log('resulteeeeee',result.data);
+      console.log('resulteeeeeeeeeee',result.data);
       
       if (result.data.result.success) {
           const {_id,name,email,phone}=result.data.result.userData;
@@ -76,8 +79,8 @@ function UserLogin() {
 
 
         console.log(result.data.token.accessToken);
-        Cookies.set('accessToken',JSON.stringify(result.data.token.accessToken), { expires: 15 / 1440 }); // Expires in 15 minutes
-        Cookies.set('refreshToken', JSON.stringify(result.data.token.refreshToken), { expires: 7 }); // Expires in 7 days        // localStorage.setItem('userToken', result.data.token);
+        Cookies.set('userToken',JSON.stringify(result.data.token.accessToken));
+        Cookies.set('refreshToken', JSON.stringify(result.data.token.refreshToken)); 
         navigate("/home");
         toast.success("Logged in Successfully");
       } else {

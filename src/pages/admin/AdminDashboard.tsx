@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import AdminSideBar from '../../components/admin/AdminSideBar';
-import { useNavigate } from 'react-router-dom';
 import AdminNavbar from '../../components/admin/AdminNavbar';
 import AdminHeader from '../../components/admin/AdminHeader';
 import AdminBarGraph from '../../components/admin/AdminBarGraph';
@@ -8,9 +7,9 @@ import AdminPieGraph from '../../components/admin/AdminPieGraph';
 import UserTable from '../../components/admin/UserTable';
 import TutorTable from '../../components/admin/TutorTable';
 import CourseTable from '../../components/admin/CourseTable';
-
+import Payouts from '../../components/admin/Payouts';
 const AdminDashboard: React.FC = () => {
-  const navigate = useNavigate();
+ 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedSection, setSelectedSection] = useState('dashboard');
   // const [totalStudents, setTotalStudents] = useState<number>(0);
@@ -18,12 +17,7 @@ const AdminDashboard: React.FC = () => {
   // const [totalCourses, setTotalCourses] = useState<number>(0);
   // const [totalLiveCourses, setTotalLiveCourses] = useState<number>(0);
 
-  useEffect(() => {
-    const token = localStorage.getItem('adminToken');
-    if (!token) {
-      navigate('/admin');
-    }
-  }, [navigate]);
+
 
   // useEffect(() => {
   //   const fetchDashboardData = async () => {
@@ -63,6 +57,8 @@ const AdminDashboard: React.FC = () => {
         return <TutorTable />;
       case 'courses':
         return <CourseTable />;
+      case 'payouts':
+        return<Payouts/>
       default:
         return (
           <>

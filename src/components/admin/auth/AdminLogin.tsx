@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import  {  useState } from 'react';
+import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import LOGO from '../../../assets/Nextera_Logo.jpg'
 import axios  from 'axios';
@@ -27,6 +28,7 @@ const initialValues={
 
 
 function AdminLogin() {
+
   const navigate = useNavigate()
   const [showPassword,setShowPassword] =useState(false);
 
@@ -35,18 +37,16 @@ const togglePasswordVisiblility=()=>{
   setShowPassword(!showPassword)
 }
 
-  useEffect(()=>{
-    const token = localStorage.getItem('adminToken');
-    if(token){
-      navigate('/admin/dashboard')
-    }
-  },[navigate]);
+
 
   const handleSubmit= async (values: typeof initialValues,{ setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void })=>{
     try{
       const result = await axios.post(adminEndpoints.login,values)
     if(result.data.success){
-     localStorage.setItem('adminToken',result.data.token)
+      console.log('data',result.data)
+    
+      Cookies.set('adminToken',JSON.stringify(result.data.token.accessToken));
+      // Cookies.set('refreshToken', JSON.stringify(result.data.token.refreshToken)); 
       console.log(result.data)
       navigate('/admin/dashboard')
       toast.success('admin logged in succesfully')

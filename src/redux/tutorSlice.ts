@@ -7,7 +7,7 @@ interface TutorState{
     profilePicture?:string|null;
     bio?:string;
     phone:string;
-    courseAdded?:string[];
+    courses?:string[];
 }
 
 const initialState:TutorState={
@@ -16,7 +16,7 @@ const initialState:TutorState={
     name:'',
     phone:'',
     bio:'',
-    courseAdded:[],
+    courses:[],
     profilePicture:null,
 }
 
@@ -30,12 +30,22 @@ const tutotSlice = createSlice({
         setTutor:(state,action: PayloadAction<TutorState>)=>{
             return {...state,...action.payload};
         },
-    }
+        clearTutorDetails:(state)=>{
+            state.id='';
+            state.name='';
+            state.email='';
+            state.bio='';
+            state.phone='';
+            state.courses=[];
+            state.profilePicture=null;
+        }
+    },
+    
 
     
 });
 
 
-export const {setTutor }=tutotSlice.actions;
+export const {setTutor,clearTutorDetails }=tutotSlice.actions;
 
 export default tutotSlice.reducer

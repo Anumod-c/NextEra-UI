@@ -1,5 +1,5 @@
 
-const API_GATEWAY_BASE_URL = 'http://localhost:5000/tutor';
+export const API_GATEWAY_BASE_URL = 'http://localhost:5000/tutor';
 
 export const tutorEndpoints ={
     register: `${API_GATEWAY_BASE_URL}/register`,

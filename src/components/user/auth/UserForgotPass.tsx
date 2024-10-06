@@ -6,7 +6,6 @@ import { toast } from 'sonner';
 import { userEndpoints } from '../../../constraints/endpoints/userEndPoints';
 import * as Yup from 'yup';
 import {Form,Formik,ErrorMessage, Field} from 'formik';
-// import { userAxios } from '../../../constraints/axios/userAxios';
 import axios from 'axios';
 
 const validationSchema =Yup.object({

@@ -47,11 +47,11 @@ userAxios.interceptors.response.use(
 
 
 userAxios.interceptors.request.use(config => {
-    const rawToken = Cookies.get('accessToken');
+    const rawToken = Cookies.get('userToken');
 
     if (rawToken) {
         const token =JSON.parse(rawToken); // No need to parse, it's already a string
-        console.log('Access Token:', token);
+        console.log('Access Token useraxios:', token);
         config.headers['Authorization'] = `Bearer ${token}`;
 
     } else {

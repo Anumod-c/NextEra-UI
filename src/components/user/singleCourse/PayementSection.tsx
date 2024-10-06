@@ -5,14 +5,14 @@ import { toast } from 'sonner';
 import userAxios from '../../../constraints/axios/userAxios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
-import {loadStripe} from '@stripe/stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
 import { userEndpoints } from '../../../constraints/endpoints/userEndPoints';
 import { useDispatch } from 'react-redux';
 import { setOrderData } from '../../../redux/OrderDataSlice';
-
+import { useNavigate } from 'react-router-dom';
 interface Lesson {
   title: string;
-  video: string;
+  video?: string;
   description: string;
 }
 interface Section {
@@ -41,62 +41,69 @@ interface PaymentProps {
 }
 
 
-export const PaymentSection: React.FC<PaymentProps> = ({ course ,tutor}) => {
-  console.log('coirseeeeeeeeprops',course);
+export const PaymentSection: React.FC<PaymentProps> = ({ course, tutor }) => {
   const dispatch = useDispatch()
-  const user= useSelector((state:RootState)=>state.user)
-  const totalLessons = course.sections.reduce((count,section)=>count +section.lessons.length,0);
-  
-  const handlePayement=async (courseId:string)=>{
+  const user = useSelector((state: RootState) => state.user)
+  const totalLessons = course.sections.reduce((count, section) => count + section.lessons.length, 0);
+  const userId = useSelector((state: RootState) => state.user.id);
+  const navigate = useNavigate()
+
+  const handlePayement = async (courseId: string) => {
+    if (!userId) {
+      toast.error("You need to be logged in to make a purchase."); // Show a toast message
+      navigate('/login'); // Redirect to the login page
+      return;
+    }
     try {
       const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
-      
-      const courseData={
-        courseId:course._id,
-        userId:user.id,
-        tutorId:course.tutorId,
-        category:course.category,
-        thumbnail:course.thumbnail,
-        title:course.title,
-        price:course.price,
-        level:course.level,
-        totalLessons:totalLessons,
-        discountPrice:course.discountPrice,
-       
+
+      const courseData = {
+        courseId: course._id,
+        userId: user.id,
+        tutorId: course.tutorId,
+        category: course.category,
+        thumbnail: course.thumbnail,
+        title: course.title,
+        price: course.price,
+        level: course.level,
+        totalLessons: totalLessons,
+        discountPrice: course.discountPrice,
+
 
       }
-      
 
-      console.log("course Idddd",courseId,"userID",user.id);
+
+      console.log("course Idddd", courseId, "userID", user.id);
 
 
       // payement API be completed
-      const response =  await userAxios.post(userEndpoints.makepayement,courseData);
-      console.log('hayyyy stripe',response.data);
+
+      const response = await userAxios.post(userEndpoints.makepayement, courseData);
+      console.log('hayyyy stripe', response.data);
       dispatch(setOrderData(response.data.orderData))
-      const  sessionId = response.data.sessionId;
+      const sessionId = response.data.sessionId;
 
-      if(stripe && sessionId){
+      if (stripe && sessionId) {
         console.log("stripeIDddddd")
-        const result = await stripe.redirectToCheckout({sessionId});
+        const result = await stripe.redirectToCheckout({ sessionId });
 
-        if(result.error){
+        if (result.error) {
           toast.error(result.error.message)
         }
-      }else{
+      } else {
         toast.error("Stripe could not be loaded or session ID is missing.")
       }
-      
+
 
     } catch (error) {
       toast.error("Couldnt buy Course")
     }
   }
-    return (
+  return (
     <div className='payment-section p-4 col-span-1 flex flex-col shadow-xl rounded-lg bg-white md:max-w-xs max-w-full'>
-       {/* Price Section */}
-       <div className='price mb-4 text-center'>
-       <h1 className='text-4xl font-bold'>${course.discountPrice || course.price}</h1>
+      {/* Price Section */}
+      <div className='price mb-4 text-center'>
+        <h1 className='text-4xl font-bold'>₹ {course.discountPrice || course.price}</h1>
       </div>
 
       {/* Additional Information Section */}
@@ -112,20 +119,20 @@ export const PaymentSection: React.FC<PaymentProps> = ({ course ,tutor}) => {
         </div>
         <div className='flex justify-between mb-2'>
           <p className='text-md'>Language</p>
-          <p className='text-md'>{course.language||'English'}</p>
+          <p className='text-md'>{course.language || 'English'}</p>
         </div>
       </div>
 
-       {/* Buy Now Button */}
-       <div className='button mb-4'>
-        <button onClick={()=>handlePayement(course._id)} className='w-full bg-green-500 text-white py-2 rounded-md text-lg shadow hover:bg-green-600'>
+      {/* Buy Now Button */}
+      <div className='button mb-4'>
+        <button onClick={() => handlePayement(course._id)} className='w-full bg-green-500 text-white py-2 rounded-md text-lg shadow hover:bg-green-600'>
           Buy Now
         </button>
       </div>
 
 
-       {/* Tutor Details Section */}
-       <div className='tutor-details bg-gray-50 p-4 rounded-lg shadow-sm'>
+      {/* Tutor Details Section */}
+      <div className='tutor-details bg-gray-50 p-4 rounded-lg shadow-sm'>
         <div className='img-name flex items-center mb-4'>
           <img className='rounded-full w-16 h-16 mr-4' src={TutorImage} alt='Tutor' />
           <div className='text-lg font-semibold'>{tutor?.name || 'Instructor Name'}</div>

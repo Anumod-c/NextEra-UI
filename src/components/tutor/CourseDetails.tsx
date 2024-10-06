@@ -6,8 +6,8 @@ import { RiCheckDoubleLine } from "react-icons/ri";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import CloseIcon from "@mui/icons-material/Close";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { courseEndpoints } from "../../constraints/endpoints/courseEndpoints";
+import tutorAxios from "../../constraints/axios/tutorAxios";
 
 
 interface Lesson {
@@ -52,7 +52,7 @@ const CourseDetails: React.FC= () => {
   useEffect(()=>{
     const fetchCourseDetails = async()=>{
       try {
-        const response = await axios.get(`${courseEndpoints.fetchAllCourse}/${courseId}`);
+        const response = await tutorAxios.get(`${courseEndpoints.fetchAllCourse}/${courseId}`);
         console.log("consoleee",response.data.course)
         if(response.data.success){
           setCourse(response.data.course);
