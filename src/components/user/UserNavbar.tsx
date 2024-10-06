@@ -51,13 +51,13 @@ dispatch(clearUserDetails())
           </div>
 
           {/* Search Bar */}
-          {/* <div className=" md:flex flex-grow mx-4">
+          <div className=" md:flex flex-grow mx-4">
             <input
               type="text"
               placeholder="Search..."
               className="w-full p-2 rounded-md text-black"
             />
-          </div> */}
+          </div>
 
 
           {/* Desktop Menu */}
