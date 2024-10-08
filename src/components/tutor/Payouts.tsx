@@ -45,9 +45,9 @@ const Payouts:React.FC=()=> {
         
     },[])
   return (
-    <div className="p-4">
-      <div className='flex justify-center  py -4 mb-4 '>
-      <h2 className="text-2xl font-bold ">Your Earnings </h2>
+    <div className="px-2">
+      <div className='flex justify-center'>
+      <h2 className="text-2xl mb-4 font-bold ">Your Earnings </h2>
 
       </div>
     <table className="w-full p-4 bg-white shadow-lg rounded-lg table-auto">

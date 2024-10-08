@@ -26,7 +26,7 @@ function TutorSidebar() {
   return (
     <div>
       {/* Mobile Menu Bar */}
-      <div className="md:hidden flex items-center p-4 bg-white shadow-lg">
+      <div className="md:hidden flex items-center p-4 bg-white shadow-lg sticky">
         <button onClick={toggleSidebar} className="text-xl">
           <FaBars />
         </button>

@@ -4,7 +4,7 @@ import UserForgotPass from "../../components/user/auth/UserForgotPass"
 import Userotp from "../../components/user/auth/Userotp"
 import UserRegister from "../../components/user/auth/UserRegister"
 import UserResetPass from "../../components/user/auth/UserResetPass"
-import UserProfile from "../../pages/user/UserProfile"
+import UserProfile from "../../pages/user/UserProfilePage"
 import UserLandingPage from "../../pages/user/UserLandingPage"
 import UserHome from "../../pages/user/UserHome"
 import PrivateRoute from "./PrivateRoute"
@@ -13,6 +13,7 @@ import UserTutorSelection from "../../components/user/UserTutorSelection"
 import SingleCoursePage from "../../pages/user/SingleCoursePage.tsx/SingleCoursePage"
 import SuccessPage from "../../components/user/SuccessPage"
 import AllCoursePage from "../../pages/user/Courses/AllCoursePage"
+import EditProfile from "../../components/user/profile/EditProfile"
 
 const UserRoutes:React.FC=()=>{
     return(
@@ -33,6 +34,8 @@ const UserRoutes:React.FC=()=>{
     <Route path='/resetPassword' element={<PrivateRoute><UserResetPass/></PrivateRoute>}/>
     <Route path='/profile' element={<PrivateRouteUser><UserProfile/></PrivateRouteUser>} />
     <Route path='/success' element={<PrivateRouteUser><SuccessPage/></PrivateRouteUser>} />
+    <Route path='/editProfile' element={<PrivateRouteUser><EditProfile/></PrivateRouteUser>} />
+
 
 </Routes>
     )

@@ -10,7 +10,9 @@ export const userEndpoints = {
     resetPassword: `${API_GATEWAY_BASE_URL}/resetPassword`,
     googleLogin: `${API_GATEWAY_BASE_URL}/google_login`,
     resendOtp: `${API_GATEWAY_BASE_URL}/resendOtp`,
-    
+    editProfile : `${API_GATEWAY_BASE_URL}/editProfile`,
+    getPresignedUrlForUpload:`${API_GATEWAY_BASE_URL}/get-presigned-url`,
+    updateProfilePicture:`${API_GATEWAY_BASE_URL}/updateProfilePicture`,
     logout: `${API_GATEWAY_BASE_URL}/logout`,
 
     // added order along with the base url instead of creating seperate endpoints for payment
@@ -18,7 +20,7 @@ export const userEndpoints = {
     saveOrder: `${API_GATEWAY_BASE_URL}/purchase/order`,
 
 
-
+   
 
 
     

@@ -110,7 +110,7 @@ function UserOtp() {
   const isOtpComplete = formik.values.otp.every((digit) => digit !== '');
 
   return (
-    <div className="flex h-screen">
+    <div className="flex flex-col md:flex-row h-screen">
       {/* Image Section */}
       <div className="flex-1 bg-[#6227c2] flex justify-center items-center">
         <img src={tutorLoginImage} alt="otp-img" className="w-4/5 max-w-lg" />

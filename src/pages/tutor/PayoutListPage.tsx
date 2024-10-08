@@ -9,7 +9,7 @@ function PayoutListPage() {
     <div>
          <TutorNavbar />
     <TutorHeader />
-    <div className="flex mt-4 pt-4">
+    <div className="flex  p-4">
       <TutorSidebar  />
       <div className="flex-grow bg-white-100 mt-4 p-4">
         <Payouts/>

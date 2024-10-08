@@ -4,10 +4,15 @@ import { createSlice,PayloadAction } from "@reduxjs/toolkit";
 interface UserState{
     id:string;
     name:string;
+    age?:number;
     email:string;
     profilePicture?:string|null;
     bio?:string;
     phone:string;
+    linkedin:string;
+    instagram:string;
+    facebook:string;
+    twitter:string;
     coursesEnrolled?:string[];
     completedCourses?:string[];
 }
@@ -17,7 +22,12 @@ const initialState:UserState={
     name:'',
     email:'',
     bio:'',
+    age:0,
     phone:'',
+    facebook:'',
+    instagram:'',
+    linkedin:'',
+    twitter:'',
     completedCourses:[],
     coursesEnrolled:[],
     profilePicture:null,
@@ -34,12 +44,7 @@ const userSlice=createSlice({
           updateProfilePicture: (state, action: PayloadAction<string>) => {
             state.profilePicture = action.payload;
           },
-        //   updateBio: (state, action: PayloadAction<string>) => {
-        //     state.bio = action.payload;
-        //   },
-        //   addCourse: (state, action: PayloadAction<string>) => {
-        //     state.coursesEnrolled.push(action.payload);
-        //   },
+       
         //   completeCourse: (state, action: PayloadAction<string>) => {
         //     state.completedCourses.push(action.payload);
         //   },,
@@ -47,11 +52,16 @@ const userSlice=createSlice({
             state.id='';
             state.name='';
             state.email='';
-            state.bio='';
+            state.bio= '';
+            state.age=0,
             state.phone='';
             state.completedCourses=[];
             state.coursesEnrolled=[];
             state.profilePicture=null;
+            state.instagram='',
+            state.facebook='',
+            state.twitter='',
+            state.linkedin=''
         }
 
 

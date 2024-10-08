@@ -15,10 +15,10 @@ const UserNavbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 const dispatch= useDispatch()
 
-const userId = useSelector((state: RootState) => state.user.id);
+const {id,profilePicture} = useSelector((state: RootState) => state.user);
   const userToken = Cookies.get("userToken");
 
-  const isLoggedIn = !!userId || !!userToken; // Check if the user is logged in
+  const isLoggedIn = !!id || !!userToken; // Check if the user is logged in
 
   const handleLogout =()=>{
    
@@ -80,9 +80,9 @@ dispatch(clearUserDetails())
               <>
                 <button
                   onClick={handleProfileClick}
-                  className="w-16 h-16 px-3 py-2 rounded-md"
+                  className=" "
                 >
-                  <img src={profileImage} alt="Profile" />
+                  <img className="rounded-full w-14 object-cover h-14 p-2 " src={profilePicture||profileImage} alt="Profile" />
                 </button>
                 <button onClick={handleLogout} className="hover:text-gray-400">
                   Logout

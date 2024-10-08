@@ -108,7 +108,7 @@ export const PaymentSection: React.FC<PaymentProps> = ({ course, tutor }) => {
 
       {/* Additional Information Section */}
       <div className='additional-information mb-4 bg-gray-50 p-4 rounded-lg shadow-sm'>
-        <h2 className='text-xl font-semibold mb-2'>This course includes:</h2>
+        <h2 className='text-xl font-semibold mb-2'>This course includes</h2>
         <div className='flex justify-between mb-2'>
           <p className='text-md'>Lectures</p>
           <p className='text-md'>{totalLessons}</p>
@@ -135,7 +135,11 @@ export const PaymentSection: React.FC<PaymentProps> = ({ course, tutor }) => {
       <div className='tutor-details bg-gray-50 p-4 rounded-lg shadow-sm'>
         <div className='img-name flex items-center mb-4'>
           <img className='rounded-full w-16 h-16 mr-4' src={TutorImage} alt='Tutor' />
-          <div className='text-lg font-semibold'>{tutor?.name || 'Instructor Name'}</div>
+          <div className='flex flex-col '>
+          <div className='text-lg font-semibold'>  {tutor?.name || 'Instructor Name'}</div>
+          <p className='text-gray-500'>Instructor</p>
+
+          </div>
         </div>
         <div className='rating flex items-center'>
           <StarIcon style={{ color: 'gold' }} />

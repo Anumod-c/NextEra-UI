@@ -79,7 +79,7 @@ const Courses: React.FC<CourseProps> = ({fetchUrl,title,subTitle}) => {
       <div className="container mx-auto text-center">
         <motion.div
           initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          whileInView={{ opacity: 1, }}
           transition={{ duration: 1 }}
           className="mb-8"
         >
