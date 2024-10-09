@@ -13,6 +13,7 @@ interface UserState{
     instagram:string;
     facebook:string;
     twitter:string;
+    purchasedCourses?:string[];
     coursesEnrolled?:string[];
     completedCourses?:string[];
 }
@@ -28,6 +29,7 @@ const initialState:UserState={
     instagram:'',
     linkedin:'',
     twitter:'',
+    purchasedCourses:[],
     completedCourses:[],
     coursesEnrolled:[],
     profilePicture:null,
@@ -44,10 +46,15 @@ const userSlice=createSlice({
           updateProfilePicture: (state, action: PayloadAction<string>) => {
             state.profilePicture = action.payload;
           },
+          updateCourseEnroled:(state ,action: PayloadAction<string>)=>{
+            if (state.coursesEnrolled) {
+                state.coursesEnrolled.push(action.payload); // Adding single course ID
+              } else {
+                state.coursesEnrolled = [action.payload]; // Initialize if undefined
+              }
+          },
        
-        //   completeCourse: (state, action: PayloadAction<string>) => {
-        //     state.completedCourses.push(action.payload);
-        //   },,
+        
         clearUserDetails:(state)=>{
             state.id='';
             state.name='';
@@ -55,6 +62,7 @@ const userSlice=createSlice({
             state.bio= '';
             state.age=0,
             state.phone='';
+            state.purchasedCourses=[];
             state.completedCourses=[];
             state.coursesEnrolled=[];
             state.profilePicture=null;

@@ -1,6 +1,4 @@
 import { FaInstagram, FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
-import Courses from "../Courses";
-import { courseEndpoints } from "../../../constraints/endpoints/courseEndpoints";
 
 interface IEditProfile {
   email: string;
@@ -74,10 +72,7 @@ const ProfileDetails: React.FC<IEditProfile> = ({ email, name, age, phone, bio,f
           </div>
         </div>
 
-        {/* Ongoing Courses Section */}
-        <div className="bg-white shadow-lg rounded-lg overflow-hidden p-6">
-          <Courses fetchUrl={courseEndpoints.fetchlatestCourse} title="My Courses" subTitle="Courses brought by me" />
-        </div>
+        
       </div>
     </>
   );

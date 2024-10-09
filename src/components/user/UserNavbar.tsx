@@ -45,9 +45,8 @@ dispatch(clearUserDetails())
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <a href="/" className="text-xl font-bold">
-              Nextera
-            </a>
+            
+            <Link  className="text-xl font-bold" to={'/'}>NextEra</Link>
           </div>
 
           {/* Search Bar */}
@@ -62,25 +61,27 @@ dispatch(clearUserDetails())
 
           {/* Desktop Menu */}
           <div className="hidden justify-center items-center p-4 m-4 md:flex space-x-4">
-          <a href="#" className="hover:text-gray-400">
-              Home
-            </a>
+            <Link to={'/home'} className="hover:text-gray-400">
+                Home
+            </Link>
+
             <Link to={'/allCourse'}>Courses</Link>
-            <a href="#" className="hover:text-gray-400">
+            <Link to={'/contact'} className="hover:text-gray-400">
                Contact
-            </a>
-            <a href="#" className="hover:text-gray-400">
+            </Link>
+            <Link to={'/about'} className="hover:text-gray-400">
               About
-            </a>
-            <a href="#" className="hover:text-gray-400">
+            </Link>
+            <Link to={'/dicussion'} className="hover:text-gray-400">
               Discussion
-            </a>
+            </Link>
+            
                         {/* Profile & Auth Buttons */}
                         {isLoggedIn ? (
               <>
                 <button
                   onClick={handleProfileClick}
-                  className=" "
+                  
                 >
                   <img className="rounded-full w-14 object-cover h-14 p-2 " src={profilePicture||profileImage} alt="Profile" />
                 </button>

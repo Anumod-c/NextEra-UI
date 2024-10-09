@@ -14,10 +14,14 @@ export const userEndpoints = {
     getPresignedUrlForUpload:`${API_GATEWAY_BASE_URL}/get-presigned-url`,
     updateProfilePicture:`${API_GATEWAY_BASE_URL}/updateProfilePicture`,
     logout: `${API_GATEWAY_BASE_URL}/logout`,
+    // refreshToken: `${API_GATEWAY_BASE_URL}/refreshToken`,
 
     // added order along with the base url instead of creating seperate endpoints for payment
     makepayement: `${API_GATEWAY_BASE_URL}/purchase/payment`,
     saveOrder: `${API_GATEWAY_BASE_URL}/purchase/order`,
+
+    
+
 
 
    
