@@ -7,6 +7,7 @@ import { userEndpoints } from '../../constraints/endpoints/userEndPoints'
 import { useDispatch } from 'react-redux'
 import { clearOrderData } from '../../redux/OrderDataSlice'
 import { useNavigate } from 'react-router-dom'
+import { setUser } from '../../redux/userSlice'
 
 function SuccessPage() {
     const orderdata =  useSelector((state:RootState)=>state.order)
@@ -23,9 +24,12 @@ function SuccessPage() {
                 try {
                     // Send the order data to be saved in the database
                     const response = await userAxios.post(userEndpoints.saveOrder, orderdata.order  );
-                    if (response.data.success) {
+                    console.log('reseponse from save order',response.data)
+                    if (response.data.courseUpdate.success) {
+                        //setting the updated userdata with courseID
+                        dispatch(setUser(response.data.userUpdate.updatedUser))
                         dispatch(clearOrderData()); // Clear order data from Redux after saving
-                        toast.success(response.data.message);
+                        toast.success("Course Purchasesd successfully");
                     }
                 } catch (error) {
                     console.error('Error fetching order details:', error);

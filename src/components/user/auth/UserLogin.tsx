@@ -51,7 +51,7 @@ function UserLogin() {
 
         dispatch(setUser({ id: _id, name, email,purchasedCourses, phone, facebook, instagram, linkedin, twitter, age, bio, completedCourses, coursesEnrolled, profilePicture }));
 
-        Cookies.set('userToken', JSON.stringify(result.data.token));
+        Cookies.set('userToken', JSON.stringify(result.data.token.accessToken));
         navigate("/home");
       } else {
         toast.info("Couldn't login with Google");
@@ -78,7 +78,7 @@ function UserLogin() {
         Cookies.set('userToken', JSON.stringify(result.data.token.accessToken));
         // Cookies.set('refreshToken', JSON.stringify(result.data.token.refreshToken));
         navigate("/home");
-        toast.success("Logged in Successfully");
+       
       } else {
         toast.error("User does not exist");
       }
