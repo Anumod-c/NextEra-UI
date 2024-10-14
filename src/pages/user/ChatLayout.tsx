@@ -6,7 +6,7 @@ const ChatLayout:React.FC=()=>{
     return(
         <>
         <UserNavbar/>
-         <div className="flex">
+         <div className="flex ">
         <CourseList/>
         <CourseDiscussion/>
         </div>

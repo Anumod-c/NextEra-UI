@@ -35,7 +35,8 @@ const UserRoutes:React.FC=()=>{
     <Route path='/resetPassword' element={<PrivateRoute><UserResetPass/></PrivateRoute>}/>
     <Route path='/profile' element={<PrivateRouteUser><UserProfile/></PrivateRouteUser>} />
     <Route path='/success' element={<PrivateRouteUser><SuccessPage/></PrivateRouteUser>} />
-    <Route path='/editProfile' element={<PrivateRouteUser><EditProfile/></PrivateRouteUser>} /><Route path='/discussion' element={<PrivateRouteUser><ChatLayout/></PrivateRouteUser>} />
+    <Route path='/editProfile' element={<PrivateRouteUser><EditProfile/></PrivateRouteUser>} />
+    <Route path='/discussion' element={<PrivateRouteUser><ChatLayout/></PrivateRouteUser>} />
     
 
 

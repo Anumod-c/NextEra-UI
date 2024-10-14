@@ -1,25 +1,49 @@
-import { PieChart } from '@mui/x-charts';
-import React from 'react'
+import React from 'react';
+import { Doughnut } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
-function AdminPieGraph() {
-    const data = [
-        { id: 0, value: 10, label: 'series A' },
-        { id: 1, value: 15, label: 'series B' },
-        { id: 2, value: 20, label: 'series C' },
-      ];
-  return (
-    <PieChart 
-    series={[
-      {
-        data,
-        highlightScope: { faded: 'global', highlighted: 'item' },
-        faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
-      },
-    ]}
-    height={200}
-  />
-);
-  
+// Register required Chart.js components
+ChartJS.register(ArcElement, Tooltip, Legend);
+interface BarGraphProps{
+  totalStudents : number;
+  totalInstructors : number;
+  totalCourses : number;
 }
+const AdminDonutGraph: React.FC<BarGraphProps>= ({totalCourses,totalInstructors,totalStudents}) => {
+  // Data for the donut chart
+  const data = {
+    labels: ['Tutors', 'Users', 'Courses'],
+    datasets: [
+      {
+        label: 'Admin Stats',
+        data: [totalStudents,totalInstructors,totalCourses], // Example data: number of tutors, users, courses, and payouts
+        backgroundColor: ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'], // Donut segments colors
+        borderColor: ['#ffffff'], // Border color
+        borderWidth: 2, // Border width around the segments
+      },
+    ],
+  };
 
-export default AdminPieGraph
+  // Configuration options for the donut chart
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const, // Position the legend at the top
+      },
+      title: {
+        display: true,
+        text: 'Admin Dashboard Donut Chart', // Chart title
+      },
+    },
+    cutout: '50%', // Makes it a donut chart (50% cutout in the middle)
+  };
+
+  return (
+    <div style={{ width: '100%',height:'400px' }}>
+      <Doughnut data={data} options={options} />
+    </div>
+  );
+};
+
+export default AdminDonutGraph;

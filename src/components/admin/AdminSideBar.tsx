@@ -22,6 +22,8 @@ const AdminSideBar: React.FC<AdminSideBarProps> = ({ isSidebarOpen, toggleSideba
 
 
   const navItems = [
+    { name: 'Dashboard', icon: <FaUser className="mr-2" />, action: () => onSectionChange('dashboard') },
+
     { name: 'Users', icon: <FaUser className="mr-2" />, action: () => onSectionChange('users') },
     { name: 'Tutor', icon: <FaChalkboardTeacher className="mr-2" />, action: () => onSectionChange('tutors') },
     { name: 'Courses', icon: <FaChalkboardTeacher className="mr-2" />, action: () => onSectionChange('courses') },

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link,  useNavigate } from "react-router-dom";
 import profileImage from "../../assets/profile.png";
 import { FaBars, FaTimes } from "react-icons/fa";
 import Cookies from "js-cookie";
@@ -9,10 +9,25 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 
 
-const UserNavbar: React.FC = () => {
+interface NavbarProps{
+  showSearch?: boolean;
+  onSearch?:(query:string)=>void;
+}
+
+const UserNavbar: React.FC<NavbarProps>= ({onSearch,showSearch}) => {
   const navigate = useNavigate();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [serachQuery,setSearchQuery]= useState('');
+
+  useEffect(()=>{
+    const delayDebouncingFn = setTimeout(() => {
+      if(onSearch){
+        onSearch(serachQuery)
+      }
+    }, 500);
+    return ()=>clearTimeout(delayDebouncingFn);
+  },[serachQuery,onSearch])
 const dispatch= useDispatch()
 
 const {id,profilePicture} = useSelector((state: RootState) => state.user);
@@ -37,7 +52,10 @@ dispatch(clearUserDetails())
       navigate("/profile");
     } else {
       navigate("/login");
-    }
+    } 
+  };
+  const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value); // Update the search query
   };
   return (
     <nav className="bg-gray-800 text-white">
@@ -49,14 +67,18 @@ dispatch(clearUserDetails())
             <Link  className="text-xl font-bold" to={'/'}>NextEra</Link>
           </div>
 
-          {/* Search Bar */}
-          <div className=" md:flex flex-grow mx-4">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-full p-2 rounded-md text-black"
-            />
-          </div>
+          {showSearch && (
+            <div className="md:flex flex-grow mx-4">
+              <input
+                type="text"
+                value={serachQuery}
+                onChange={handleSearchInput}
+                placeholder="Search..."
+                className="w-full p-2 rounded-md text-black"
+              />
+            </div>
+          )}
+
 
 
           {/* Desktop Menu */}
@@ -72,7 +94,7 @@ dispatch(clearUserDetails())
             <Link to={'/about'} className="hover:text-gray-400">
               About
             </Link>
-            <Link to={'/dicussion'} className="hover:text-gray-400">
+            <Link to={'/discussion'} className="hover:text-gray-400">
               Discussion
             </Link>
             

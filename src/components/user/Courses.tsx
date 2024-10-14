@@ -26,9 +26,10 @@ interface CourseProps{
   fetchUrl:string;
   title:string;
   subTitle?:string;
+  searchQuery?:string; //props for search query
 }
 
-const Courses: React.FC<CourseProps> = ({fetchUrl,title,subTitle}) => {
+const Courses: React.FC<CourseProps> = ({fetchUrl,title,subTitle,searchQuery}) => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -64,6 +65,10 @@ const Courses: React.FC<CourseProps> = ({fetchUrl,title,subTitle}) => {
 
     fetchCourses();
   }, [fetchUrl]);
+  const filteredCourse = courses.filter((course) =>
+    course.title.toLowerCase().includes(searchQuery?.toLowerCase() || "")
+  );
+  
 
   const handleCourseClick = (coruseId: string) => {
     navigate(`/courses/${coruseId}`);
@@ -87,7 +92,7 @@ const Courses: React.FC<CourseProps> = ({fetchUrl,title,subTitle}) => {
           <h4 className="text-xl text-gray-500">{subTitle}</h4>
         </motion.div>
         <div className="grid  grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
-          {courses.map((course, index) => (
+          {filteredCourse.map((course, index) => (
             //make  course component
             <motion.div
               key={course._id}
