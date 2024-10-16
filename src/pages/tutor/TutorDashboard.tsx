@@ -1,4 +1,3 @@
-import React from 'react';
 import TutorNavbar from '../../components/tutor/TutorNavbar';
 import TutorSidebar from '../../components/tutor/TutorSidebar';
 import TutorHeader from '../../components/tutor/TutorHeader';
@@ -7,6 +6,7 @@ import TutorPieGraph from '../../components/tutor/TutorPieGraph';
 import Footer from './Footer';
 
 function TutorDashboard() {
+  
   return (
     <div >
       <TutorNavbar />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { useNavigate } from "react-router-dom";
@@ -29,11 +29,21 @@ const validationSchema = Yup.object({
 });
 
 function TutorLogin() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
 
+
+  useEffect(()=>{
+    const queryparams = new URLSearchParams(location.search);
+    const message = queryparams.get('message');
+    if(message =='blocked'){
+      toast.error("You have beed blocked by admin. Contact admin for more informations")
+
+    }
+
+  })
   const togglePasswordVisiblility = () => {
     setShowPassword(!showPassword);
   };
@@ -46,10 +56,18 @@ function TutorLogin() {
       });
       console.log(result.data, "result of googlelogin");
       if (result.data.success) {
-        const {_id,name,email,phone} = result.data.tutor;
-        dispatch(setTutor({id:_id,name,email,phone}));
-        Cookies.set('tutorToken',JSON.stringify(result.data.token.accessToken)); //
-        
+        const { _id, name, email, phone, status } = result.data.tutor;
+        if (!status) {
+          return toast.error(
+            "You are blocked by the admin. Contact admin for furthur details"
+          );
+        }
+        dispatch(setTutor({ id: _id, name, email, phone }));
+        Cookies.set(
+          "tutorToken",
+          JSON.stringify(result.data.token.accessToken)
+        ); //
+
         navigate("/tutor/dashboard");
       } else {
         toast.info("Couldnt login with google");
@@ -66,15 +84,24 @@ function TutorLogin() {
     try {
       const result = await axios.post(tutorEndpoints.login, values);
       if (result.data.success) {
-        const {_id,name,email,phone} = result.data.tutorData
-        Cookies.set('tutorToken',JSON.stringify(result.data.token.accessToken))
-        dispatch(setTutor({id:_id,email,name,phone}))
-        console.log(result.data,'gg');
+        const { _id, name, email, phone, status } = result.data.tutorData;
+        if (!status) {
+          return toast.error(
+            "You are blocked by the admin. Contact admin for furthur details"
+          );
+        }
+        Cookies.set('tutorId',_id);
+        Cookies.set(
+          "tutorToken",
+          JSON.stringify(result.data.token.accessToken)
+        );
+        dispatch(setTutor({ id: _id, email, name, phone }));
+        console.log(result.data, "gg");
         // localStorage.setItem("tutorToken", result.data.token.accessToken);
         navigate("/tutor/dashboard");
         toast.success("tutor logged in successfull");
       } else {
-        toast.error("User dont exist");
+        toast.error("Invalid Credentials");
       }
     } catch (err) {
       toast.error("An Error occured during login");
@@ -85,12 +112,12 @@ function TutorLogin() {
   return (
     <div className="flex h-screen">
       <div className="flex-1 bg-[#cbe5ff] flex justify-center items-center">
-      <Player
-              autoplay
-              loop
-              src="https://lottie.host/d7d79707-db33-4538-b2a0-2437d31f0cca/lyH67nxXFp.json"
-              style={{ height: "80%", width: "80%" }}
-            /> 
+        <Player
+          autoplay
+          loop
+          src="https://lottie.host/d7d79707-db33-4538-b2a0-2437d31f0cca/lyH67nxXFp.json"
+          style={{ height: "80%", width: "80%" }}
+        />
       </div>
       <div className="flex-1   flex flex-col justify-center items-center p-6">
         <h2 className="text-2xl font-bold mb-2">Tutor Login</h2>

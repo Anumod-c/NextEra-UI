@@ -12,5 +12,7 @@ export const tutorEndpoints ={
     getPresignedUrlForUpload:`${API_GATEWAY_BASE_URL}/get-presigned-url`,
     getPresignedUrlForDownload:`${API_GATEWAY_BASE_URL}/get-presigned-url-download`,
     payouts: `${API_GATEWAY_BASE_URL}/payouts`,
-
+    getTotalStudentsCount: `${API_GATEWAY_BASE_URL}/getStudentsCount`,
+    getTotalCoursesCount: `${API_GATEWAY_BASE_URL}/getTotalCoursesCount`
+    
 }

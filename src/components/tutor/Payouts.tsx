@@ -22,8 +22,8 @@ const Payouts:React.FC=()=> {
         const fetchPayouts = async()=>{
             try {
                 const response = await tutorAxios.get(tutorEndpoints.payouts,{
-                    params:{tutorId}
-                });
+                    params:{tutorId},withCredentials:true
+                },);
                 console.log(response.data)
                 if(response.data.success){
                     setPayouts(response.data.tutorPayouts)

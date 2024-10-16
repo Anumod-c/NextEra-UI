@@ -3,10 +3,35 @@ import tutorImage from "../../assets/profile.png";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import tutorAxios from "../../constraints/axios/tutorAxios";
+import { tutorEndpoints } from "../../constraints/endpoints/tutorEndpoints";
+import { useEffect, useState } from "react";
 
 
 function TutorHeader() {
   const {name} = useSelector((state:RootState)=>state.tutor)
+  const tutorId = useSelector((state:RootState)=>state.tutor.id);
+  const [totalStudents, setTotalStudents] = useState<number>(0);
+  const [totalCourses, setTotalCourses] = useState<number>(0);
+
+  useEffect(()=>{
+    const fetchHeaderData=async()=>{
+      try{
+        const [courseResponse,studentResponse] = await Promise.all([
+          tutorAxios.get<number>(`${tutorEndpoints.getTotalCoursesCount}/${tutorId}`),
+          tutorAxios.get<number>(`${tutorEndpoints.getTotalStudentsCount}/${tutorId}`),
+          
+        ])
+        setTotalStudents(studentResponse.data);
+        setTotalCourses(courseResponse.data);
+
+      }catch(error){
+        console.log("Error in fetching header data",error)
+      }
+     
+    }
+    fetchHeaderData();
+  });
 const navigate = useNavigate()
   const handleAddCourse=()=>{
     navigate('/tutor/addcourse')
@@ -32,11 +57,11 @@ const navigate = useNavigate()
               <FaStar className="text-yellow-500 mr-2" /> 0/5
             </li>
             <li className="flex items-center">
-              <FaUserGraduate className="text-green-500 mr-2" /> 4 Enrolled
+              <FaUserGraduate className="text-green-500 mr-2" /> {totalStudents} Enrolled
               Students
             </li>
             <li className="flex items-center">
-              <FaBookOpen className="text-orange-500 mr-2" /> 2 Courses
+              <FaBookOpen className="text-orange-500 mr-2" /> {totalCourses} Courses
             </li>
           </ul>
           <button onClick={handleAddCourse} className="disabled sm:rounded-lg p-2 sm:bg-green-500 text-white">

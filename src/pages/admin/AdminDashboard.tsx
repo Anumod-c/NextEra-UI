@@ -7,7 +7,7 @@ import UserTable from '../../components/admin/UserTable';
 import TutorTable from '../../components/admin/TutorTable';
 import CourseTable from '../../components/admin/CourseTable';
 import Payouts from '../../components/admin/Payouts';
-import AdminDonutGraph from '../../components/admin/AdminPieGraph';
+import AdminDonutGraph from '../../components/admin/AdminDonutGraph';
 import { adminEndpoints } from "../../constraints/endpoints/adminEndpoints";
 import adminAxios from "../../constraints/axios/adminAxios";
 

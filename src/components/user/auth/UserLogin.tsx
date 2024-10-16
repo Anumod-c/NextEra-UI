@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Player } from "@lottiefiles/react-lottie-player";
 import Cookies from 'js-cookie';
 import { motion } from 'framer-motion'; // Import motion
@@ -34,6 +34,16 @@ function UserLogin() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
+
+  useEffect(()=>{
+    const queryparams = new URLSearchParams(location.search);
+    const message = queryparams.get('message');
+    if(message =='blocked'){
+      toast.error("You have beed blocked by admin. Contact admin for more information")
+
+    }
+
+  })
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -47,8 +57,10 @@ function UserLogin() {
       console.log(result.data, "Google Login Result");
 
       if (result.data.result.success) {
-        const { _id, name, email, phone, facebook, purchasedCourses , instagram, linkedin, twitter, age, bio, completedCourses, coursesEnrolled, profilePicture } = result.data.result.user;
-
+        const { _id, name, email, phone, facebook, purchasedCourses , instagram, linkedin, twitter, age, bio, completedCourses, coursesEnrolled, profilePicture,status } = result.data.result.user;
+        if(!status){
+          return  toast.error("You have beed blocked by admin. Contact admin for more information")
+        }
         dispatch(setUser({ id: _id, name, email,purchasedCourses, phone, facebook, instagram, linkedin, twitter, age, bio, completedCourses, coursesEnrolled, profilePicture }));
 
         Cookies.set('userToken', JSON.stringify(result.data.token.accessToken));
@@ -71,7 +83,10 @@ function UserLogin() {
       console.log('Login result:', result.data);
 
       if (result.data.result.success) {
-        const {_id, name, email, phone, purchasedCourses,facebook, instagram, linkedin, twitter, age, bio, completedCourses, coursesEnrolled, profilePicture } = result.data.result.userData;
+        const {_id, name, email, phone, purchasedCourses,facebook, instagram, linkedin, twitter, age, bio, completedCourses, coursesEnrolled, profilePicture ,status} = result.data.result.userData;
+        if(!status){
+          return  toast.error("You are blocked by the admin. Contact admin for furthur details")
+        }
         dispatch(setUser({ id: _id, name, email, phone, facebook, instagram, linkedin, twitter, age, bio, completedCourses, coursesEnrolled, profilePicture,purchasedCourses }));
 
 
@@ -80,7 +95,7 @@ function UserLogin() {
         navigate("/home");
        
       } else {
-        toast.error("User does not exist");
+        toast.error(result.data.result.message);
       }
     } catch (err) {
       console.log(err, "Error in User Login");

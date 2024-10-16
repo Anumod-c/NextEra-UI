@@ -38,6 +38,16 @@ tutorAxios.interceptors.response.use(
                     
                 }
             }
+            // Handle 403 Forbidden (user blocked)
+        if (error.response.status === 403) {
+            console.log('Tutor is blocked. Redirecting to login or blocked page.');
+            Cookies.remove('tutorToken')
+
+            // Redirect to login or blocked user page
+            window.location.href = '/tutor?message=blocked'; // Change this to your actual login or blocked route
+
+            return Promise.reject(error);
+        }
     
             return Promise.reject(error);
         }
