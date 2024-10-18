@@ -1,5 +1,5 @@
 
-const API_GATEWAY_BASE_URL = 'http://localhost:5000/course';
+export const API_GATEWAY_BASE_URL = 'http://localhost:5000/course';
 
 
 export const courseEndpoints={
@@ -7,6 +7,6 @@ export const courseEndpoints={
     fetchAllCourse: `${API_GATEWAY_BASE_URL}/fetchAllCourses`,
     Course: `${API_GATEWAY_BASE_URL}/courses/:courseId`,
     fetchlatestCourse:`${API_GATEWAY_BASE_URL}/fetchLatestCourses`,
-    fetchMyCourses:`${API_GATEWAY_BASE_URL}/fetchMyCourses`
-
+    fetchMyCourses:`${API_GATEWAY_BASE_URL}/fetchMyCourses`,
+    fetchCourseChatList:`${API_GATEWAY_BASE_URL}/fetchCourseChatList`
 }

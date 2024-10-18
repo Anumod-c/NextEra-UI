@@ -137,9 +137,9 @@ dispatch(clearUserDetails())
           <a href="#" className="block text-center py-2 hover:bg-gray-700">
             My Course
           </a>
-          <a href="#" className="block text-center py-2 hover:bg-gray-700">
-            Discussion
-          </a>
+          <Link to={'/discussion'} className="block text-center py-2 hover:bg-gray-700">
+          Discussion
+          </Link>
           <Link to={'/profile'} className="block text-center py-2 hover:bg-gray-700">
             Profile
           </Link>
