@@ -10,6 +10,8 @@ import Payouts from '../../components/admin/Payouts';
 import AdminDonutGraph from '../../components/admin/AdminDonutGraph';
 import { adminEndpoints } from "../../constraints/endpoints/adminEndpoints";
 import adminAxios from "../../constraints/axios/adminAxios";
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 
 export interface IPayout {
   totalPayout: number;  // The total payout for a given period
@@ -17,7 +19,7 @@ export interface IPayout {
 }
 
 const AdminDashboard: React.FC = () => {
-
+const adminId = useSelector((state:RootState)=>state.admin.id)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedSection, setSelectedSection] = useState('dashboard');
 
@@ -47,7 +49,7 @@ const AdminDashboard: React.FC = () => {
     };
 
     fetchHeaderData();
-  }, []);
+  }, [adminId]);
 
   useEffect(() => {
     const fetchPayouts = async () => {

@@ -10,6 +10,7 @@ import { userEndpoints } from '../../../constraints/endpoints/userEndPoints';
 import { useDispatch } from 'react-redux';
 import { setOrderData } from '../../../redux/OrderDataSlice';
 import { useNavigate } from 'react-router-dom';
+import { FaHeart } from "react-icons/fa";
 interface Lesson {
   title: string;
   video?: string;
@@ -124,11 +125,15 @@ export const PaymentSection: React.FC<PaymentProps> = ({ course, tutor }) => {
       </div>
 
       {/* Buy Now Button */}
-      <div className='button mb-4'>
-        <button onClick={() => handlePayement(course._id)} className='w-full bg-green-500 text-white py-2 rounded-md text-lg shadow hover:bg-green-600'>
-          Buy Now
-        </button>
-      </div>
+      <div className='button mb-4 flex items-center justify-between'>
+  <button 
+    onClick={() => handlePayement(course._id)} 
+    className='w-full bg-green-500 text-white py-2 rounded-md text-lg shadow hover:bg-green-600 mr-4'
+  >
+    Buy Now
+  </button>
+  <FaHeart className="text-3xl text-red-500 cursor-pointer" /> {/* Solid heart icon */}
+</div>
 
 
       {/* Tutor Details Section */}

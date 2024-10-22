@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import CourseDiscussion from "../../components/user/chat/CourseDiscussion";
-import CourseList from "../../components/user/chat/CourseList";
+import CourseList, { Course } from "../../components/user/chat/CourseList";
 import UserNavbar from "../../components/user/UserNavbar";
 import SocketService from "../../socket/SocketService";
 import { useSelector } from "react-redux";
@@ -8,61 +8,69 @@ import { RootState } from "../../redux/store";
 import { courseEndpoints } from "../../constraints/endpoints/courseEndpoints";
 import userAxios from "../../constraints/axios/userAxios";
 
+export interface Message{
+  userId:string,
+  content:string;
+}
 const ChatLayout: React.FC = () => {
   const [message, setMessage] = useState('');
   const [courseMessages, setCourseMessages] = useState<{ [key: string]: { userId: string; text: string }[] }>({});
-  const [courseId, setCourseId] = useState<string | null>(null);
-  const  [courses,setCourses]= useState([]);
+  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null); 
 
+  const  [courses, setCourses] = useState<Course[]>([]);
   const currentUserId = useSelector((state: RootState) => state.user.id);
 
-  //fetch courses for course listing
-  useEffect(()=>{
-    const fetchCourses = async()=>{
+  // Fetch courses for course listing
+  useEffect(() => {
+    const fetchCourses = async () => {
       try {
-        const response = await  userAxios.get(courseEndpoints.fetchCourseChatList,{
-          params: { currentUserId }});
-        if(response.data.success){
-          setCourses(response.data.courses)
+        const response = await userAxios.get(courseEndpoints.fetchCourseChatList, {
+          params: { currentUserId },
+        });
+        if (response.data.success) {
+          setCourses(response.data.courses);
         }
       } catch (error) {
         console.error("Error fetching courses:", error);
       }
-    }
-    fetchCourses()
-  },[currentUserId])
+    };
+    fetchCourses();
+  }, [currentUserId]);
+
   useEffect(() => {
-    if (courseId) {
+    if (selectedCourse) {
+      const courseId = selectedCourse._id;
       // Join the selected course's discussion room
       SocketService.joinRoom(courseId);
 
       SocketService.loadPreviousMessages('loadPreviousMessages', (previousMessages) => {
-        const mappedMessages = previousMessages.result.map((msg: any) => ({
+        const mappedMessages = previousMessages.result.map((msg: Message) => ({
+        
           userId: msg.userId,
-          text: msg.content,  
           
+          text: msg.content,
         }));
-      
+
         setCourseMessages((prevMessages) => ({
           ...prevMessages,
-          [courseId]: mappedMessages,  // Set the mapped messages for the course
+          [courseId]: mappedMessages, // Set the mapped messages for the course
         }));
       });
     }
 
     return () => {
-      if (courseId) {
-        SocketService.leaveRoom(courseId);
+      if (selectedCourse) {
+        SocketService.leaveRoom(selectedCourse._id);
       }
     };
-  },[courseId]);
+  }, [selectedCourse]);
 
   useEffect(() => {
     const handleMessageReceive = (newMessage: { userId: string; text: string; courseId: string }) => {
-      if (courseId && newMessage.courseId === courseId) {
+      if (selectedCourse && newMessage.courseId === selectedCourse._id) {
         setCourseMessages((prevMessages) => ({
           ...prevMessages,
-          [courseId]: [...(prevMessages[courseId] || []), newMessage],
+          [selectedCourse._id]: [...(prevMessages[selectedCourse._id] || []), newMessage],
         }));
       }
     };
@@ -72,12 +80,12 @@ const ChatLayout: React.FC = () => {
     return () => {
       SocketService.removeMessageListener(handleMessageReceive);
     };
-  }, [courseId]);
+  }, [selectedCourse]);
 
   const handleSendMessage = () => {
-    if (message.trim() && courseId) {
-      const newMessage = { userId: currentUserId, text: message, courseId }; 
-      SocketService.sendMessage(courseId, newMessage);
+    if (message.trim() && selectedCourse) {
+      const newMessage = { userId: currentUserId, text: message, courseId: selectedCourse._id };
+      SocketService.sendMessage(selectedCourse._id, newMessage);
 
       setMessage('');
     }
@@ -87,11 +95,10 @@ const ChatLayout: React.FC = () => {
     <>
       <UserNavbar />
       <div className="flex h-screen">
-        <CourseList setCourseId={setCourseId} courses={courses} />
+        <CourseList setSelectedCourse={setSelectedCourse} courses={courses} />
         <CourseDiscussion
-        // courses={courses}
-        selectedCourse={courseId}
-          messages={courseId ? courseMessages[courseId] || [] : []} // Show messages for the selected course
+          selectedCourse={selectedCourse}
+          messages={selectedCourse ? courseMessages[selectedCourse._id] || [] : []}
           message={message}
           setMessage={setMessage}
           onSendMessage={handleSendMessage}

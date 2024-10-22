@@ -6,15 +6,15 @@ export interface Course {
 }
 
 interface CourseListProps {
-  setCourseId: (courseId: string) => void;
-  courses:Course[]
+  setSelectedCourse: (course: Course) => void;
+  courses: Course[];
 }
 
-const CourseList: React.FC<CourseListProps> = ({ setCourseId ,courses }) => {
+const CourseList: React.FC<CourseListProps> = ({ setSelectedCourse, courses }) => {
   return (
-    <div className="w-1/4 shadow-lg border flex flex-col h-full bg-white ">
+    <div className="w-1/4 shadow-lg border flex flex-col h-full bg-white">
       {/* Header */}
-      <div className="courselis_heading p-4 bg-blue-600 text-white text-lg font-semibold ">
+      <div className="courselis_heading p-4 bg-gray-900 text-white text-lg font-semibold">
         Discussions
       </div>
 
@@ -24,7 +24,7 @@ const CourseList: React.FC<CourseListProps> = ({ setCourseId ,courses }) => {
         {courses.map((course) => (
           <div
             key={course._id}
-            onClick={() => setCourseId(course._id)} // Select course and pass courseId to parent
+            onClick={() => setSelectedCourse(course)} // Pass the full course object
             className="flex items-center p-3 m-2 bg-gray-100 hover:bg-blue-100 rounded-lg cursor-pointer transition-colors"
           >
             <img className="w-10 h-10 object-fit rounded-full mr-4" src={course.thumbnail} alt={course.title} />
