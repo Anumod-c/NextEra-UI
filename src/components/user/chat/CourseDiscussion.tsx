@@ -1,6 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Course } from "./CourseList";
 import { IoSend } from "react-icons/io5";
+import Picker, {EmojiClickData} from 'emoji-picker-react';
 
 interface CourseDiscussionProps {
   messages: {
@@ -24,6 +25,8 @@ const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
   currentUserId,
   selectedCourse,
 }) => {
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  
   console.log('final  msg',messages)
   // Reference for the messages container to scroll to the bottom
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
@@ -39,6 +42,10 @@ const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
     scrollToBottom();
   }, [messages]);
 
+  const onEmojiClick = ( emojiObject: EmojiClickData) => {
+    setMessage(message + emojiObject.emoji); 
+    setShowEmojiPicker(false); 
+  };
   return (
     <div className="w-3/4 flex flex-col h-full bg-gray-50">
       <div className="courselis_heading p-2  bg-gray-900 text-white text-lg font-semibold">
@@ -97,6 +104,20 @@ const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
 
       {selectedCourse && (
         <div className="p-4 flex bg-white border-t">
+          {/* Emoji Picker */}
+          {showEmojiPicker && (
+            <div className="absolute bottom-20">
+              <Picker onEmojiClick={onEmojiClick} />
+            </div>
+          )}
+
+          {/* Emoji Button */}
+          <button
+            onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+            className="m-2 bg-gray-200 text-black px-2 py-2 rounded-lg"
+          >
+            😀
+          </button>
           <input
             type="text"
             value={message}
