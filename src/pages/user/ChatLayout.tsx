@@ -11,6 +11,8 @@ import userAxios from "../../constraints/axios/userAxios";
 export interface Message{
   userId:string,
   content:string;
+  userName:string;
+  profilePicture:string;
 }
 const ChatLayout: React.FC = () => {
   const [message, setMessage] = useState('');
@@ -44,11 +46,13 @@ const ChatLayout: React.FC = () => {
       SocketService.joinRoom(courseId);
 
       SocketService.loadPreviousMessages('loadPreviousMessages', (previousMessages) => {
-        const mappedMessages = previousMessages.result.map((msg: Message) => ({
-        
+        console.log('previousMessageas',previousMessages.result)
+        const mappedMessages = previousMessages.map((msg: Message) => (
+          {
           userId: msg.userId,
-          
+          userName:msg.userName,
           text: msg.content,
+          profilePicture:msg.profilePicture,
         }));
 
         setCourseMessages((prevMessages) => ({
