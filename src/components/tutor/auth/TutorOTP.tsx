@@ -34,9 +34,12 @@ function TutorOTP() {
                 console.log('otp response', response)
                 if (response.data.success) {
                     if (response.data.forgotPass) {
+                        console.log('xx')
+
                         navigate('/tutor/resetPassword', { state: { email } })
                     } else {
-                        navigate('/tutor/dashboard');
+                        console.log('yy')
+                        navigate('/tutor/additionalInfo');
                     }
                 } else {
                     toast.error(response.data.message);

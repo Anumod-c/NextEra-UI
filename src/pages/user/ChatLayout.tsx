@@ -46,7 +46,7 @@ const ChatLayout: React.FC = () => {
       SocketService.joinRoom(courseId);
 
       SocketService.loadPreviousMessages('loadPreviousMessages', (previousMessages) => {
-        console.log('previousMessageas',previousMessages.result)
+        console.log('previousMessageas',previousMessages)
         const mappedMessages = previousMessages.map((msg: Message) => (
           {
           userId: msg.userId,

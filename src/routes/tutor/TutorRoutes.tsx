@@ -12,6 +12,7 @@ import CourseDetailsPage from "../../pages/tutor/CourseDetailsPage"
 import PayoutListPage from "../../pages/tutor/PayoutListPage"
 import PrivateRoute from "./privateRoute"
 import PrivateRouteTutor from "./PrivateRouteTutor"
+import TutorAdditionalInfo from "../../components/tutor/auth/TutorAdditionalInfo "
 
 const TutorRoutes=()=>{
 return(
@@ -27,6 +28,7 @@ return(
         <Route  path="/courselist" element={<PrivateRouteTutor><CourseListPage /></PrivateRouteTutor> }/>
         <Route  path="/courses-details/:courseId" element={<PrivateRouteTutor><CourseDetailsPage /></PrivateRouteTutor> }/>
         <Route  path="/payouts" element={<PrivateRouteTutor><PayoutListPage/></PrivateRouteTutor> }/>
+        <Route  path="/additionalInfo" element={<TutorAdditionalInfo/>}/>
 
         
 

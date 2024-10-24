@@ -30,11 +30,15 @@ tutorAxios.interceptors.response.use(
                   } else {
                     // Handle failed refresh (e.g., redirect to login)
                     console.log('Refresh token failed');
+                    window.location.href = '/tutor'; // Change this to your actual login or blocked route
+
                   }
                   return tutorAxios(originalRequest);
                 } catch (refreshError) {
                     // Handle refresh token failure (e.g., redirect to login)
                     console.log('error in refreshtken tutorAxios');
+                    window.location.href = '/tutor'; 
+
                     
                 }
             }
@@ -60,10 +64,14 @@ tutorAxios.interceptors.response.use(
         if (rawToken) {
             const token =JSON.parse(rawToken); // No need to parse, it's already a string
             console.log('Access Token:', token);
+
             config.headers['Authorization'] = `Bearer ${token}`;
     
         } else {
             console.log('Access token not found');
+            window.location.href = '/tutor'; 
+            
+
         }
     
         return config;
