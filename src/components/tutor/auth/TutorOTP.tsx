@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { useLocation } from 'react-router-dom';
 import { tutorEndpoints } from '../../../constraints/endpoints/tutorEndpoints';
+import { setTutor } from '../../../redux/tutorSlice';
+import { useDispatch } from 'react-redux';
 
 
 interface FormValues {
@@ -14,7 +16,8 @@ interface FormValues {
 
 function TutorOTP() {
     const navigate = useNavigate();
-    
+    const dispatch = useDispatch();
+
     const location = useLocation();
     const { forgotPass, email } = location.state || { forgotPass: false, email: '' };
     const inputRef = useRef<(HTMLInputElement | null)[]>([]);
@@ -31,13 +34,15 @@ function TutorOTP() {
                 const otp = values.otp.join('');
 
                 const response = await axios.post(tutorEndpoints.otp, { otp, forgotPass });
-                console.log('otp response', response)
+                console.log('otp response', response.data)
                 if (response.data.success) {
                     if (response.data.forgotPass) {
                         console.log('xx')
 
                         navigate('/tutor/resetPassword', { state: { email } })
                     } else {
+                        const { _id, name, email, phone } = response.data.tutor;
+                        dispatch(setTutor({id:_id,name,email,phone}))
                         console.log('yy')
                         navigate('/tutor/additionalInfo');
                     }

@@ -13,7 +13,7 @@ function TutorHeader() {
   const tutorId = useSelector((state:RootState)=>state.tutor.id);
   const [totalStudents, setTotalStudents] = useState<number>(0);
   const [totalCourses, setTotalCourses] = useState<number>(0);
-
+  const ProfilePicture = useSelector((state:RootState)=>state.tutor.profilePicture)
   useEffect(()=>{
     const fetchHeaderData=async()=>{
       try{
@@ -42,7 +42,7 @@ const navigate = useNavigate()
       <div className="flex-shrink-0  ml-4 pl-4 flex justify-center">
         <img
           className="w-[180px] h-[180px] rounded-full object-cover"
-          src={tutorImage}
+          src={ProfilePicture||tutorImage}
           alt="Tutor"
         />
       </div>

@@ -28,7 +28,7 @@ function TutorSidebar() {
     { path: '/tutor/courselist', icon: <FaBook />, label: 'My Course' },
     { path: '/tutor/students', icon: <FaUserGraduate />, label: 'Students' },
     { path: '/tutor/payouts', icon: <FaMoneyCheckAlt />, label: 'Payouts' },
-    { path: '/tutor/edit-profile', icon: <FaUserEdit />, label: 'Edit Profile' },
+    { path: '/tutor/profile', icon: <FaUserEdit />, label: 'Profile' },
     { path: '/tutor/privacy-security', icon: <FaLock />, label: 'Privacy & Security' },
     { 
       path: '/tutor', 
@@ -40,9 +40,9 @@ function TutorSidebar() {
   ];
 
   return (
-    <div>
+    <div >
       {/* Mobile Menu Bar */}
-      <div className="md:hidden flex items-center p-4 bg-white shadow-lg sticky">
+      <div className="md:hidden  flex items-center p-4 bg-white shadow-lg sticky">
         <button onClick={toggleSidebar} className="text-xl">
           <FaBars />
         </button>
@@ -51,7 +51,7 @@ function TutorSidebar() {
       {/* Sidebar */}
       <div className={`fixed inset-0 z-50 flex ${isSidebarOpen ? 'block' : 'hidden'} md:block md:relative`}>
         <div
-          className={`md:w-64 w-64 shadow-lg bg-white text-black rounded-md flex-col h-full transition-transform transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:relative z-50`}
+          className={`md:w-64 w-64 shadow-lg bg-white text-black rounded-2xl flex-col h-full transition-transform transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:relative z-50`}
         >
           <ul className='m-2 p-2 text-lg font-semibold'>
             {sidebarItems.map(({ path, icon, label, className = '', onClick }) => (

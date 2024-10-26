@@ -1,13 +1,26 @@
 import { createSlice,PayloadAction } from "@reduxjs/toolkit";
 
+interface Qualification {
+    qualification: string;
+    certificate: string;
+}
 interface TutorState{
     id:string;
     name:string;
     email:string;
-    profilePicture?:string|null;
+    profilePicture?:string;
     bio?:string;
     phone:string;
+    linkedin?:string;
+    instagram?:string;
+    facebook?:string;
+    twitter?:string;
     courses?:string[];
+    cv?:string;
+    expertise?:string[];
+    qualifications?:Qualification[];
+    status?:boolean;
+
 }
 
 const initialState:TutorState={
@@ -16,8 +29,16 @@ const initialState:TutorState={
     name:'',
     phone:'',
     bio:'',
+    facebook:'',
+    instagram:'',
+    linkedin:'',
+    twitter:'',
     courses:[],
-    profilePicture:null,
+    profilePicture:'',
+    cv: '',
+    expertise: [],
+    qualifications: [],
+    status:true,
 }
 
 
@@ -36,8 +57,16 @@ const tutotSlice = createSlice({
             state.email='';
             state.bio='';
             state.phone='';
+            state.facebook='';
+            state.instagram='';
+            state.linkedin='';
+            state.twitter='';
             state.courses=[];
-            state.profilePicture=null;
+            state.profilePicture='';
+            state.cv = '';
+            state.expertise = [];
+            state.qualifications = [];
+            state.status = true;
         }
     },
     

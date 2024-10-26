@@ -14,6 +14,7 @@ export const tutorEndpoints ={
     payouts: `${API_GATEWAY_BASE_URL}/payouts`,
     getTotalStudentsCount: `${API_GATEWAY_BASE_URL}/getStudentsCount`,
     getTotalCoursesCount: `${API_GATEWAY_BASE_URL}/getTotalCoursesCount`,
-    additionalInfo: `${API_GATEWAY_BASE_URL}/additionalInfo`
+    additionalInfo: `${API_GATEWAY_BASE_URL}/additionalInfo`,
+    editProfile: `${API_GATEWAY_BASE_URL}/editProfile`
     
 }

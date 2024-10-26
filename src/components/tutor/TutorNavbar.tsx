@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
-import profileImage from "../../assets/profile.png";
+
 const TutorNavbar = () => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -37,9 +37,9 @@ const TutorNavbar = () => {
             <a href="#" className="hover:text-gray-400">
               Discussion
             </a> */}
-            <button className=" px-3 py-2 rounded-md flex items-center">
-              <img className="w-12 h-12" src={profileImage} alt="" />
-            </button>
+            {/* <button className=" px-3 py-2 rounded-md flex items-center">
+              <img className="w-12 h-12 rounded-full" src={ProfilePicture||profileImage} alt="" />
+            </button> */}
           </div>
 
           {/* Mobile Menu Icon */}

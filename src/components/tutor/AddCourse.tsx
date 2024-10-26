@@ -232,7 +232,7 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
 
                 <div className="flex flex-col items-center justify-center">
                   <label className="text-lg font-medium text-gray-700 mb-2">
-                    Drag and Drop Thumbnail or click here
+                    Add Thumbnail 
                   </label>
                   <div
                     className="w-full sm:max-w-[400px] h-0 lg:pb-[14.25%] md:pb-[32.25%] pb-[55.25%] relative rounded-md bg-gray-100 border-2 border-dashed border-gray-300 hover:bg-gray-200 cursor-pointer"
