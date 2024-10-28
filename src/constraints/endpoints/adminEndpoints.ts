@@ -12,6 +12,7 @@ export const adminEndpoints={
     getInstructorsCount :`${API_GATEWAY_BASE_URL}/getInstructorsCount`,
     changeStatus: (userId: string) => `${API_GATEWAY_BASE_URL}/changeStatus/${userId}`,
     changeTutorStatus: (tutorId: string) => `${API_GATEWAY_BASE_URL}/changeTutorStatus/${tutorId}`,
+    changeTutorVerification: (tutorId: string) => `${API_GATEWAY_BASE_URL}/changeTutorVerification/${tutorId}`,
 
     payouts: `${API_GATEWAY_BASE_URL}/payouts`,
     courseTable:`${API_GATEWAY_BASE_URL}/courseTable`

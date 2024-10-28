@@ -42,14 +42,14 @@ function TutorSidebar() {
   return (
     <div >
       {/* Mobile Menu Bar */}
-      <div className="md:hidden  flex items-center p-4 bg-white shadow-lg sticky">
+      <div className="md:hidden      items-center p-4 bg-white shadow-lg ">
         <button onClick={toggleSidebar} className="text-xl">
           <FaBars />
         </button>
       </div>
 
       {/* Sidebar */}
-      <div className={`fixed inset-0 z-50 flex ${isSidebarOpen ? 'block' : 'hidden'} md:block md:relative`}>
+      <div className={`fixed z-50 flex ${isSidebarOpen ? 'block' : 'hidden'} md:block md:relative`}>
         <div
           className={`md:w-64 w-64 shadow-lg bg-white text-black rounded-2xl flex-col h-full transition-transform transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:relative z-50`}
         >

@@ -56,13 +56,13 @@ function TutorLogin() {
       });
       console.log(result.data, "result of googlelogin");
       if (result.data.success) {
-        const {_id,email,bio,cv,expertise,status,name,phone,profilePicture,qualifications,instagram,twitter,facebook,linkedin}= result.data.tutor;
+        const {_id,email,bio,cv,expertise,status,name,isVerified,phone,profilePicture,qualifications,instagram,twitter,facebook,linkedin}= result.data.tutor;
         if (!status) {
           return toast.error(
             "You are blocked by the admin. Contact admin for furthur details"
           );
         }
-        dispatch(setTutor({id:_id,name,email,phone,bio,cv,expertise,profilePicture,qualifications,status,instagram,twitter,facebook,linkedin}))
+        dispatch(setTutor({id:_id,name,email,phone,bio,isVerified,cv,expertise,profilePicture,qualifications,status,instagram,twitter,facebook,linkedin}))
         Cookies.set(
           "tutorToken",
           JSON.stringify(result.data.token.accessToken)
@@ -84,7 +84,7 @@ function TutorLogin() {
     try {
       const result = await axios.post(tutorEndpoints.login, values);
       if (result.data.success) {
-        const {_id,email,bio,cv,expertise,status,name,phone,profilePicture,qualifications} = result.data.tutorData;
+        const {_id,email,bio,cv,expertise,status,name, instagram,isVerified,facebook,linkedin,phone,twitter,profilePicture,qualifications} = result.data.tutorData;
         if (!status) {
           return toast.error(
             "You are blocked by the admin. Contact admin for furthur details"
@@ -95,7 +95,7 @@ function TutorLogin() {
           "tutorToken",
           JSON.stringify(result.data.token.accessToken)
         );
-        dispatch(setTutor({id:_id,name,email,phone,bio,cv,expertise,profilePicture,qualifications,status}))
+        dispatch(setTutor({id:_id,name,email,phone,bio,cv,facebook,instagram,isVerified,linkedin,twitter,expertise,profilePicture,qualifications,status}))
         console.log(result.data, "gg");
         // localStorage.setItem("tutorToken", result.data.token.accessToken);
         navigate("/tutor/dashboard");

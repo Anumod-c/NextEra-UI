@@ -13,6 +13,7 @@ interface TutorState{
     phone:string;
     linkedin?:string;
     instagram?:string;
+    isVerified?:boolean;
     facebook?:string;
     twitter?:string;
     courses?:string[];
@@ -32,6 +33,7 @@ const initialState:TutorState={
     facebook:'',
     instagram:'',
     linkedin:'',
+    isVerified:false,
     twitter:'',
     courses:[],
     profilePicture:'',
@@ -67,6 +69,7 @@ const tutotSlice = createSlice({
             state.expertise = [];
             state.qualifications = [];
             state.status = true;
+            state.isVerified=false;
         }
     },
     

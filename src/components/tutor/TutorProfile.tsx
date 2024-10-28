@@ -26,7 +26,7 @@ const TutorProfile: React.FC = () => {
     <div className="max-w-screen-2xl mx-auto p-6 bg-gradient-to-b from-gray-100 to-white shadow-lg rounded-lg">
       {/* Profile Header Section */}
       <div className="flex items-center mb-6">
-        <div className="relative w-[160px] h-[160px] mr-6">
+        <div className=" w-[160px] h-[160px] rounded-full  mr-6">
           <img
             src={profilePicture || profileImage}
             alt={`${name}'s profile`}
@@ -42,7 +42,7 @@ const TutorProfile: React.FC = () => {
               expertise.map((item, index) => (
                 <span
                   key={index}
-                  className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium"
+                  className="bg-blue-100 text-blue-500 px-3 py-1 rounded-full text-sm font-medium"
                 >
                   {item}
                 </span>

@@ -1,27 +1,26 @@
-import TutorNavbar from "../../components/tutor/TutorNavbar"
-import TutorProfile from "../../components/tutor/TutorProfile"
-import TutorSidebar from "../../components/tutor/TutorSidebar"
-import Footer from "./Footer"
+import TutorNavbar from "../../components/tutor/TutorNavbar";
+import TutorProfile from "../../components/tutor/TutorProfile";
+import TutorSidebar from "../../components/tutor/TutorSidebar";
+import Footer from "./Footer";
 
-const TutorProfilePage:React.FC=()=>{
+const TutorProfilePage: React.FC = () => {
   return (
     <>
-      <TutorNavbar/>
-      {/* <TutorHeader/> */}
+      <TutorNavbar />
       <div className="flex">
-        <div className="flex p-4 ">
-        <TutorSidebar/>
-
+        {/* Sidebar with fixed position on the left */}
+        <div className="w-64  sticky top-20 self-start">
+          <TutorSidebar />
         </div>
-
-        <div className="flex-grow mt-4 ">
-        <TutorProfile/>
-
+        
+        {/* Main content with left margin to avoid overlap */}
+        <div className="flex-grow ml-4  p-4 mt-4">
+          <TutorProfile />
         </div>
       </div>
       <Footer />
     </>
-  )
-}
+  );
+};
 
-export default TutorProfilePage
+export default TutorProfilePage;
