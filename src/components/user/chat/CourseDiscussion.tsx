@@ -88,7 +88,7 @@ const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
                   className="w-8 h-8 rounded-full"
                 />
                 <div className="flex flex-col">
-                  <div className="p-3 m-2 max-w-xs  rounded-lg">
+                  <div className="p-2   max-w-xs  rounded-lg">
                     <span className="text-sm font-semibold block text-gray-600">
                       {msg.userName || "User Name"}
                     </span>
@@ -100,7 +100,7 @@ const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
                       />
                     ) : (
                       // Text message display as before
-                      <div className="p-3 m-2 max-w-xs rounded-lg bg-blue-500 text-white">
+                      <div className="p-2 min-w-16  rounded-lg  bg-gray-200 text-black">
                         {msg.text}
                       </div>
                     )}
@@ -110,7 +110,7 @@ const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
             )}
 
             {msg.userId === currentUserId && (
-              <div className="p-2 m-2 max-w-xs rounded-lg  text-white">
+              <div className="p-2  max-w-xs rounded-lg  text-white">
                 {msg.image ? (
                       <img
                         src={msg.image}
@@ -119,7 +119,7 @@ const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
                       />
                     ) : (
                       // Text message display as before
-                      <div className="p-3 m-2 max-w-xs rounded-lg bg-blue-500 text-white">
+                      <div className="p-2 min-w-16    rounded-lg bg-blue-500 text-white">
                         {msg.text}
                       </div>
                     )}

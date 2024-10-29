@@ -27,6 +27,7 @@ interface CourseProps {
         _id: string;
         name: string;
         email: string;
+        profilePicture?:string;
         phone: number;
       };
   }
@@ -50,6 +51,7 @@ const PurchasedSingleCourse: React.FC<CourseProps> = ({ course,tutor }) => {
 
   return (
     <div className="flex flex-col md:flex-row gap-8">
+      
       {/* Left Component: Course Details */}
       <CourseDetails course={course} selectedVideo={selectedVideo} />
 
@@ -59,9 +61,9 @@ const PurchasedSingleCourse: React.FC<CourseProps> = ({ course,tutor }) => {
         tutor={tutor ?? { _id: '', name: 'Unknown Tutor', email: 'N/A', phone: 0 }}  // Use fallback if tutor is undefined
         openSection={openSection}
         toggleSection={toggleSection}
-        handleVideoClick={handleVideoClick}
-       
+        handleVideoClick={handleVideoClick}       
       />
+      
     </div>
   );
 };

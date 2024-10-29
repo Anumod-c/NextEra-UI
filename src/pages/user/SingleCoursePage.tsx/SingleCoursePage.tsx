@@ -9,6 +9,7 @@ import userAxios from "../../../constraints/axios/userAxios";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import PurchasedSingleCourse from "./PurchasedSingleCourse";
+import Footer from "../../tutor/Footer";
 
 interface Lesson {
   title: string;
@@ -112,12 +113,14 @@ console.log(hasPurchased,'kkkkkkkkkkkkk')
             </div>
           </div>
         </div>
+        <Footer/>
       </>
     );
   return (
     <>
       <UserNavbar />
       <PurchasedSingleCourse course={course} tutor={tutor} />
+      <Footer/>
     </>
   );
 }

@@ -6,7 +6,7 @@ function UserHome() {
   return (
     <div>
       <UserNavbar />
-      <Courses fetchUrl={courseEndpoints.fetchAllCourse} title="Most Rated Courses" subTitle="See what students love the most"/>
+      <Courses fetchUrl={courseEndpoints.fetchlatestCourse} title="Most Rated Courses" subTitle="See what students love the most"/>
       <Courses
         fetchUrl={courseEndpoints.fetchlatestCourse}
         title="Latest Courses"

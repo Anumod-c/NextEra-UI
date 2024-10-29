@@ -4,6 +4,7 @@ import tutorImage from '../../../assets/profile.png';
 import CloseIcon from "@mui/icons-material/Close";
 import VideoIcon from "@mui/icons-material/OndemandVideo";
 import StarIcon from '@mui/icons-material/Star';
+import ReviewRating from "../ReviewRating";
 
 interface Lesson {
   title: string;
@@ -26,6 +27,7 @@ interface CourseSectionsProps {
   tutor: {
     _id: string;
     name: string;
+    profilePicture?:string;
     email: string;
     phone: number;
   };
@@ -76,7 +78,7 @@ const CourseSections: React.FC<CourseSectionsProps> = ({
         {/* Tutor Details Card */}
         <div className="tutorDetails mt-14 p-4 bg-white rounded-lg shadow-md flex items-center space-x-4">
           <img 
-            src={tutorImage} 
+            src={tutor.profilePicture||tutorImage} 
             alt="tutorImage" 
             className="w-16 h-16 rounded-full border-2 border-blue-400" 
           />
@@ -93,6 +95,7 @@ const CourseSections: React.FC<CourseSectionsProps> = ({
             </div>
           </div>
         </div>
+        <ReviewRating/>
       </div>
     </>
   );

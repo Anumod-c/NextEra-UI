@@ -39,7 +39,7 @@ const Courses: React.FC<CourseProps> = ({fetchUrl,title,subTitle,searchQuery}) =
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get(fetchUrl);
+        const response = await axios.get(fetchUrl,{  params: { search: searchQuery }});
         console.log('response from fetching courses', response.data);
         //  response.data.courses is an array of courses
         const coursesData: Course[] = response.data.courses.map((course: Course) => ({
@@ -64,11 +64,10 @@ const Courses: React.FC<CourseProps> = ({fetchUrl,title,subTitle,searchQuery}) =
     };
 
     fetchCourses();
-  }, [fetchUrl]);
-  const filteredCourse = courses.filter((course) =>
-    course.title.toLowerCase().includes(searchQuery?.toLowerCase() || "")
-  );
-  
+  }, [fetchUrl,searchQuery]);
+
+
+
 
   const handleCourseClick = (coruseId: string) => {
     navigate(`/courses/${coruseId}`);
@@ -77,8 +76,7 @@ const Courses: React.FC<CourseProps> = ({fetchUrl,title,subTitle,searchQuery}) =
 
 
   if (loading) return <SkeltonCourse />;
-  if (error) return <p>{error}</p>;
-
+  if(error) return  <p>{error}</p>
   return (
     <section className=" m-4 p-4 bg-white">
       <div className="container mx-auto text-center">
@@ -92,7 +90,7 @@ const Courses: React.FC<CourseProps> = ({fetchUrl,title,subTitle,searchQuery}) =
           <h4 className="text-xl text-gray-500">{subTitle}</h4>
         </motion.div>
         <div className="grid  grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
-          {filteredCourse.map((course, index) => (
+          {courses.map((course, index) => (
             //make  course component
             <motion.div
               key={course._id}
