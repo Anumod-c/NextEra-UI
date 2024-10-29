@@ -9,4 +9,4 @@ export const courseEndpoints={
     fetchlatestCourse:`${API_GATEWAY_BASE_URL}/fetchLatestCourses`,
     fetchMyCourses:`${API_GATEWAY_BASE_URL}/fetchMyCourses`,
     fetchCourseChatList:`${API_GATEWAY_BASE_URL}/fetchCourseChatList`
-}
+} 

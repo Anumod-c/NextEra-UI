@@ -38,7 +38,11 @@ class SocketService {
     this.socket.emit('sendMessage', { courseId, message });
   }
 
-  onMessage(callback: (message: { userId: string; text: string; courseId: string }) => void) {
+  sendImage(courseId: string, imageMessage: { userId: string; image: string }) {
+  this.socket.emit('sendImage', { courseId, imageMessage });
+}
+
+  onMessage(callback: (message: { userId: string; text: string; image:string; courseId: string }) => void) {
     this.socket.on('receiveMessage', callback);
   }
 
@@ -46,7 +50,7 @@ class SocketService {
     this.socket.on(event, callback);
   }
 
-  removeMessageListener(callback: (message: { userId: string; text: string; courseId: string }) => void) {
+  removeMessageListener(callback: (message: { userId: string; image:string; text: string; courseId: string }) => void) {
     this.socket.off('receiveMessage', callback);
   }
 }

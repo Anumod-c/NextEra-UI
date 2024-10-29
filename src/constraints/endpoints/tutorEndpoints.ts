@@ -16,5 +16,5 @@ export const tutorEndpoints ={
     getTotalCoursesCount: `${API_GATEWAY_BASE_URL}/getTotalCoursesCount`,
     additionalInfo: `${API_GATEWAY_BASE_URL}/additionalInfo`,
     editProfile: `${API_GATEWAY_BASE_URL}/editProfile`,
-    
+    changeCourseStatus:(courseId:string)=>`${API_GATEWAY_BASE_URL}/changeCourseStatus/${courseId}`,
 }

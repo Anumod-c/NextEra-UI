@@ -12,6 +12,7 @@ import tutorAxios from '../../constraints/axios/tutorAxios';
     title:string;
     category:string;
     level:string;
+    status:boolean;
     price:string;
  }
 const CourseList:React.FC=()=> {
@@ -43,6 +44,16 @@ const CourseList:React.FC=()=> {
         }
         fetchCourse();
     },[]);
+
+    const handleCourseList = async(courseId:string,currentStatus:boolean)=>{
+      try {
+        await tutorAxios.patch(tutorEndpoints.changeCourseStatus(courseId),{status:!currentStatus});
+        setCourses(prevCourses=> prevCourses.map(course=> course._id===courseId?{...course,status:!currentStatus}:course))
+      } catch (error) {
+        console.log('Error in Listing/Unlisting the course',error)
+      }
+    }
+
     if (loading) {
       return <div>Loading...</div>; // Show loading indicator while data is being fetched
     }
@@ -58,6 +69,8 @@ const CourseList:React.FC=()=> {
             <th className="p-2 text-left">Level</th>
             <th className="p-2 text-left">Price</th>
             <th className="p-2 text-left">View</th>
+            <th className="p-2 text-left">Status</th>
+            
             {/* Add more columns as needed */}
           </tr>
         </thead>
@@ -75,6 +88,17 @@ const CourseList:React.FC=()=> {
               <td className="p-2">
                 <button onClick={()=>handleDetailView(courses._id)} className='bg-blue-500 text-white p-2 rounded-md'>Detail View</button>
               </td>
+              <td className="p-2">
+              <button
+                  className={` p-2 min-w-14 text-white rounded ${
+                    courses.status ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'
+                  }`}
+                  onClick={() => handleCourseList(courses._id, courses.status)}
+                >
+                  {courses.status ? 'Unlist' : 'List'}
+                </button>
+              </td>
+
             </tr>
           ))}
         </tbody>

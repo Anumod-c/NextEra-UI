@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { Course } from "./CourseList";
 import { IoSend } from "react-icons/io5";
-import Picker, {EmojiClickData} from 'emoji-picker-react';
+import Picker, { EmojiClickData } from "emoji-picker-react";
+import { AiOutlinePicture } from "react-icons/ai";
 
 interface CourseDiscussionProps {
   messages: {
     userId: string;
-    text: string;
+    text?: string;
+    image?: string;
     userName?: string;
     profilePicture?: string;
   }[];
@@ -15,6 +17,7 @@ interface CourseDiscussionProps {
   onSendMessage: () => void;
   currentUserId: string;
   selectedCourse: Course | null;
+  handleImageSelect: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
@@ -24,10 +27,11 @@ const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
   onSendMessage,
   currentUserId,
   selectedCourse,
+  handleImageSelect,
 }) => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  
-  console.log('final  msg',messages)
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  console.log("final  msg", messages);
   // Reference for the messages container to scroll to the bottom
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
@@ -42,9 +46,9 @@ const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
     scrollToBottom();
   }, [messages]);
 
-  const onEmojiClick = ( emojiObject: EmojiClickData) => {
-    setMessage(message + emojiObject.emoji); 
-    setShowEmojiPicker(false); 
+  const onEmojiClick = (emojiObject: EmojiClickData) => {
+    setMessage(message + emojiObject.emoji);
+    setShowEmojiPicker(false);
   };
   return (
     <div className="w-3/4 flex flex-col h-full bg-gray-50">
@@ -77,24 +81,48 @@ const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
             {msg.userId !== currentUserId && (
               <div className="flex mb-6 items-start space-x-3">
                 <img
-                  src={msg.profilePicture || "https://dummyimage.com/50x50/000/fff"}
+                  src={
+                    msg.profilePicture || "https://dummyimage.com/50x50/000/fff"
+                  }
                   alt="Profile"
                   className="w-8 h-8 rounded-full"
                 />
                 <div className="flex flex-col">
-                  <div className="p-3 m-2 max-w-xs bg-gray-200 rounded-lg">
+                  <div className="p-3 m-2 max-w-xs  rounded-lg">
                     <span className="text-sm font-semibold block text-gray-600">
                       {msg.userName || "User Name"}
                     </span>
-                    <span className="text-sm block mt-1">{msg.text}</span>
+                    {msg.image ? (
+                      <img
+                        src={msg.image}
+                        alt="Shared content"
+                        className="w-40 h-auto rounded-lg"
+                      />
+                    ) : (
+                      // Text message display as before
+                      <div className="p-3 m-2 max-w-xs rounded-lg bg-blue-500 text-white">
+                        {msg.text}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
             )}
 
             {msg.userId === currentUserId && (
-              <div className="p-3 m-2 max-w-xs rounded-lg bg-blue-500 text-white">
-                {msg.text}
+              <div className="p-2 m-2 max-w-xs rounded-lg  text-white">
+                {msg.image ? (
+                      <img
+                        src={msg.image}
+                        alt="Shared content"
+                        className="w-40 h-auto rounded-lg"
+                      />
+                    ) : (
+                      // Text message display as before
+                      <div className="p-3 m-2 max-w-xs rounded-lg bg-blue-500 text-white">
+                        {msg.text}
+                      </div>
+                    )}
               </div>
             )}
           </div>
@@ -118,6 +146,16 @@ const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
           >
             😀
           </button>
+          <button onClick={() => fileInputRef.current?.click()} className="m-2">
+            <AiOutlinePicture className="h-6 w-6 text-gray-600" />
+          </button>
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleImageSelect}
+            style={{ display: "none" }}
+            accept="image/*"
+          />
           <input
             type="text"
             value={message}
