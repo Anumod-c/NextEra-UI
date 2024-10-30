@@ -5,6 +5,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import VideoIcon from "@mui/icons-material/OndemandVideo";
 import StarIcon from '@mui/icons-material/Star';
 import ReviewRating from "../ReviewRating";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
 
 interface Lesson {
   title: string;
@@ -19,6 +21,7 @@ interface Section {
 
 interface CourseSectionsProps {
   course: {
+    _id:string
     title: string;
     description: string;
     sections: Section[];
@@ -44,6 +47,7 @@ const CourseSections: React.FC<CourseSectionsProps> = ({
   handleVideoClick
 }) => {
   console.log(tutor, "tutorfullData");
+  const userId = useSelector((state:RootState)=>state.user.id)
 
   return (
     <>
@@ -95,7 +99,7 @@ const CourseSections: React.FC<CourseSectionsProps> = ({
             </div>
           </div>
         </div>
-        <ReviewRating/>
+        <ReviewRating userId={userId} courseId={course._id} />
       </div>
     </>
   );

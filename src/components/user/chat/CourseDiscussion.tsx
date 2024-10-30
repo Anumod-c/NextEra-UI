@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Course } from "./CourseList";
 import { IoSend } from "react-icons/io5";
 import Picker, { EmojiClickData } from "emoji-picker-react";
-import { AiOutlinePicture } from "react-icons/ai";
+import { MdPermMedia } from "react-icons/md";
 
 interface CourseDiscussionProps {
   messages: {
@@ -51,10 +51,10 @@ const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
     setShowEmojiPicker(false);
   };
   return (
-    <div className="w-3/4 flex flex-col h-full bg-gray-50">
-      <div className="courselis_heading p-2  bg-gray-900 text-white text-lg font-semibold">
+    <div className="w-3/4 flex flex-col h-full">
+      <div className="courselis_heading p-[6px]  bg-gray-900 text-white text-lg font-semibold">
         <div className="flex justify-start gap-4 items-center h-12">
-          {selectedCourse ? (
+          {selectedCourse && (
             <>
               <img
                 className="rounded-full w-14 h-14 object-fit "
@@ -63,8 +63,6 @@ const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
               />
               <span>{selectedCourse.title}</span>
             </>
-          ) : (
-            <span> Discussions</span>
           )}
         </div>
       </div>
@@ -147,7 +145,7 @@ const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
             😀
           </button>
           <button onClick={() => fileInputRef.current?.click()} className="m-2">
-            <AiOutlinePicture className="h-6 w-6 text-gray-600" />
+            <MdPermMedia className="h-6 w-6 text-gray-600" />
           </button>
           <input
             type="file"

@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import PurchasedSingleCourse from "./PurchasedSingleCourse";
 import Footer from "../../tutor/Footer";
+import ReviewCard from "../../../components/user/ReviewCard";
 
 interface Lesson {
   title: string;
@@ -85,7 +86,7 @@ console.log(hasPurchased,'kkkkkkkkkkkkk')
     if (courseId) {
       fetchCourse();
     }
-  }, [courseId]);
+  }, [courseId,userId]);
 
   useEffect(() => {
     // Log course data whenever it changes
@@ -112,6 +113,10 @@ console.log(hasPurchased,'kkkkkkkkkkkkk')
               <PaymentSection course={course} tutor={tutor} />
             </div>
           </div>
+          <div className="col-span-full">
+      <ReviewCard courseId={courseId||''} />
+    </div>
+
         </div>
         <Footer/>
       </>

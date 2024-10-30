@@ -16,6 +16,7 @@ interface Section {
 
 interface CourseProps {
     course: {
+      _id:string;
       title: string;
       description: string;
       benefits: string[];

@@ -1,10 +1,18 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
 import StarIcon from "@mui/icons-material/Star";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import ProfilePicture from "../../assets/profile.png";
+import userAxios from "../../constraints/axios/userAxios";
+import { userEndpoints } from "../../constraints/endpoints/userEndPoints";
+
+interface ReviewRatingProps {
+  userId: string;
+  courseId: string;
+}
+
 const labels: { [index: number]: string } = {
   0.5: "Useless",
   1: "Useless+",
@@ -22,35 +30,77 @@ function getLabelText(value: number) {
   return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
 }
 
-const ReviewRating: React.FC = () => {
+interface Review {
+  rating: number;
+  review: string;
+  name: string;
+  profilePicture: string;
+}
+
+const ReviewRating: React.FC<ReviewRatingProps> = ({ userId, courseId }) => {
   const [rating, setRating] = React.useState<number | null>(3);
   const [hover, setHover] = React.useState(-1);
   const [review, setReview] = React.useState<string>("");
   const [error, setError] = React.useState<string | null>(null);
-  const [reviews, setReviews] = React.useState<
-    { rating: number; review: string }[]
-  >([]); // Initial reviews state
+  const [reviews, setReviews] = React.useState<Review[]>([]); // Updated type for reviews state
 
-  const handleReviewSubmit = () => {
-    // Validate review length
-    if (review.length < 10) {
-      setError("Review must be at least 10 characters long.");
-      return;
-    }
-    if (review.length > 200) {
-      setError("Review cannot exceed 200 characters.");
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await userAxios.get(`${userEndpoints.fetchReviews}/${courseId}`);
+        console.log('response when fetching the review',response.data)
+        if (response.data.success) {
+          const updatedReviews = response.data.newReview.map((rev: any) => ({
+            rating: rev.rating,
+            review: rev.review,
+            name: rev.userDetails.user.name,
+            profilePicture: rev.userDetails.user.profilePicture || ProfilePicture
+          }));
+          setReviews(updatedReviews);
+        } else {
+          console.log("Failed to fetch reviews");
+        }
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
+    };
+    fetchReviews();
+  }, [courseId]);
+
+  const handleReviewSubmit = async () => {
+    if (review.length < 10 || review.length > 200) {
+      setError(
+        review.length < 10
+          ? "Review must be at least 10 characters long."
+          : "Review cannot exceed 200 characters."
+      );
       return;
     }
     setError(null);
-
-    // Add the new review
-    setReviews([...reviews, { rating: rating || 3, review }]);
-    setReview("");
-    setRating(3); // Reset rating to a default
+    const newReview = { rating: rating || 3, review, userId, courseId };
+    try {
+      const response = await userAxios.post(userEndpoints.addReview, newReview);
+      console.log('responseeee',response.data)
+      if (!response.data.success) {
+        throw new Error("Failed to submit review.");
+      }
+      const { reviewResult, userResult } = response.data.result;
+      setReviews([...reviews, {
+        rating: reviewResult.newReview.rating,
+        review: reviewResult.newReview.review,
+        name: userResult.user.name,
+        profilePicture: userResult.user.profilePicture || ProfilePicture
+      }]);
+      setReview("");
+      setRating(3);
+    } catch (error) {
+      console.log("Error in frontend for review:", error);
+      setError("There was a problem submitting your review.");
+    }
   };
 
   return (
-    <Box className="flex flex-col  p-4 rounded-md shadow-md max-w-md mx-auto my-4">
+    <Box className="flex flex-col p-4 rounded-md shadow-md max-w-md mx-auto my-4">
       <p className="text-lg font-semibold">Rate and Review this Course</p>
 
       <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
@@ -100,20 +150,22 @@ const ReviewRating: React.FC = () => {
           reviews.map((reviewItem, index) => (
             <Box key={index} className="p-2 mb-2 bg-white rounded shadow-sm">
               <div className="flex gap-4">
-                <img  className="w-12 h-12 rounded-full" src={ProfilePicture} alt="profilePicture" />
+                <img
+                  className="w-12 h-12 rounded-full"
+                  src={reviewItem.profilePicture || ProfilePicture}
+                  alt="profilePicture"
+                />
                 <div className="flex flex-col">
-                  <p>Username</p>
+                  <p>{reviewItem.name}</p>
                   <Rating
                     value={reviewItem.rating}
                     readOnly
                     size="small"
                     precision={0.5}
                   />
-                                <p className="text-gray-700 mt-1">{reviewItem.review}</p>
-
+                  <p className="text-gray-700 mt-1">{reviewItem.review}</p>
                 </div>
               </div>
-
             </Box>
           ))
         )}

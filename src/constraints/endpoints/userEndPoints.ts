@@ -15,11 +15,12 @@ export const userEndpoints = {
     updateProfilePicture:`${API_GATEWAY_BASE_URL}/updateProfilePicture`,
     logout: `${API_GATEWAY_BASE_URL}/logout`,
     // refreshToken: `${API_GATEWAY_BASE_URL}/refreshToken`,
-
+    addReview:`${API_GATEWAY_BASE_URL}/add_reviews`,
+    fetchReviews:`${API_GATEWAY_BASE_URL}/fetchReviews`,
+    
     // added order along with the base url instead of creating seperate endpoints for payment
     makepayement: `${API_GATEWAY_BASE_URL}/purchase/payment`,
     saveOrder: `${API_GATEWAY_BASE_URL}/purchase/order`,
-
     
 
 
