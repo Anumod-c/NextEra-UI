@@ -7,6 +7,7 @@ export const courseEndpoints={
     fetchAllCourse: `${API_GATEWAY_BASE_URL}/fetchAllCourses`,
     Course: `${API_GATEWAY_BASE_URL}/courses/:courseId`,
     fetchlatestCourse:`${API_GATEWAY_BASE_URL}/fetchLatestCourses`,
+    mostRatedCourse:`${API_GATEWAY_BASE_URL}/fetchMostRatedCourse`,
     fetchMyCourses:`${API_GATEWAY_BASE_URL}/fetchMyCourses`,
     fetchCourseChatList:`${API_GATEWAY_BASE_URL}/fetchCourseChatList`
 }

@@ -22,7 +22,8 @@ interface CourseProps {
       benefits: string[];
       prerequisites: string[];
       sections: Section[];
-      rating?:number;
+      enrolledUsers?:string[];
+      averageRating?:number;
     };
     tutor?: {  // Make tutor optional
         _id: string;

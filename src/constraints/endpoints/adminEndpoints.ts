@@ -1,7 +1,5 @@
 export const API_GATEWAY_BASE_URL = 'http://localhost:5000/admin';
 
-
-
 export const adminEndpoints={
     login: `${API_GATEWAY_BASE_URL}/login`,
     getUser:`${API_GATEWAY_BASE_URL}/getUsers`,
@@ -16,5 +14,6 @@ export const adminEndpoints={
     changeCourseStatus:(courseId:string)=>`${API_GATEWAY_BASE_URL}/changeCourseStatus/${courseId}`,
 
     payouts: `${API_GATEWAY_BASE_URL}/payouts`,
-    courseTable:`${API_GATEWAY_BASE_URL}/courseTable`
+    courseTable:`${API_GATEWAY_BASE_URL}/courseTable`,
+    payoutsByMonth:`${API_GATEWAY_BASE_URL}/payoutsByMonth`,
 }

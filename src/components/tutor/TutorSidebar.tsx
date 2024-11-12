@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaTachometerAlt, FaBook, FaUserGraduate, FaMoneyCheckAlt, FaUserEdit, FaLock, FaSignOutAlt, FaBars } from 'react-icons/fa';
+import { FaTachometerAlt, FaBook, FaMoneyCheckAlt, FaUserEdit, FaSignOutAlt, FaBars } from 'react-icons/fa';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { clearTutorDetails } from '../../redux/tutorSlice';
 import { useDispatch } from 'react-redux';
@@ -26,10 +26,10 @@ function TutorSidebar() {
   const sidebarItems = [
     { path: '/tutor/dashboard', icon: <FaTachometerAlt />, label: 'Dashboard' },
     { path: '/tutor/courselist', icon: <FaBook />, label: 'My Course' },
-    { path: '/tutor/students', icon: <FaUserGraduate />, label: 'Students' },
+    // { path: '/tutor/students', icon: <FaUserGraduate />, label: 'Students' },
     { path: '/tutor/payouts', icon: <FaMoneyCheckAlt />, label: 'Payouts' },
     { path: '/tutor/profile', icon: <FaUserEdit />, label: 'Profile' },
-    { path: '/tutor/privacy-security', icon: <FaLock />, label: 'Privacy & Security' },
+    // { path: '/tutor/privacy-security', icon: <FaLock />, label: 'Privacy & Security' },
     { 
       path: '/tutor', 
       icon: <FaSignOutAlt />, 
@@ -42,7 +42,7 @@ function TutorSidebar() {
   return (
     <div >
       {/* Mobile Menu Bar */}
-      <div className="md:hidden      items-center p-4 bg-white shadow-lg ">
+      <div className="md:hidden     items-center p-4 bg-white shadow-lg ">
         <button onClick={toggleSidebar} className="text-xl">
           <FaBars />
         </button>

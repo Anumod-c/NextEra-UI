@@ -11,7 +11,7 @@ const AllCoursePage:React.FC=()=> {
   return (
     <div>
       <UserNavbar onSearch={handleSearch} showSearch={true}/>
-      <Courses fetchUrl={courseEndpoints.fetchAllCourse}title={"All Courses"} subTitle={"Browse through all available courses"} searchQuery={searchQuery}/>
+      <Courses fetchUrl={courseEndpoints.fetchAllCourse}title={"All Courses"} subTitle={"Browse through all available courses"} searchQuery={searchQuery} showSortAndFilter={true}/>
     </div>
   )
 }

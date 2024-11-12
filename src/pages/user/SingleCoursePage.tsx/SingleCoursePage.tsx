@@ -29,6 +29,7 @@ interface Course {
   category: string;
   description: string;
   price: number;
+  enrolledUsers?:string[];
   discountPrice: number;
   thumbnail: string;
   level: string;

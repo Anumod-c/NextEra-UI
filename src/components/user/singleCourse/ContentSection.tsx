@@ -26,8 +26,8 @@ interface CourseProps {
     benefits: string[];
     prerequisites: string[];
     sections: Section[];
-    // rating?: number;
-    // enrolled?: number;
+    averageRating?: number;
+    enrolledUsers?: string[];
     // language?: string;
   };
 }
@@ -53,11 +53,11 @@ const ContentSection: React.FC<CourseProps> = ({ course }) => {
           <div className="flex items-center space-x-16">
             <div className="flex items-center  p-4 space-x-2">
               <StarIcon className="text-amber-400" />
-              <p>4.5 Rating</p>
+              <p>{course.averageRating?.toFixed(2)||0} rating</p>
             </div>
             <div className="flex items-center space-x-2">
               <SchoolIcon className="text-violet-800" />
-              <p>12,345 Enrolled</p>
+              <p>{course.enrolledUsers?.length} Enrolled</p>
             </div>
             <div className="flex items-center space-x-2">
               <TranslateIcon className="text-pink-500" />

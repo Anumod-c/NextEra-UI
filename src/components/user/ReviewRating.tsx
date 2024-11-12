@@ -13,6 +13,7 @@ interface ReviewRatingProps {
   courseId: string;
 }
 
+
 const labels: { [index: number]: string } = {
   0.5: "Useless",
   1: "Useless+",
@@ -50,11 +51,12 @@ const ReviewRating: React.FC<ReviewRatingProps> = ({ userId, courseId }) => {
         const response = await userAxios.get(`${userEndpoints.fetchReviews}/${courseId}`);
         console.log('response when fetching the review',response.data)
         if (response.data.success) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const updatedReviews = response.data.newReview.map((rev: any) => ({
             rating: rev.rating,
             review: rev.review,
             name: rev.userDetails.user.name,
-            profilePicture: rev.userDetails.user.profilePicture || ProfilePicture
+            profilePicture: rev.userDetails.user.profilePicture || ProfilePicture 
           }));
           setReviews(updatedReviews);
         } else {
@@ -110,8 +112,8 @@ const ReviewRating: React.FC<ReviewRatingProps> = ({ userId, courseId }) => {
           size="large"
           precision={0.5}
           getLabelText={getLabelText}
-          onChange={(event, newValue) => setRating(newValue)}
-          onChangeActive={(event, newHover) => setHover(newHover)}
+          onChange={(_, newValue) => setRating(newValue)}
+          onChangeActive={(_, newHover) => setHover(newHover)}
           emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
         />
         {rating !== null && (

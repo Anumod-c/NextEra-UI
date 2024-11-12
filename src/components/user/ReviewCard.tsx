@@ -25,6 +25,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ courseId }) => {
       try {
         const response = await userAxios.get(`${userEndpoints.fetchReviews}/${courseId}`);
         if (response.data.success) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const updatedReviews = response.data.newReview.map((rev: any) => ({
             rating: rev.rating,
             review: rev.review,

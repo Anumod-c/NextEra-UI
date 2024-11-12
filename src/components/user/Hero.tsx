@@ -1,7 +1,6 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-// import Lottie from 'lottie-react';
+import { Player } from "@lottiefiles/react-lottie-player";
 // import learningAnimation from '../animations/learning.json';
 
 const Hero = () => {
@@ -11,6 +10,20 @@ const Hero = () => {
     }
   return (
     <section className="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-blue-400 to-indigo-600">
+      <div className="lottiplayer w-full md:w-1/2 flex justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="flex flex-col items-center"
+        >
+          <Player
+            autoplay
+            loop
+            src="https://lottie.host/5b087d75-ddb5-42cd-89a8-f1de45f89dd4/xwPlWyiQCa.json" style={{ height: "400px", width: "400px" }} // Adjusted size
+          />
+        </motion.div>
+      </div>
       <motion.div 
         className="text-center text-white"
         initial={{ opacity: 0, y: -50 }}
