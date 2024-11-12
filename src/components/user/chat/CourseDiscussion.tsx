@@ -60,11 +60,11 @@ const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
     setShowEmojiPicker(false);
   };
 
-  useEffect(() => {
-    if (isJoiningLive) {
-      handleJoinLive();
-    }
-  }, [isJoiningLive]);
+  // useEffect(() => {
+  //   if (isJoiningLive) {
+  //     handleJoinLive();
+  //   }
+  // }, [isJoiningLive]);
 
   const handleJoinLive = async () => {
     if (!selectedCourse) return;

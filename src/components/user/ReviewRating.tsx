@@ -109,12 +109,13 @@ const ReviewRating: React.FC<ReviewRatingProps> = ({ userId, courseId }) => {
         <Rating
           name="hover-feedback"
           value={rating}
-          size="large"
+          
           precision={0.5}
           getLabelText={getLabelText}
           onChange={(_, newValue) => setRating(newValue)}
           onChangeActive={(_, newHover) => setHover(newHover)}
-          emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+          emptyIcon={<StarIcon style={{ opacity: 0.55, fontSize:28 }} />}
+          icon={<StarIcon fontSize="inherit" sx={{ fontSize: 28 }} />}
         />
         {rating !== null && (
           <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : rating]}</Box>

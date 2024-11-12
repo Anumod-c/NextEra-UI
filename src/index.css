@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 .blinking-cursor {
     display: inline-block;
     width: 2px;

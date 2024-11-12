@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { adminEndpoints } from '../../constraints/endpoints/adminEndpoints';
 import adminAxios from '../../constraints/axios/adminAxios';
+import {Pagination} from '@mui/material';
 
 
 interface Payouts {
@@ -18,16 +19,22 @@ interface Payouts {
 
 const Payouts: React.FC = () => {
   const [payouts, setPayouts] = useState<Payouts[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     console.log('useeffect worked')
-    const fetchPayouts = async () => {
+    const fetchPayouts = async (page = 1) => {
       try {
         console.log('lglglglggl')
-        const response = await adminAxios.get(adminEndpoints.payouts);
+        const response = await adminAxios.get(adminEndpoints.payouts,{
+          params: { page, limit: 6 },
+          withCredentials: true,
+        });
         console.log(response.data, 'hyhyhyhyhy')
         // if(response.data.success){
         setPayouts(response.data.adminPayouts)
+        setTotalPages(response.data.totalPages);
 
         // }else{
         //     toast.error(response.data.message)
@@ -40,11 +47,18 @@ const Payouts: React.FC = () => {
       }
     }
 
-    fetchPayouts();
+    fetchPayouts(currentPage);
 
 
-  }, [])
+  }, [currentPage])
+  const handlePageChange = (
+    _event: React.ChangeEvent<unknown>,
+    page: number
+  ) => {
+    setCurrentPage(page);
+  };
   return (
+    <>
     <div className="p-4">
       <div className='flex justify-center  py -4 mb-4 '>
         <h2 className="text-2xl font-bold ">Your Earnings </h2>
@@ -79,8 +93,18 @@ const Payouts: React.FC = () => {
           ))}
         </tbody>
       </table>
+
     </div>
+    <div className='w-full flex justify-center items-center p-2 m-2 '>
+    <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+          size="large"
+          color="primary"
+        /></div>
+    </>
   )
-}
+} 
 
 export default Payouts

@@ -6,6 +6,7 @@ import SkeltonCourse from "./skelton/SkeltonCourse";
 import { Rating } from "@mui/material";
 import { FaFilter } from "react-icons/fa6";
 import { FaSortAmountDown } from "react-icons/fa";
+import {Pagination} from '@mui/material';
 
 interface TutorDetails {
   tutorDetails: {
@@ -107,6 +108,7 @@ const Courses: React.FC<CourseProps> = ({
   if (loading) return <SkeltonCourse />;
 
   return (
+    <>
     <section className="m-4 p-4 bg-white">
       <div className="container mx-auto text-center">
         <motion.div
@@ -280,6 +282,10 @@ const Courses: React.FC<CourseProps> = ({
         </div>
       </div>
     </section>
+    <div className="w-full flex justify-center items-center p-2 m-2 ">
+    <Pagination count={10} size="large" color="primary" />
+  </div>
+  </>
   );
 };
 

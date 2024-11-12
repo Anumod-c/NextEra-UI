@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { adminEndpoints } from '../../constraints/endpoints/adminEndpoints';
 import adminAxios from '../../constraints/axios/adminAxios';
+import {Pagination} from '@mui/material';
 
 interface Tutor {
   _id: string;
@@ -13,20 +14,32 @@ interface Tutor {
 
 const TutorTable: React.FC = () => {
   const [tutors, setTutors] = useState<Tutor[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    const fetchTutor = async () => {
+    const fetchTutor = async (page = 1) => {
       try {
-        const response = await adminAxios.get<Tutor[]>(adminEndpoints.getTutor);
+        const response = await adminAxios.get(adminEndpoints.getTutor,{
+          params: {  page, limit: 6 },
+          withCredentials: true,
+        });
         console.log(response.data, 'response from fetching tutor');
-        setTutors(response.data);
+        setTutors(response.data.tutorData);
+        setTotalPages(response.data.totalPages);
+
       } catch (err) {
         console.error('Error fetching tutors', err);
       }
     };
-    fetchTutor();
-  }, []);
-
+    fetchTutor(currentPage);
+  }, [currentPage]);
+  const handlePageChange = (
+    _event: React.ChangeEvent<unknown>,
+    page: number
+  ) => {
+    setCurrentPage(page);
+  };
   const handleBlockToggle = async (tutorId: string, currentStatus: boolean) => {
     try {
       await adminAxios.patch(adminEndpoints.changeTutorStatus(tutorId), { status: !currentStatus });
@@ -52,8 +65,9 @@ const TutorTable: React.FC = () => {
       console.log('Error in verifying/unverifying the tutor', error);
     }
   };
-
+ 
   return (
+    <>
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">User List</h2>
       <table className="w-full bg-white shadow-lg rounded-lg table-auto">
@@ -96,7 +110,18 @@ const TutorTable: React.FC = () => {
           ))}
         </tbody>
       </table>
+
     </div>
+          <div className='w-full flex justify-center items-center p-2 m-2 '>
+          <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+          size="large"
+          color="primary"
+        />
+        </div>
+    </>
   );
 };
 
