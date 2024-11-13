@@ -29,7 +29,7 @@ interface CourseProps {
   title: string;
   subTitle?: string;
   searchQuery?: string;
-  showSortAndFilter?: boolean;
+  fullCoursePage?: boolean;
 }
 
 const Courses: React.FC<CourseProps> = ({
@@ -37,7 +37,7 @@ const Courses: React.FC<CourseProps> = ({
   title,
   subTitle,
   searchQuery,
-  showSortAndFilter
+  fullCoursePage
 }) => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -46,11 +46,13 @@ const Courses: React.FC<CourseProps> = ({
   const [filterLevel, setFilterLevel] = useState<string | null>(null);
   const [showSortDropdown, setShowSortDropdown] = useState(false);
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchCourses = async () => {
+    const fetchCourses = async (page = 1) => {
       try {
         const response = await axios.get(fetchUrl, {
           params: {
@@ -58,6 +60,8 @@ const Courses: React.FC<CourseProps> = ({
             sort: sortOption,
             category: filterCategory,
             level: filterLevel,
+            page, 
+            limit: 5
           },
         });
         
@@ -72,8 +76,9 @@ const Courses: React.FC<CourseProps> = ({
             averageRating: course.averageRating,
           })
         );
-
+console.log('courseData',response.data)
         setCourses(coursesData);
+        setTotalPages(response.data.totalPages)
         setTimeout(() => {
           setLoading(false);
         }, 400);
@@ -83,8 +88,13 @@ const Courses: React.FC<CourseProps> = ({
       }
     };
 
-    fetchCourses();
-  }, [fetchUrl, searchQuery, sortOption, filterCategory, filterLevel]);
+    fetchCourses(currentPage);
+  }, [fetchUrl, searchQuery, sortOption, currentPage,filterCategory, filterLevel]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+}, [searchQuery, sortOption, filterCategory, filterLevel]);
+
 
   const handleCourseClick = (courseId: string) => {
     navigate(`/courses/${courseId}`);
@@ -106,7 +116,12 @@ const Courses: React.FC<CourseProps> = ({
   };
 
   if (loading) return <SkeltonCourse />;
-
+  const handlePageChange = (
+    _event: React.ChangeEvent<unknown>,
+    page: number
+  ) => {
+    setCurrentPage(page);
+  };
   return (
     <>
     <section className="m-4 p-4 bg-white">
@@ -122,7 +137,7 @@ const Courses: React.FC<CourseProps> = ({
         </motion.div>
 
         {/* Sort and Filter Options */}
-        {showSortAndFilter && (
+        {fullCoursePage && (
         <div className="flex justify-end mb-4 ">
           {/* Sort Dropdown */}
           <div className="relative z-50">
@@ -148,6 +163,19 @@ const Courses: React.FC<CourseProps> = ({
                 >
                   Price: High to Low
                 </div>
+                <div
+                  onClick={() => handleSortChange("rating-desc")}
+                  className="cursor-pointer p-2 hover:bg-gray-100"
+                >
+                  Highest Rated
+                </div>
+                <div
+                  onClick={() => handleSortChange("rating-asc")}
+                  className="cursor-pointer p-2 hover:bg-gray-100"
+                >
+                  Lowest Rated
+                </div>
+                
               </div>
             )}
           </div>
@@ -281,10 +309,19 @@ const Courses: React.FC<CourseProps> = ({
           ))}
         </div>
       </div>
+      {fullCoursePage &&( 
+    <div className="w-full   flex justify-center items-center p-4 m-4 ">
+<Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+          size="large"
+          color="primary"
+        />  </div>
+
+    )}
     </section>
-    <div className="w-full flex justify-center items-center p-2 m-2 ">
-    <Pagination count={10} size="large" color="primary" />
-  </div>
+    
   </>
   );
 };
