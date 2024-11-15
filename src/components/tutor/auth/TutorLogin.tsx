@@ -56,6 +56,12 @@ function TutorLogin() {
       });
       console.log(result.data, "result of googlelogin");
       if (result.data.success) {
+
+        Cookies.set('tutorToken',JSON.stringify(result.data.token.accessToken));
+        Cookies.set('tutorRefreshToken', JSON.stringify(result.data.token.refreshToken)); 
+        localStorage.setItem('tutorRefreshToken',JSON.stringify(result.data.token.refreshToken))
+  
+
         const {_id,email,bio,cv,expertise,status,name,isVerified,phone,profilePicture,qualifications,instagram,twitter,facebook,linkedin}= result.data.tutor;
         if (!status) {
           return toast.error(
@@ -63,10 +69,7 @@ function TutorLogin() {
           );
         }
         dispatch(setTutor({id:_id,name,email,phone,bio,isVerified,cv,expertise,profilePicture,qualifications,status,instagram,twitter,facebook,linkedin}))
-        Cookies.set(
-          "tutorToken",
-          JSON.stringify(result.data.token.accessToken)
-        ); //
+       
 
         navigate("/tutor/dashboard");
       } else {
@@ -84,6 +87,11 @@ function TutorLogin() {
     try {
       const result = await axios.post(tutorEndpoints.login, values);
       if (result.data.success) {
+
+        Cookies.set('tutorToken',JSON.stringify(result.data.token.accessToken));
+        Cookies.set('tutorRefreshToken', JSON.stringify(result.data.token.refreshToken)); 
+        localStorage.setItem('tutorRefreshToken',JSON.stringify(result.data.token.refreshToken))
+
         const {_id,email,bio,cv,expertise,status,name, instagram,isVerified,facebook,linkedin,phone,twitter,profilePicture,qualifications} = result.data.tutorData;
         if (!status) {
           return toast.error(
@@ -91,13 +99,9 @@ function TutorLogin() {
           );
         }
         Cookies.set('tutorId',_id);
-        Cookies.set(
-          "tutorToken",
-          JSON.stringify(result.data.token.accessToken)
-        );
+        
         dispatch(setTutor({id:_id,name,email,phone,bio,cv,facebook,instagram,isVerified,linkedin,twitter,expertise,profilePicture,qualifications,status}))
         console.log(result.data, "gg");
-        // localStorage.setItem("tutorToken", result.data.token.accessToken);
         navigate("/tutor/dashboard");
         toast.success("tutor logged in successfull");
       } else {

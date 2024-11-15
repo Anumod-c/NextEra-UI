@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from 'js-cookie';
-import { API_GATEWAY_BASE_URL } from "../endpoints/userEndPoints";
+import { API_GATEWAY_BASE_URL, userEndpoints } from "../endpoints/userEndPoints";
 
 export const userAxios = axios.create({
     baseURL: API_GATEWAY_BASE_URL,
@@ -14,6 +14,9 @@ export const userAxios = axios.create({
 userAxios.interceptors.response.use(
     response => response,
     async error => {
+        const token = Cookies.get('userRefreshToken')
+        // const token = localStorage.getItem('userRefreshToken')
+        console.log('refreshToken',token)
         const originalRequest = error.config;
 
         // Handle 401 Unauthorized (token expiration)
@@ -21,20 +24,21 @@ userAxios.interceptors.response.use(
             originalRequest._retry = true;
 
             try {
-                const refreshResponse = await axios.get(`${API_GATEWAY_BASE_URL}/refresh-token`, { withCredentials: true });
-                
-                if (refreshResponse.data.accessToken) {
-                    Cookies.set('userToken', JSON.stringify(refreshResponse.data.accessToken)); // Store new token in cookies
-                    originalRequest.headers['Authorization'] = `Bearer ${refreshResponse.data.accessToken}`;
-                    return userAxios(originalRequest); // Retry the original request
-                } else {
-                    // Handle failed token refresh
-                    console.log('Token refresh failed');
-                    // Optionally, redirect to login if token refresh fails
+                console.log('hello inside refresh')
+                const refreshResponse = await axios.post(userEndpoints.refreshToken,{token});
+                console.log('1111111111111')
+                const newAccessToken = refreshResponse.data.accessToken;
+                console.log('11111411111111',newAccessToken)
+
+                if(newAccessToken){
+                    Cookies.set('userToken',JSON.stringify(newAccessToken));
+                    originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+                    return userAxios(originalRequest)  // Retry original request
                 }
             } catch (refreshError) {
                 console.log('Error refreshing token:', refreshError);
-                // Optionally, redirect to login on refresh token failure
+                Cookies.remove('userToken');
+                Cookies.remove('userRefreshToken');
             }
         }
 
@@ -42,9 +46,9 @@ userAxios.interceptors.response.use(
         if (error.response.status === 403) {
             console.log('User is blocked. Redirecting to login or blocked page.');
             Cookies.remove('userToken')
-
+            Cookies.remove('userRefreshToken');
             // Redirect to login or blocked user page
-            window.location.href = '/login?message=blocked'; // Change this to your actual login or blocked route
+            window.location.href = '/login'; // Change this to your actual login or blocked route
 
             return Promise.reject(error);
         }

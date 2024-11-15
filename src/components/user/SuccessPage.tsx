@@ -1,4 +1,4 @@
-import React, {  useEffect } from 'react'
+import {  useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
 import { toast } from 'sonner'
@@ -39,7 +39,7 @@ function SuccessPage() {
         };
     
         fetchOrderDetails();
-    }, []);
+    });
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
             <div className="bg-white shadow-lg rounded-lg p-8 text-center max-w-lg">

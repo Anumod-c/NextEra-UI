@@ -5,6 +5,7 @@ export const tutorEndpoints ={
     register: `${API_GATEWAY_BASE_URL}/register`,
     otp:`${API_GATEWAY_BASE_URL}/otp`,
     login : `${API_GATEWAY_BASE_URL}/login`,
+    refreshToken: `${API_GATEWAY_BASE_URL}/refresh-token`,
     courseList:`${API_GATEWAY_BASE_URL}/courseList`,
     forgotPassword:`${API_GATEWAY_BASE_URL}/forgotPassword`,
     resetPassword: `${API_GATEWAY_BASE_URL}/resetPassword`,

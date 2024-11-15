@@ -10,6 +10,7 @@ interface PrivateRouteProps{
 
 const PrivateRoute:React.FC<PrivateRouteProps>=({children})=>{
     const admin = Cookies.get('adminToken')
-    return admin? <Navigate to='/admin/dashboard'/>:<>{children}</>
+    const adminRefreshToken = Cookies.get('adminRefreshToken')
+    return admin||adminRefreshToken? <Navigate to='/admin/dashboard'/>:<>{children}</>
 }
 export default PrivateRoute;

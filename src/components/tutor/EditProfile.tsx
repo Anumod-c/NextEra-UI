@@ -13,6 +13,7 @@ import { setTutor } from "../../redux/tutorSlice";
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 import TutorNavbar from "./TutorNavbar";
 import TutorSidebar from "./TutorSidebar";
+import tutorAxios from "../../constraints/axios/tutorAxios";
 
 const EditProfile = () => {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -157,7 +158,7 @@ const EditProfile = () => {
     { setSubmitting }: FormikHelpers<typeof initialValues>
   ) => {
     try {
-      const response = await axios.post(
+      const response = await tutorAxios.post(
         tutorEndpoints.editProfile,
         { id, ...values },
         {

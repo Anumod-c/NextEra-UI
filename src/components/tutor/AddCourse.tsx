@@ -22,8 +22,14 @@ interface AddCourseProps {
 const randomImageName = (): string => CryptoJS.SHA256(Date.now().toString()).toString(CryptoJS.enc.Hex);
 const validationSchema = Yup.object({
   courseTitle: Yup.string().required("Course name is required"),
-  coursePrice: Yup.number().required("Course price is required"),
-  courseDiscountPrice: Yup.number().required("Discount price is required"),
+  coursePrice: Yup.number().min(1, "Course price must be a positive number").required("Course price is required"),
+  courseDiscountPrice: Yup.number().min(1, "Discount price must be a positive number").required("Discount price is required").test(
+    "is-less-than-price",
+    "Discount price should be less than the actual price",
+    function (value) {
+      return value < this.parent.coursePrice;
+    }
+  ),
   courseDesc: Yup.string().required("Course description is required"),
   courseCategory: Yup.string().required("Course category is required"),
   courseLevel: Yup.string().required("Course level is required"),
@@ -67,7 +73,7 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
   };
 
   const handleFileUpload = async (file: File) => {
-    const fileName = `${randomImageName()}_${file.name}`;
+    const fileName = `${randomImageName()}_${file.name.replace(/\s+/g, '')}`;
     const fileType = file.type.startsWith('video') ? 'video' : 'image';
 
     // Get upload URL
@@ -213,7 +219,7 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
                       <option value="">Select Level</option>
                       <option value="Beginner">Beginner</option>
                       <option value="Intermediate">Intermediate</option>
-                      <option value="Expert">Expert</option>
+                      <option value="Advanced">Advanced</option>
                     </Field>
                     <ErrorMessage name="courseLevel" component="div" className="text-red-600" />
                   </div>

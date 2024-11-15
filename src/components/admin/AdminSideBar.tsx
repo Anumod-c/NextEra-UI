@@ -15,6 +15,8 @@ const AdminSideBar: React.FC<AdminSideBarProps> = ({ isSidebarOpen, toggleSideba
 
   const handleLogout = () => {
     Cookies.remove('adminToken') // Clear the token
+    Cookies.remove('adminRefreshToken') // Clear the token
+
     navigate('/admin'); // Redirect to login page
   };
 

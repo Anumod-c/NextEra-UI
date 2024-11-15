@@ -10,7 +10,9 @@ interface PrivateTutorRouteProps{
 
 const PrivateTutorRoute:React.FC<PrivateTutorRouteProps>=({children})=>{
     const tutor = Cookies.get('tutorToken')
-    return tutor? <Navigate to='/tutor/dashboard'/>:<>{children}</>
+    const tutorRefreshToken = Cookies.get('tutorRefreshToken')
+
+    return tutor||tutorRefreshToken? <Navigate to='/tutor/dashboard'/>:<>{children}</>
 }
 
 export default PrivateTutorRoute;

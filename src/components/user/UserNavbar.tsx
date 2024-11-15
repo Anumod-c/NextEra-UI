@@ -38,6 +38,8 @@ const {id,profilePicture} = useSelector((state: RootState) => state.user);
   const handleLogout =()=>{
    
     Cookies.remove('userToken')
+    Cookies.remove('userRefreshToken') // Clear the token
+
 dispatch(clearUserDetails())
     
       navigate('/login')

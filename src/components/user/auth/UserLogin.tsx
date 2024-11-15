@@ -13,7 +13,6 @@ import * as Yup from "yup";
 import { Form, Formik, Field, ErrorMessage } from "formik";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../../redux/userSlice";
-import { userAxios } from "../../../constraints/axios/userAxios";
 
 const validationSchema = Yup.object({
   email: Yup.string()
@@ -57,13 +56,18 @@ function UserLogin() {
       console.log(result.data, "Google Login Result");
 
       if (result.data.result.success) {
+
+        Cookies.set('userToken',JSON.stringify(result.data.token.accessToken));
+      Cookies.set('userRefreshToken', JSON.stringify(result.data.token.refreshToken)); 
+      localStorage.setItem('userRefreshToken',JSON.stringify(result.data.token.refreshToken))
+
         const { _id, name, email, phone, facebook, purchasedCourses , instagram, linkedin, twitter, age, bio, completedCourses, coursesEnrolled, profilePicture,status } = result.data.result.user;
         if(!status){
           return  toast.error("You have beed blocked by admin. Contact admin for more information")
         }
         dispatch(setUser({ id: _id, name, email,purchasedCourses, phone, facebook, instagram, linkedin, twitter, age, bio, completedCourses, coursesEnrolled, profilePicture }));
 
-        Cookies.set('userToken', JSON.stringify(result.data.token.accessToken));
+        
         navigate("/home");
       } else {
         toast.info("Couldn't login with Google");
@@ -79,19 +83,21 @@ function UserLogin() {
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
     try {
-      const result = await userAxios.post(userEndpoints.login, values);
+      const result = await axios.post(userEndpoints.login, values);
       console.log('Login result:', result.data);
 
       if (result.data.result.success) {
+
+        Cookies.set('userToken',JSON.stringify(result.data.token.accessToken));
+      Cookies.set('userRefreshToken', JSON.stringify(result.data.token.refreshToken)); 
+      localStorage.setItem('userRefreshToken',JSON.stringify(result.data.token.refreshToken))
+
         const {_id, name, email, phone, purchasedCourses,facebook, instagram, linkedin, twitter, age, bio, completedCourses, coursesEnrolled, profilePicture ,status} = result.data.result.userData;
         if(!status){
           return  toast.error("You are blocked by the admin. Contact admin for furthur details")
         }
         dispatch(setUser({ id: _id, name, email, phone, facebook, instagram, linkedin, twitter, age, bio, completedCourses, coursesEnrolled, profilePicture,purchasedCourses }));
 
-
-        Cookies.set('userToken', JSON.stringify(result.data.token.accessToken));
-        // Cookies.set('refreshToken', JSON.stringify(result.data.token.refreshToken));
         navigate("/home");
        
       } else {

@@ -92,7 +92,7 @@ export const PaymentSection: React.FC<PaymentProps> = ({ course, tutor }) => {
           toast.error(result.error.message)
         }
       } else {
-        toast.error("Stripe could not be loaded or session ID is missing.")
+        toast.error("Something went wrong please try again later.")
       }
 
 

@@ -8,7 +8,7 @@ interface PrivateRouteProps{
 
 const PrivateRoute: React.FC<PrivateRouteProps>=({children})=> {
 const user = Cookies.get('userToken')
-
-  return  user? <Navigate to='/home'/>:<>{children}</>
+const userRefreshToken = Cookies.get('userRefreshToken')
+  return  user||userRefreshToken? <Navigate to='/home'/>:<>{children}</>
 }
 export default PrivateRoute;

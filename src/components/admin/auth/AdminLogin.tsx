@@ -46,7 +46,8 @@ const togglePasswordVisiblility=()=>{
       console.log('data',result.data)
     
       Cookies.set('adminToken',JSON.stringify(result.data.token.accessToken));
-      // Cookies.set('refreshToken', JSON.stringify(result.data.token.refreshToken)); 
+      Cookies.set('adminRefreshToken', JSON.stringify(result.data.token.refreshToken)); 
+      localStorage.setItem('adminRefreshToken',JSON.stringify(result.data.token.refreshToken))
       console.log(result.data)
       navigate('/admin/dashboard')
       toast.success('admin logged in succesfully')

@@ -2,6 +2,9 @@ export const API_GATEWAY_BASE_URL = 'http://localhost:5000/admin';
 
 export const adminEndpoints={
     login: `${API_GATEWAY_BASE_URL}/login`,
+    refreshToken: `${API_GATEWAY_BASE_URL}/refresh-token`,
+
+    
     getUser:`${API_GATEWAY_BASE_URL}/getUsers`,
     getTutor:`${API_GATEWAY_BASE_URL}/getTutors`,
     getCourses:`${API_GATEWAY_BASE_URL}/getCourses`,
