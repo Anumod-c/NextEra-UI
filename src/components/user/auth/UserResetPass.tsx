@@ -27,12 +27,7 @@ const validationSchema = Yup.object({
 
 const UserResetPass: React.FC = () => {
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   const token = localStorage.getItem("userToken");
-  //   if (token) {
-  //     navigate("/");
-  //   }
-  // }, [navigate]);
+
   const location = useLocation();
   const { email } = location.state || { email: "" };
   const handleSubmit = async (

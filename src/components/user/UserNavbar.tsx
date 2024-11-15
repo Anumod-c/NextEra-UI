@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { clearUserDetails } from "../../redux/userSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-
+import { MdGroups2 } from "react-icons/md";
 
 interface NavbarProps{
   showSearch?: boolean;
@@ -96,8 +96,8 @@ dispatch(clearUserDetails())
             <Link to={'/about'} className="hover:text-gray-400">
               About
             </Link>
-            <Link to={'/discussion'} className="hover:text-gray-400">
-              Discussion
+            <Link to={'/discussion'} className="hover:text-gray-400 text-3xl">
+              <MdGroups2/>
             </Link>
             
                         {/* Profile & Auth Buttons */}

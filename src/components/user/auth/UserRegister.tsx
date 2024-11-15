@@ -54,12 +54,7 @@ const UserRegister: React.FC = () => {
   const togglePasswordVisiblility = () => {
     setShowPassword(!showPassword)
   }
-  // useEffect(() => {
-  //   const token = localStorage.getItem("userToken");
-  //   if (token) {
-  //     navigate("/");
-  //   }
-  // }, [navigate]);
+
   const handleSubmit = async (
     values: typeof intitalValues,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
@@ -68,8 +63,8 @@ const UserRegister: React.FC = () => {
       const response = await axios.post(userEndpoints.register, values);
       console.log("data send from client");
       if (response.data.success) {
-        console.log("register client andd navigate to otp", response.data);
-        navigate(`/otp`);
+        console.log(response.data.tempData._id,"register client andd navigate to otp", response.data);
+        navigate(`/otp`,{state:{userId:response.data.tempData._id}});
       } else {
         toast.info(response.data.message);
       }

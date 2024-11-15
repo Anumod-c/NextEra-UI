@@ -39,7 +39,7 @@ function SuccessPage() {
         };
     
         fetchOrderDetails();
-    });
+    }, );
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
             <div className="bg-white shadow-lg rounded-lg p-8 text-center max-w-lg">

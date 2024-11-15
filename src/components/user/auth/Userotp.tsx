@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import tutorLoginImage from '../../../assets/tutorlogin.png';
 import axios from 'axios';
-import Cookies from 'js-cookie';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
@@ -15,18 +14,10 @@ interface FormValues {
 function UserOtp() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { forgotPass, email } = location.state || { forgotPass: false, email: '' };
+  const { forgotPass, email,userId} = location.state || { forgotPass: false, email: '' ,userId:''};
+  console.log(location.state,'location.state')
   const inputRef = useRef<(HTMLInputElement | null)[]>([]);
-  useEffect(() => {
-    const token = Cookies.get('accessToken');
-    console.log('acesssss',token);
-    if(token){
-      navigate('/home')
-    }
-    if (token) {
-      navigate('/home')
-    }
-  }, [navigate]);
+
   const [countdown, setCountdown] = useState<number>(() => {
     const savedCountdown = localStorage.getItem('otpCountdown');
     return savedCountdown ? Number(savedCountdown) : 60;
@@ -41,7 +32,7 @@ function UserOtp() {
     onSubmit: async (values) => {
       try {
         const otp = values.otp.join('');
-        const response = await axios.post(userEndpoints.otp, { otp, forgotPass });
+        const response = await axios.post(userEndpoints.otp, { otp,userId, forgotPass });
         console.log('ereeeeeee',response);
         localStorage.removeItem('otpCountdown')
 
