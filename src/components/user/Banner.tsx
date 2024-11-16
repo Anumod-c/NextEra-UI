@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"; // Importing Link for navigation
 
 const Banner: React.FC = () => {
   return (
-    <div className="flex flex-col md:flex-row items-center justify-between bg-gradient-to-t from-white to-blue-600 p-8 rounded-lg ">
+    <div className="flex flex-col md:flex-row items-center justify-between bg-gradient-to-t from-white to-blue-600 p-8  ">
       {/* Left Side - Animation */}
       <div className="lottiplayer w-full md:w-1/2 flex justify-center">
         <motion.div

@@ -248,10 +248,10 @@ console.log('courseData',response.data)
                     Intermediate
                   </div>
                   <div
-                    onClick={() => handleLevelChange("Expert")}
+                    onClick={() => handleLevelChange("Advanced")}
                     className="cursor-pointer p-2 hover:bg-gray-100"
                   >
-                    Expert
+                    Advanced
                   </div>
                 </div>
               </div>

@@ -25,7 +25,7 @@ const Payouts: React.FC = () => {
       try {
         const response = await tutorAxios.get(tutorEndpoints.payouts, {
           params: { tutorId, page, limit: 6 },
-          withCredentials: true,
+          
         });
         console.log(response.data);
         if (response.data.success) {

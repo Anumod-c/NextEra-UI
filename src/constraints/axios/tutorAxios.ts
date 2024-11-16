@@ -40,6 +40,8 @@ tutorAxios.interceptors.response.use(
                     console.log('error in refreshtken tutorAxios',refreshError);
                     Cookies.remove('tutorToken');
                     Cookies.remove('tutorRefreshToken');
+                    Cookies.remove('tutorId');
+
     
 
                     
@@ -50,9 +52,11 @@ tutorAxios.interceptors.response.use(
             console.log('Tutor is blocked. Redirecting to login or blocked page.');
             Cookies.remove('tutorToken')
             Cookies.remove('tutorRefreshToken');
+            Cookies.remove('tutorId');
+
 
             // Redirect to login or blocked user page
-            window.location.href = '/tutor'; // Change this to your actual login or blocked route
+            window.location.href = '/tutor?message=blocked'; // Change this to your actual login or blocked route
 
             return Promise.reject(error);
         }

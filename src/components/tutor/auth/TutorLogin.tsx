@@ -60,9 +60,11 @@ function TutorLogin() {
         Cookies.set('tutorToken',JSON.stringify(result.data.token.accessToken));
         Cookies.set('tutorRefreshToken', JSON.stringify(result.data.token.refreshToken)); 
         localStorage.setItem('tutorRefreshToken',JSON.stringify(result.data.token.refreshToken))
-  
+        Cookies.set('tutorId',JSON.stringify(result.data.tutor._id));
 
         const {_id,email,bio,cv,expertise,status,name,isVerified,phone,profilePicture,qualifications,instagram,twitter,facebook,linkedin}= result.data.tutor;
+        Cookies.set('tutorId',_id)
+
         if (!status) {
           return toast.error(
             "You are blocked by the admin. Contact admin for furthur details"
@@ -93,6 +95,7 @@ function TutorLogin() {
         localStorage.setItem('tutorRefreshToken',JSON.stringify(result.data.token.refreshToken))
 
         const {_id,email,bio,cv,expertise,status,name, instagram,isVerified,facebook,linkedin,phone,twitter,profilePicture,qualifications} = result.data.tutorData;
+        Cookies.set('tutorId',_id)
         if (!status) {
           return toast.error(
             "You are blocked by the admin. Contact admin for furthur details"

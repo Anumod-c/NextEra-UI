@@ -18,8 +18,10 @@ function TutorSidebar() {
   const isActive = (path: string) => location.pathname === path;
 
   const handleLogout = () => {
-    Cookies.remove('tutorToken'); // Clear the access token
-    Cookies.remove('tutorRefreshToken'); // Clear the access token
+    Cookies.remove('tutorToken'); 
+    Cookies.remove('tutorRefreshToken'); 
+    Cookies.remove('tutorId');
+
 
     dispatch(clearTutorDetails()); // Clear tutor details from Redux
     navigate('/tutor'); // Navigate to the tutor login or home page

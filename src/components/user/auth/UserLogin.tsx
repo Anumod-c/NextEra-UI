@@ -62,6 +62,10 @@ function UserLogin() {
       localStorage.setItem('userRefreshToken',JSON.stringify(result.data.token.refreshToken))
 
         const { _id, name, email, phone, facebook, purchasedCourses , instagram, linkedin, twitter, age, bio, completedCourses, coursesEnrolled, profilePicture,status } = result.data.result.user;
+        console.log('Login result: id', _id);
+
+        Cookies.set('userId',_id);
+
         if(!status){
           return  toast.error("You have beed blocked by admin. Contact admin for more information")
         }
@@ -84,15 +88,20 @@ function UserLogin() {
   ) => {
     try {
       const result = await axios.post(userEndpoints.login, values);
-      console.log('Login result:', result.data);
+      console.log('Login resultssss:', result.data);
 
       if (result.data.result.success) {
 
         Cookies.set('userToken',JSON.stringify(result.data.token.accessToken));
       Cookies.set('userRefreshToken', JSON.stringify(result.data.token.refreshToken)); 
       localStorage.setItem('userRefreshToken',JSON.stringify(result.data.token.refreshToken))
+      Cookies.set('userId',JSON.stringify(result.data.token.refreshToken));
 
         const {_id, name, email, phone, purchasedCourses,facebook, instagram, linkedin, twitter, age, bio, completedCourses, coursesEnrolled, profilePicture ,status} = result.data.result.userData;
+        Cookies.set('userId',_id);
+
+        console.log('Login result: id', _id);
+
         if(!status){
           return  toast.error("You are blocked by the admin. Contact admin for furthur details")
         }

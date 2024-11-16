@@ -7,8 +7,7 @@ import { useDispatch } from "react-redux";
 import { clearUserDetails } from "../../redux/userSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { MdGroups2 } from "react-icons/md";
-
+import { MdGroups2,MdLogout } from "react-icons/md";
 interface NavbarProps{
   showSearch?: boolean;
   onSearch?:(query:string)=>void;
@@ -38,7 +37,9 @@ const {id,profilePicture} = useSelector((state: RootState) => state.user);
   const handleLogout =()=>{
    
     Cookies.remove('userToken')
-    Cookies.remove('userRefreshToken') // Clear the token
+    Cookies.remove('userRefreshToken') 
+    Cookies.remove('userrId');
+
 
 dispatch(clearUserDetails())
     
@@ -60,7 +61,7 @@ dispatch(clearUserDetails())
     setSearchQuery(e.target.value); // Update the search query
   };
   return (
-    <nav className="bg-gray-800 text-white">
+    <nav className="      bg-gradient-to-b from-blue-900  to-blue-600 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -85,15 +86,15 @@ dispatch(clearUserDetails())
 
           {/* Desktop Menu */}
           <div className="hidden justify-center items-center p-4 m-4 md:flex space-x-4">
-            <Link to={'/home'} className="hover:text-gray-400">
+            <Link to={'/home'} className="hover:text-gray-400 ">
                 Home
             </Link>
 
-            <Link to={'/allCourse'}>Courses</Link>
-            <Link to={'/contact'} className="hover:text-gray-400">
+            <Link to={'/allCourse'} className="hover:text-gray-400 " >Courses</Link>
+            <Link to={'/contact'} className="hover:text-gray-400 ">
                Contact
             </Link>
-            <Link to={'/about'} className="hover:text-gray-400">
+            <Link to={'/about'} className="hover:text-gray-400 ">
               About
             </Link>
             <Link to={'/discussion'} className="hover:text-gray-400 text-3xl">
@@ -109,8 +110,8 @@ dispatch(clearUserDetails())
                 >
                   <img className="rounded-full w-14 object-cover h-14 p-2 " src={profilePicture||profileImage} alt="Profile" />
                 </button>
-                <button onClick={handleLogout} className="hover:text-gray-400">
-                  Logout
+                <button onClick={handleLogout} className="hover:text-gray-400 pl-4 text-2xl">
+                  <MdLogout/>
                 </button>
               </>
             ) : (

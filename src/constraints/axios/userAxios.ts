@@ -39,6 +39,8 @@ userAxios.interceptors.response.use(
                 console.log('Error refreshing token:', refreshError);
                 Cookies.remove('userToken');
                 Cookies.remove('userRefreshToken');
+                Cookies.remove('userId');
+
             }
         }
 
@@ -47,8 +49,10 @@ userAxios.interceptors.response.use(
             console.log('User is blocked. Redirecting to login or blocked page.');
             Cookies.remove('userToken')
             Cookies.remove('userRefreshToken');
+            Cookies.remove('userId');
+
             // Redirect to login or blocked user page
-            window.location.href = '/login'; // Change this to your actual login or blocked route
+            window.location.href = '/login?message=blocked'; // Change this to your actual login or blocked route
 
             return Promise.reject(error);
         }

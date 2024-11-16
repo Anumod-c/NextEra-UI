@@ -3,6 +3,7 @@ import Courses from "../../components/user/Courses";
 import UserNavbar from "../../components/user/UserNavbar";
 
 import { courseEndpoints } from "../../constraints/endpoints/courseEndpoints";
+import Footer from "../tutor/Footer";
 function UserHome() {
   return (
     <div>
@@ -15,6 +16,7 @@ function UserHome() {
         subTitle="Check out the newest additions"
         
       />
+      <Footer/>
     </div>
   );
 }

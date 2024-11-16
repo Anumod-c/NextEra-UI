@@ -34,7 +34,7 @@ const CourseList: React.FC = () => {
 
         const response = await tutorAxios.get(tutorEndpoints.courseList, {
           params: { tutorId, page, limit: 4 },
-          withCredentials: true,
+         
         });
         console.log("data reached frontend", response.data.courses);
         if (response.data) {

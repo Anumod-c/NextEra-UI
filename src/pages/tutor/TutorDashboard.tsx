@@ -23,7 +23,8 @@ function TutorDashboard() {
       try {
         const response = await axios.get(tutorEndpoints.tutorPayoutsByMonth, {
           params: tutorId,
-        });
+          withCredentials:true
+        },);
         const payoutsData = response.data;
         console.log(payoutsData,'payout data');
         const monthLabels = payoutsData.map((item: IPayout) => {
