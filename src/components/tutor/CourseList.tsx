@@ -47,7 +47,7 @@ const CourseList: React.FC = () => {
         setLoading(false);
       }
     };
-    fetchCourse();
+    fetchCourse(currentPage);
   }, [tutorId, currentPage]);
   const handlePageChange = (
     _event: React.ChangeEvent<unknown>,

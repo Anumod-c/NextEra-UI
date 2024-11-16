@@ -1,5 +1,5 @@
 import React from "react";
-import { FaCheckCircle } from "react-icons/fa"; // You can use any icon from react-icons
+import { FaCheckCircle } from "react-icons/fa";
 
 interface ProgressBarProps {
   currentStep: number;
@@ -17,12 +17,17 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep, totalSteps }) =>
       checkpoints.push(
         <div
           key={i}
-          className={`absolute top-1/2 transform -translate-y-1/2 flex items-center justify-center ${
-            i <= currentStep ? 'text-blue-600' : 'text-gray-400'
-          }`}
-          style={{ left: `${position}%`, width: '24px', height: '24px' }}
+          className={`absolute top-1/2 transform -translate-y-1/2 flex items-center justify-center 
+            ${i <= currentStep ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-500"}
+            rounded-full shadow-md transition-all duration-300`}
+          style={{
+            left: `${position}%`,
+            width: "30px",
+            height: "30px",
+            border: "2px solid white",
+          }}
         >
-          <FaCheckCircle size={24} />
+          {i <= currentStep ? <FaCheckCircle size={16} /> : i}
         </div>
       );
     }
@@ -30,12 +35,16 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep, totalSteps }) =>
   };
 
   return (
-    <div className="relative w-full bg-gray-200 rounded-full h-4">
+    <div className="relative w-full">
+      {/* Background track with gradient */}
+      <div className="absolute w-full h-2 rounded-full bg-gradient-to-r from-gray-300 to-gray-100 shadow-inner"></div>
+      {/* Progress track */}
       <div
-        className="bg-blue-600 h-full rounded-full"
+        className="absolute h-2  rounded-full bg-gradient-to-r from-blue-400 to-blue-600 shadow-md transition-all duration-300"
         style={{ width: `${progressPercentage}%` }}
       ></div>
-      {renderCheckpoints()}
+      {/* Checkpoints */}
+      <div className="relative w-full">{renderCheckpoints()}</div>
     </div>
   );
 };

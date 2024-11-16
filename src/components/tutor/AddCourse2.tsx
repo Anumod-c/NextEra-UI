@@ -138,17 +138,17 @@ const AddCourse2: React.FC<AddCourse2Props> = ({ onNext,onBack }) => {
                 </div>
                 
 
-                <div className="w-full flex justify-end mt-6">
+                <div className="w-full space-x-4 flex justify-end mt-6">
                 <button
                   type="button"
                   onClick={onBack}
-                  className="py-2 mb-4 px-8 bg-gray-600 text-white font-semibold rounded-md hover:bg-gray-700 transition"
+                  className="py-2 px-4 bg-gray-600 text-white font-semibold rounded-md hover:bg-gray-700 transition"
                 >
                   Back
                 </button>
                   <button
                     type="submit"
-                    className="py-2 px-8 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
+                    className="py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
                   >
                     Next
                   </button>
