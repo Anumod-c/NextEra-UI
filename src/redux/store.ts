@@ -6,6 +6,7 @@ import userReducer from './userSlice';
 import tutorreducer from './tutorSlice'
 import OrderDataSlice from './OrderDataSlice';
 import adminSlice from './adminSlice';
+import quizSlice from './QuizSlice'
 // Configuration for redux-persist
 const persistConfig = {
   key: 'root',
@@ -20,6 +21,8 @@ const rootReducer = combineReducers({
   course: courseReducer,
   order: OrderDataSlice,
   admin:adminSlice,
+  quiz:quizSlice
+  
   // Add other reducers here if you have more slices
 });
 

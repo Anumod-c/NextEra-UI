@@ -1,10 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+export interface Option {
+  text: string;
+  isCorrect: boolean;
+}
 
+interface Quiz {
+  question: string;
+  options: Option[];
+}
 export interface Lesson {
   title: string;
   video: string | null; // Store only the file name
   description: string;
+  quizzes:Quiz[]
 }
 
 export interface Section {
@@ -63,7 +72,7 @@ const initialState: CourseState = {
   sections: [
     {
       title: "",
-      lessons: [{ title: "", video: null, description: "" }],
+      lessons: [{ title: "", video: null, description: "",quizzes:[] }],
     },
   ],
  

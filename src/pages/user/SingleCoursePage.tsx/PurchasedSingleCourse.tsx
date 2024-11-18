@@ -52,7 +52,7 @@ const PurchasedSingleCourse: React.FC<CourseProps> = ({ course,tutor }) => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-8">
+    <div className="flex flex-col md:flex-row gap-2">
       
       {/* Left Component: Course Details */}
       <CourseDetails course={course} selectedVideo={selectedVideo} />

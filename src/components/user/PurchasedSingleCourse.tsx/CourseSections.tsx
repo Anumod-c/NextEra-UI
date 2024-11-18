@@ -7,11 +7,26 @@ import StarIcon from '@mui/icons-material/Star';
 import ReviewRating from "../ReviewRating";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
+import { IoNewspaperSharp } from "react-icons/io5";
+import { useDispatch } from "react-redux";
+import { setQuizData } from "../../../redux/QuizSlice";
+import { useNavigate } from "react-router-dom";
 
+interface Option {
+  text: string;
+  isCorrect: boolean;
+}
+
+interface Quiz {
+  question: string;
+  options: Option[];
+}
 interface Lesson {
   title: string;
   video?: string;
   description: string;
+  quizzes?:Quiz[]
+  
 }
 
 interface Section {
@@ -48,7 +63,17 @@ const CourseSections: React.FC<CourseSectionsProps> = ({
 }) => {
   console.log(tutor, "tutorfullData");
   const userId = useSelector((state:RootState)=>state.user.id)
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
 
+  const handleQuizClick = (lesson: Lesson) => {
+    if (lesson.quizzes) {
+      dispatch(setQuizData({ lessonTitle: lesson.title, quizzes: lesson.quizzes }));
+      navigate("/quiz");
+    } else {
+      alert("No quizzes available for this lesson.");
+    }
+  };
   return (
     <>
       <div className="md:w-4/12 bg-white shadow-lg rounded-lg p-6 mt-8">
@@ -64,18 +89,33 @@ const CourseSections: React.FC<CourseSectionsProps> = ({
             </div>
 
             {openSection === index && (
-              <div className="mt-4 bg-gray-50 p-4 rounded-lg shadow-sm">
-                {section.lessons.map((lesson, lessonIndex) => (
-                  <div key={lessonIndex} className="flex justify-between items-center mb-4">
-                    <p className="text-lg">{lesson.title}</p>
-                    <VideoIcon
-                      className="cursor-pointer text-2xl text-blue-500"
-                      onClick={() => handleVideoClick(lesson.video||'')}
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
+  <div className="mt-4 bg-gray-50 p-4 rounded-lg shadow-sm ">
+    {section.lessons.map((lesson, lessonIndex) => (
+      <div key={lessonIndex} className="flex flex-col mb-4">
+        {/* Display Lesson Title */}
+        <div className="flex justify-between items-center  hover:bg-gray-200">
+          <p className="text-lg">{lesson.title}</p>
+          <VideoIcon
+            className="cursor-pointer  text-2xl text-blue-500"
+            onClick={() => handleVideoClick(lesson.video || '')}
+          />
+        </div>
+
+                            {/* Display Test/Exam if Quizzes Exist */}
+                            {lesson.quizzes && lesson.quizzes.length > 0 && (
+                      <div
+                        className="mt-2 flex items-center cursor-pointer p-2 hover:bg-gray-200 rounded-lg "
+                        onClick={() => handleQuizClick(lesson)} 
+                      >
+                        <IoNewspaperSharp className="text-blue-500 mr-2" />
+                        <p className="text-md ">Take Test</p>
+                      </div>
+                    )}
+      </div>
+    ))}
+  </div>
+)}
+
           </div>
         ))}
 

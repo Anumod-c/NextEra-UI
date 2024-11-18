@@ -6,23 +6,34 @@ import axios from "axios";
 import { tutorEndpoints } from "../../constraints/endpoints/tutorEndpoints";
 import { toast } from "sonner";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
-import {  FaTrash } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 
 import { saveLessons } from "../../redux/courseSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+
+interface Option {
+  text: string;
+  isCorrect: boolean;
+}
+
+interface Quiz {
+  question: string;
+  options: Option[];
+}
+
 interface Lesson {
   title: string;
   video: string | null;
   description: string;
+  quizzes: Quiz[];
 }
 
 interface Section {
   title: string;
   lessons: Lesson[];
 }
-[];
 
 // Define the validation schema
 const validationSchema = Yup.object().shape({
@@ -68,7 +79,8 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
   const [expandedSections, setExpandedSections] = useState<number[]>([]); // Track expanded sections
   const [expandedLessons, setExpandedLessons] = useState<{
     [key: string]: boolean;
-  }>({}); // Track expanded lessons
+  }>({});
+
   useEffect(() => {
     if (savedLessons) {
       const savedPreviews: { [key: string]: string } = {};
@@ -152,7 +164,6 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
       if (!url) {
         throw new Error("Presigned URL is not provided");
       }
-      // You need to ensure you have the file object to upload
       const file =
         fileInputRefs.current[`${sectionIndex}-${lessonIndex}`]?.files?.[0];
       if (!file) {
@@ -218,7 +229,22 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
           sections: savedLessons || [
             {
               title: "",
-              lessons: [{ title: "", video: null, description: "" }],
+              lessons: [
+                {
+                  title: "",
+                  video: null,
+                  description: "",
+                  quizzes: [
+                    {
+                      question: "",
+                      options: [
+                        { text: "", isCorrect: false },
+                        { text: "", isCorrect: false },
+                      ],
+                    },
+                  ],
+                },
+              ],
             },
           ],
         }}
@@ -230,6 +256,9 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
               ...lesson,
               // Keep video as File or null, as expected
               video: lesson.video,
+              quizzes: lesson.quizzes.map((quiz) => ({
+                ...quiz,
+              })),
             })),
           }));
 
@@ -243,7 +272,7 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
         {({ setFieldValue, values }) => (
           <Form>
             <FieldArray name="sections">
-              {({ remove,push }) => (
+              {({ remove, push }) => (
                 <div className="space-y-6">
                   {values.sections.map((section, sectionIndex) => (
                     <div
@@ -258,22 +287,21 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
                           Section {sectionIndex + 1}
                         </h3>
                         <div className=" flex justify-end items-center px-4 space-x-4">
-                        <button type="button">
-                          {expandedSections.includes(sectionIndex) ? (
-                            <AiOutlineMinus size={20} />
-                          ) : (
-                            <AiOutlinePlus size={20} />
-                          )}
-                        </button>
-                        <button
-                                type="button"
-                                className="p-2 text-red-600 hover:text-red-800"
-                                onClick={() => remove(sectionIndex)}
-                              >
-                                < FaTrash/>
-                              </button>
+                          <button type="button">
+                            {expandedSections.includes(sectionIndex) ? (
+                              <AiOutlineMinus size={20} />
+                            ) : (
+                              <AiOutlinePlus size={20} />
+                            )}
+                          </button>
+                          <button
+                            type="button"
+                            className="p-2 text-red-600 hover:text-red-800"
+                            onClick={() => remove(sectionIndex)}
+                          >
+                            <FaTrash />
+                          </button>
                         </div>
-                        
                       </div>
 
                       {expandedSections.includes(sectionIndex) && (
@@ -297,7 +325,7 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
 
                           {/* Lessons */}
                           <FieldArray name={`sections.${sectionIndex}.lessons`}>
-                            {({remove, push: pushLesson }) => (
+                            {({ remove, push: pushLesson }) => (
                               <div className="space-y-6">
                                 {section.lessons.map((lesson, lessonIndex) => (
                                   <div
@@ -337,33 +365,32 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
                                         </div>
                                       </div>
                                       <div className="flex justify-end items-center px-4 space-x-4">
-                                      <button
-                                        type="button"
-                                        className="p-2 hover:bg-blue-100 rounded-full transition-colors"
-                                      >
-                                        {expandedLessons[
-                                          `${sectionIndex}-${lessonIndex}`
-                                        ] ? (
-                                          <AiOutlineMinus
-                                            size={20}
-                                            className="text-blue-600"
-                                          />
-                                        ) : (
-                                          <AiOutlinePlus
-                                            size={20}
-                                            className="text-blue-600"
-                                          />
-                                        )}
-                                      </button>
-                                      <button
-                                type="button"
-                                className="p-2 text-red-600 hover:text-red-800"
-                                onClick={() => remove(sectionIndex)}
-                              >
-                                < FaTrash/>
-                              </button>
+                                        <button
+                                          type="button"
+                                          className="p-2 hover:bg-blue-100 rounded-full transition-colors"
+                                        >
+                                          {expandedLessons[
+                                            `${sectionIndex}-${lessonIndex}`
+                                          ] ? (
+                                            <AiOutlineMinus
+                                              size={20}
+                                              className="text-blue-600"
+                                            />
+                                          ) : (
+                                            <AiOutlinePlus
+                                              size={20}
+                                              className="text-blue-600"
+                                            />
+                                          )}
+                                        </button>
+                                        <button
+                                          type="button"
+                                          className="p-2 text-red-600 hover:text-red-800"
+                                          onClick={() => remove(sectionIndex)}
+                                        >
+                                          <FaTrash />
+                                        </button>
                                       </div>
-                                     
                                     </div>
 
                                     {/* Lesson Content */}
@@ -583,6 +610,157 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
                                             </div>
                                           </div>
                                         </div>
+                                        <div className="flex flex-col gap-6">
+                                          <h3 className="text-xl font-semibold text-gray-800">
+                                            Quiz
+                                          </h3>
+
+                                          <FieldArray
+                                            name={`sections.${sectionIndex}.lessons.${lessonIndex}.quizzes`}
+                                          >
+                                            {({ remove, push }) => (
+                                              <>
+                                                {section.lessons[lessonIndex]
+                                                  .quizzes &&
+                                                  section.lessons[
+                                                    lessonIndex
+                                                  ].quizzes.map(
+                                                    (quiz, quizIndex) => (
+                                                      <div
+                                                        key={quizIndex}
+                                                        className="quiz-container space-y-5 bg-gray-50 p-4 rounded-lg shadow-sm grid grid-cols-1 md:grid-cols-2 gap-4"
+                                                      >
+                                                        {/* Question on the Left */}
+                                                        <div className="question-container flex flex-col gap-2">
+                                                          <label
+                                                            className="font-medium text-gray-700"
+                                                            htmlFor={`quiz-${quizIndex}`}
+                                                          >
+                                                            Quiz Question
+                                                          </label>
+                                                          <Field
+                                                            as="textarea"
+                                                            id={`quiz-${quizIndex}`}
+                                                            name={`sections.${sectionIndex}.lessons.${lessonIndex}.quizzes.${quizIndex}.question`}
+                                                            placeholder="Enter quiz question"
+                                                            className="input-field py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none h-24 md:h-36"
+                                                          />
+                                                        </div>
+
+                                                        {/* Answer Options on the Right */}
+                                                        <div className="options-container space-y-4">
+                                                          <FieldArray
+                                                            name={`sections.${sectionIndex}.lessons.${lessonIndex}.quizzes.${quizIndex}.options`}
+                                                          >
+                                                            {({
+                                                              remove:
+                                                                removeOption,
+                                                              push: pushOption,
+                                                            }) => (
+                                                              <>
+                                                                {quiz.options.map(
+                                                                  (
+                                                                    option,
+                                                                    optionIndex
+                                                                  ) => (
+                                                                    <div
+                                                                      key={
+                                                                        optionIndex
+                                                                      }
+                                                                      className="option-item flex items-center gap-4 bg-gradient-to-r from-blue-50 via-blue-100 to-white p-4 border border-blue-300 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out"
+                                                                    >
+                                                                      <div className="flex-grow">
+                                                                        <Field
+                                                                          name={`sections.${sectionIndex}.lessons.${lessonIndex}.quizzes.${quizIndex}.options.${optionIndex}.text`}
+                                                                          placeholder="Option text"
+                                                                          className="input-field py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                                                                        />
+                                                                      </div>
+                                                                      <div className="flex items-center gap-2">
+                                                                        <label className="flex items-center gap-1 text-sm text-gray-600">
+                                                                          <Field
+                                                                            type="checkbox"
+                                                                            name={`sections.${sectionIndex}.lessons.${lessonIndex}.quizzes.${quizIndex}.options.${optionIndex}.isCorrect`}
+                                                                          />
+                                                                          Correct
+                                                                        </label>
+                                                                        <button
+                                                                          type="button"
+                                                                          onClick={() =>
+                                                                            removeOption(
+                                                                              optionIndex
+                                                                            )
+                                                                          }
+                                                                          className="text-red-500 hover:text-red-600 focus:outline-none p-2 rounded-md hover:bg-red-100 transition-colors"
+                                                                        >
+                                                                          <AiOutlineMinus />
+                                                                        </button>
+                                                                      </div>
+                                                                    </div>
+                                                                  )
+                                                                )}
+
+                                                                {/* Add Option Button */}
+                                                                <button
+                                                                  type="button"
+                                                                  onClick={() =>
+                                                                    pushOption({
+                                                                      text: "",
+                                                                      isCorrect:
+                                                                        false,
+                                                                    })
+                                                                  }
+                                                                  className="w-full bg-gradient-to-r from-green-400 to-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200"
+                                                                >
+                                                                  Add Option
+                                                                </button>
+                                                              </>
+                                                            )}
+                                                          </FieldArray>
+                                                        </div>
+
+                                                        {/* Remove Quiz Button */}
+                                                        <div className="w-full">
+                                                          <button
+                                                            type="button"
+                                                            onClick={() =>
+                                                              remove(quizIndex)
+                                                            }
+                                                            className="w-full text-red-600 hover:text-red-700 focus:outline-none"
+                                                          >
+                                                            Remove Quiz
+                                                          </button>
+                                                        </div>
+                                                      </div>
+                                                    )
+                                                  )}
+
+                                                {/* Add Quiz Button */}
+                                                <button
+                                                  type="button"
+                                                  onClick={() =>
+                                                    push({
+                                                      question: "",
+                                                      options: [
+                                                        {
+                                                          text: "",
+                                                          isCorrect: false,
+                                                        },
+                                                        {
+                                                          text: "",
+                                                          isCorrect: false,
+                                                        },
+                                                      ],
+                                                    })
+                                                  }
+                                                  className="w-full bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 mt-4"
+                                                >
+                                                  Add Quiz
+                                                </button>
+                                              </>
+                                            )}
+                                          </FieldArray>
+                                        </div>
                                       </div>
                                     )}
                                   </div>
@@ -597,6 +775,7 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
                                       title: "",
                                       video: null,
                                       description: "",
+                                      quizzes: [],
                                     })
                                   }
                                 >
@@ -631,7 +810,14 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
                     onClick={() =>
                       push({
                         title: "",
-                        lessons: [{ title: "", video: null, description: "" }],
+                        lessons: [
+                          {
+                            title: "",
+                            video: null,
+                            description: "",
+                            quizzes: [],
+                          },
+                        ],
                       })
                     }
                   >

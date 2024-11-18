@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
-import axios from 'axios';
 import { courseEndpoints } from '../../constraints/endpoints/courseEndpoints';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { RiCheckDoubleLine } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
 import { clearCourseData } from '../../redux/courseSlice';
+import tutorAxios from '../../constraints/axios/tutorAxios';
 
 interface CourseSummaryProps {
   onBack: () => void;
@@ -56,7 +56,7 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({ onBack }) => {
       sections,
     };
     try {
-      const response = await axios.post(courseEndpoints.addCourse, courseData);
+      const response = await tutorAxios.post(courseEndpoints.addCourse, courseData);
       if (response.data.success) {
         toast.success(response.data.message);
         dispatch(clearCourseData())

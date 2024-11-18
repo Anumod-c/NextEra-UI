@@ -11,15 +11,9 @@ import CourseSummary from '../../components/tutor/CourseSummary';
 
 const Course: React.FC = () => {
   const [step, setStep] = useState<number>(1);
-  // const [sections, setSections] = useState<Section[]>([]); // Updated to handle sections
 
   const totalSteps = 4;
 
-  // Handle lesson data and proceed to next step
-  // const handleLessonData = (data: Section[]) => {
-  //   setSections(data);
-  //   handleNext();
-  // };
 
   const handleNext = () => {
     setStep(prev => prev + 1);
@@ -65,25 +59,7 @@ const Course: React.FC = () => {
           )}
           {step === 4 && (
             <CourseSummary
-              onBack={handleBack}
-              // courseNa={addCourse.courseTitle}
-              // coursePrice={addCourse.coursePrice.toString()}
-              // courseDiscountPrice={addCourse.courseDiscountPrice.toString()}
-              // courseDescription={addCourse.courseDesc}
-              // courseCategory={addCourse.courseCategory}
-              // courseLevel={addCourse.courseLevel}
-              // demoUrl={addCourse.demoURL}
-              // benefits={addCourse2.benefits}
-              // prerequisites={addCourse2.prerequisites}
-              // sections={sections.map(section => ({
-              //   title: section.title,
-              //   lessons: section.lessons.map(lesson => ({
-              //     title: lesson.title,
-              //     videoName:lesson.videoName,
-              //     // video: lesson.videoName ? URL.createObjectURL(lesson.video) : null,
-              //     description: lesson.description,
-              //   }))
-              // }))}
+              onBack={handleBack}             
             />
           )}
         </div>

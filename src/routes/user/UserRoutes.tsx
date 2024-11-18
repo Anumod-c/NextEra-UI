@@ -15,6 +15,7 @@ import SuccessPage from "../../components/user/SuccessPage"
 import AllCoursePage from "../../pages/user/Courses/AllCoursePage"
 import EditProfile from "../../components/user/profile/EditProfile"
 import ChatLayout from "../../pages/user/ChatLayout"
+import QuizPage from "../../components/user/PurchasedSingleCourse.tsx/QuizPage"
 
 const UserRoutes:React.FC=()=>{
     return(
@@ -37,6 +38,7 @@ const UserRoutes:React.FC=()=>{
     <Route path='/success' element={<PrivateRouteUser><SuccessPage/></PrivateRouteUser>} />
     <Route path='/editProfile' element={<PrivateRouteUser><EditProfile/></PrivateRouteUser>} />
     <Route path='/discussion' element={<PrivateRouteUser><ChatLayout/></PrivateRouteUser>} />
+    <Route path='/quiz' element={<PrivateRouteUser><QuizPage/></PrivateRouteUser>} />
     
 
 
