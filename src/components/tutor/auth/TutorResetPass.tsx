@@ -1,5 +1,5 @@
-import React from 'react'
-import UserforgotImage from '../../../assets/tutorlogin.png'
+import { motion } from 'framer-motion'; 
+import { Player } from "@lottiefiles/react-lottie-player";
 import axios from "axios";
 import { toast } from "sonner";
 import * as Yup from "yup";
@@ -28,7 +28,6 @@ const validationSchema = Yup.object({
 
 const TutorResetPass: React.FC = () => {
   const navigate = useNavigate();
-  
   const location = useLocation()
   const { email } = location.state || { email: '' };
   const handleSubmit = async (
@@ -51,11 +50,31 @@ const TutorResetPass: React.FC = () => {
     }
   };
   return (
-    <div className="flex h-screen">
-      <div className="flex-1 bg-[#6227c2] flex justify-center items-center">
-        <img src={UserforgotImage} alt="login-img" className="w-4/5 max-w-lg" />
-      </div>
+    <div className="flex flex-col md:flex-row h-screen">
+    <div className="flex-1 bg-[#6227c2] flex justify-center items-center animate-fadeIn">
+      <motion.div
+        className="flex-1 bg-[#6227c2] flex justify-center items-center"
+        initial={{ x: -100, opacity: 0 }}
+        animate={{ x: -10, opacity: 1 }}
+        exit={{ x: -100, opacity: 0 }}
+        transition={{ duration: 0.8, ease: [0.68, -0.55, 0.27, 1.55] }}
+      >
+        <Player
+          autoplay
+          loop
+          src="https://lottie.host/7100dd4f-826b-421f-801b-752477ccd826/vBS1LriaZx.json"
+          style={{ height: "80%", width: "80%" }}
+        />
+      </motion.div>
+    </div>
       <div className="flex-1   flex flex-col justify-center items-center p-6">
+      <motion.div
+        className="flex-1 flex flex-col justify-center items-center p-6"
+        initial={{ x: 100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        exit={{ x: 100, opacity: 0 }}
+        transition={{ duration: 0.8, ease: [0.68, -0.55, 0.27, 1.55] }}
+      >
         <h2 className="text-2xl font-bold mb-2">User Reset Passowrd</h2>
         <p className="text-gray-600 mb-4">Kindly Reset your Password</p>
         <Formik
@@ -98,6 +117,7 @@ const TutorResetPass: React.FC = () => {
             </Form>
           )}
         </Formik>
+        </motion.div>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import  { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -17,25 +17,20 @@ interface Option {
   text: string;
   isCorrect: boolean;
 }
-
 interface Quiz {
   question: string;
   options: Option[];
 }
-
 interface Lesson {
   title: string;
   video: string | null;
   description: string;
   quizzes: Quiz[];
 }
-
 interface Section {
   title: string;
   lessons: Lesson[];
 }
-
-// Define the validation schema
 const validationSchema = Yup.object().shape({
   sections: Yup.array()
     .of(
@@ -65,18 +60,15 @@ interface AddLessonProps {
 const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
   const dispatch = useDispatch();
   const savedLessons = useSelector((state: RootState) => state.course.sections);
-
   console.log("savedddddddddddddddddddd", savedLessons);
-
   const generateUniqueFileName = (originalName: string): string => {
     const uniqueId = uuidv4();
-    const extension = originalName.split(".").pop(); // Get the file extension
-    return `${uniqueId}.${extension}`; // Return unique name with extension
+    const extension = originalName.split(".").pop(); 
+    return `${uniqueId}.${extension}`; 
   };
-
   const fileInputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
   const [previewUrls, setPreviewUrls] = useState<{ [key: string]: string }>({});
-  const [expandedSections, setExpandedSections] = useState<number[]>([]); // Track expanded sections
+  const [expandedSections, setExpandedSections] = useState<number[]>([]); 
   const [expandedLessons, setExpandedLessons] = useState<{
     [key: string]: boolean;
   }>({});
@@ -95,7 +87,6 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
     }
   }, [savedLessons]);
 
-  // Handle file change and preview
   const handleFileChange =
     (
       sectionIndex: number,
@@ -107,12 +98,10 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
       const file = event.currentTarget.files?.[0];
       if (file) {
         const uniqueFileName = generateUniqueFileName(file.name);
-
         setFieldValue(
           `sections.${sectionIndex}.lessons.${lessonIndex}.video`,
           uniqueFileName
-        ); // Store the file name
-
+        );
         const url = URL.createObjectURL(file);
         setPreviewUrls((prevUrls) => ({
           ...prevUrls,
@@ -120,14 +109,11 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
         }));
       }
     };
-
-  // Toggle section expansion
   const toggleSection = (index: number) => {
     setExpandedSections((prev) =>
       prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
     );
   };
-
   const toggleLesson = (sectionIndex: number, lessonIndex: number) => {
     const key = `${sectionIndex}-${lessonIndex}`;
     setExpandedLessons((prev) => ({
@@ -135,7 +121,6 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
       [key]: !prev[key],
     }));
   };
-
   // Handle the video upload to S3
   const handleUploadClick = async (
     sectionIndex: number,
@@ -150,13 +135,12 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
     }
 
     try {
-      // Request a pre-signed URL from the API Gateway
       const response = await axios.get(
         tutorEndpoints.getPresignedUrlForUpload,
         {
           params: {
             filename: videoName,
-            fileType: "video/*", // Or the actual file type if known
+            fileType: "video/*", 
           },
         }
       );
@@ -195,13 +179,10 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
       toast.error("Failed to upload video.");
     }
   };
-  // Video preview component
   const VideoPreview = ({ url }: { url: string }) => {
     if (!url) return null;
 
-    // Check if the URL is a blob URL (local preview) or an S3 URL
     const isS3Url = url.includes("amazonaws.com");
-
     return (
       <div className="mt-4">
         <video
@@ -220,7 +201,6 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
       </div>
     );
   };
-
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Add Lessons</h2>
@@ -254,17 +234,13 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
             ...section,
             lessons: section.lessons.map((lesson) => ({
               ...lesson,
-              // Keep video as File or null, as expected
               video: lesson.video,
               quizzes: lesson.quizzes.map((quiz) => ({
                 ...quiz,
               })),
             })),
           }));
-
           console.log("dddddddddd", updatedSections);
-
-          // Dispatch the action to save the lessons
           dispatch(saveLessons(updatedSections));
           onNext();
         }}
@@ -303,7 +279,6 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
                           </button>
                         </div>
                       </div>
-
                       {expandedSections.includes(sectionIndex) && (
                         <div className="mt-4 space-y-6">
                           {/* Section Title */}
@@ -322,7 +297,6 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
                               className="text-red-500 mt-1"
                             />
                           </div>
-
                           {/* Lessons */}
                           <FieldArray name={`sections.${sectionIndex}.lessons`}>
                             {({ remove, push: pushLesson }) => (
@@ -392,7 +366,6 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
                                         </button>
                                       </div>
                                     </div>
-
                                     {/* Lesson Content */}
                                     {expandedLessons[
                                       `${sectionIndex}-${lessonIndex}`
@@ -429,7 +402,6 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
                                                 className="text-red-500 text-sm mt-1"
                                               />
                                             </div>
-
                                             {/* Lesson Description */}
                                             <div className="space-y-2">
                                               <label className="flex items-center space-x-2 text-gray-700 font-medium">
@@ -460,7 +432,6 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
                                               />
                                             </div>
                                           </div>
-
                                           {/* Right Column - Video */}
                                           <div className="space-y-6 ">
                                             <div className="space-y-2">
@@ -544,7 +515,6 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
                                                     </p>
                                                   </div>
                                                 )}
-
                                                 {/* Upload Controls */}
                                                 <div className="space-y-3 mt-6">
                                                   <div className="flex items-center justify-center">
@@ -569,7 +539,6 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
                                                       />
                                                     </label>
                                                   </div>
-
                                                   <button
                                                     type="button"
                                                     className="w-full flex items-center justify-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -614,7 +583,6 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
                                           <h3 className="text-xl font-semibold text-gray-800">
                                             Quiz
                                           </h3>
-
                                           <FieldArray
                                             name={`sections.${sectionIndex}.lessons.${lessonIndex}.quizzes`}
                                           >
@@ -646,7 +614,6 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
                                                             className="input-field py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none h-24 md:h-36"
                                                           />
                                                         </div>
-
                                                         {/* Answer Options on the Right */}
                                                         <div className="options-container space-y-4">
                                                           <FieldArray
@@ -699,7 +666,6 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
                                                                     </div>
                                                                   )
                                                                 )}
-
                                                                 {/* Add Option Button */}
                                                                 <button
                                                                   type="button"
@@ -734,7 +700,6 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
                                                       </div>
                                                     )
                                                   )}
-
                                                 {/* Add Quiz Button */}
                                                 <button
                                                   type="button"
@@ -765,7 +730,6 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
                                     )}
                                   </div>
                                 ))}
-
                                 {/* Add Lesson Button */}
                                 <button
                                   type="button"
@@ -826,7 +790,6 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
                 </div>
               )}
             </FieldArray>
-
             <div className="flex justify-between mt-6">
               <button
                 type="button"
@@ -848,5 +811,4 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
     </div>
   );
 };
-
 export default AddLesson;

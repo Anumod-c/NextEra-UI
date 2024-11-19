@@ -1,5 +1,4 @@
-// src/components/user/ReviewCard.tsx
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
 import ProfilePicture from "../../assets/profile.png";

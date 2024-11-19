@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import TutorNavbar from '../../components/tutor/TutorNavbar';
 import TutorSidebar from '../../components/tutor/TutorSidebar';
 import AddCourse from '../../components/tutor/AddCourse';
@@ -7,13 +7,9 @@ import CourseProgress from '../../components/tutor/CourseProgress';
 import AddLesson from '../../components/tutor/AddLesson';
 import CourseSummary from '../../components/tutor/CourseSummary';
 
-// Define the type for a lesson
-
 const Course: React.FC = () => {
   const [step, setStep] = useState<number>(1);
-
   const totalSteps = 4;
-
 
   const handleNext = () => {
     setStep(prev => prev + 1);
@@ -37,7 +33,7 @@ const Course: React.FC = () => {
           {step === 1 && (
             <AddCourse
               onNext={handleNext}
-              onBack={() => {}}
+              onBack={() => { }}
             />
           )}
           {step === 2 && (
@@ -45,7 +41,6 @@ const Course: React.FC = () => {
               <AddCourse2
                 onNext={handleNext}
                 onBack={handleBack} // Pass back handler
-                
               />
             </>
           )}
@@ -59,7 +54,7 @@ const Course: React.FC = () => {
           )}
           {step === 4 && (
             <CourseSummary
-              onBack={handleBack}             
+              onBack={handleBack}
             />
           )}
         </div>
@@ -67,5 +62,4 @@ const Course: React.FC = () => {
     </div>
   );
 };
-
 export default Course;

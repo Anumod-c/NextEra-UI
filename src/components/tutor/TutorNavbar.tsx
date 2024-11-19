@@ -1,45 +1,41 @@
 import { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import { clearTutorDetails } from "../../redux/tutorSlice";
 
 const TutorNavbar = () => {
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  const handleLogout = () => {
+    Cookies.remove("tutorToken");
+    Cookies.remove("tutorRefreshToken");
+    Cookies.remove("tutorId");
+
+    dispatch(clearTutorDetails()); 
+    navigate("/tutor");
+  };
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    setIsMenuOpen(false); 
+  };
+
   return (
-    <nav className="shadow-lg bg-gradient-to-b  from-blue-200 to-purple-200  text-black">
-      <div className="  mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="shadow-lg bg-gradient-to-b from-blue-200 to-purple-200 text-black">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <a href="/" className="text-xl font-bold">
-              Nextera
-            </a>
-          </div>
-
-          {/* Search Bar */}
-          {/* <div className=" md:flex flex-grow mx-4">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-full p-2 rounded-md shadow-lg text-black"
-            />
-          </div> */}
-
-          {/* Desktop Menu */}
-          <div className="hidden justify-center items-center p-4 m-4 md:flex space-x-4">
-            {/* <a href="#" className="hover:text-gray-400">
-              My Course
-            </a>
-            <a href="#" className="hover:text-gray-400">
-              Discussion
-            </a> */}
-            {/* <button className=" px-3 py-2 rounded-md flex items-center">
-              <img className="w-12 h-12 rounded-full" src={ProfilePicture||profileImage} alt="" />
-            </button> */}
+            <button onClick={() => handleNavigation("/")}>
+              <span className="text-xl font-bold">Nextera</span>
+            </button>
           </div>
 
           {/* Mobile Menu Icon */}
@@ -54,15 +50,36 @@ const TutorNavbar = () => {
       {/* Mobile Menu Dropdown */}
       {isMenuOpen && (
         <div className="md:hidden px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          <a href="#" className="block text-center py-2 hover:bg-gray-700">
+          <button
+            onClick={() => handleNavigation("/tutor/dashboard")}
+            className="block text-center py-2 hover:bg-gray-700"
+          >
+            Dashboard
+          </button>
+          <button
+            onClick={() => handleNavigation("/tutor/courselist")}
+            className="block text-center py-2 hover:bg-gray-700"
+          >
             My Course
-          </a>
-          <a href="#" className="block text-center py-2 hover:bg-gray-700">
-            Discussion
-          </a>
-          <a href="#" className="block text-center py-2 hover:bg-gray-700">
+          </button>
+          <button
+            onClick={() => handleNavigation("/tutor/payouts")}
+            className="block text-center py-2 hover:bg-gray-700"
+          >
+            Payouts
+          </button>
+          <button
+            onClick={() => handleNavigation("/tutor/profile")}
+            className="block text-center py-2 hover:bg-gray-700"
+          >
             Profile
-          </a>
+          </button>
+          <button
+            onClick={handleLogout}
+            className="block text-center py-2 hover:bg-gray-700"
+          >
+            Signout
+          </button>
         </div>
       )}
     </nav>

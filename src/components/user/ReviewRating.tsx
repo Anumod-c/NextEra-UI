@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import  { useEffect, useState } from "react";
 import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
 import StarIcon from "@mui/icons-material/Star";
@@ -39,11 +39,11 @@ interface Review {
 }
 
 const ReviewRating: React.FC<ReviewRatingProps> = ({ userId, courseId }) => {
-  const [rating, setRating] = React.useState<number | null>(3);
-  const [hover, setHover] = React.useState(-1);
-  const [review, setReview] = React.useState<string>("");
-  const [error, setError] = React.useState<string | null>(null);
-  const [reviews, setReviews] = React.useState<Review[]>([]); // Updated type for reviews state
+  const [rating, setRating] = useState<number | null>(3);
+  const [hover, setHover] = useState(-1);
+  const [review, setReview] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+  const [reviews, setReviews] = useState<Review[]>([]); 
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -104,12 +104,10 @@ const ReviewRating: React.FC<ReviewRatingProps> = ({ userId, courseId }) => {
   return (
     <Box className="flex flex-col p-4 rounded-md shadow-md max-w-md mx-auto my-4">
       <p className="text-lg font-semibold">Rate and Review this Course</p>
-
       <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
         <Rating
           name="hover-feedback"
           value={rating}
-          
           precision={0.5}
           getLabelText={getLabelText}
           onChange={(_, newValue) => setRating(newValue)}
@@ -121,7 +119,6 @@ const ReviewRating: React.FC<ReviewRatingProps> = ({ userId, courseId }) => {
           <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : rating]}</Box>
         )}
       </Box>
-
       <TextField
         label="Write your review"
         multiline
@@ -134,7 +131,6 @@ const ReviewRating: React.FC<ReviewRatingProps> = ({ userId, courseId }) => {
         variant="outlined"
         placeholder="Share your thoughts about this course..."
       />
-
       <Button
         variant="contained"
         color="primary"
@@ -143,7 +139,7 @@ const ReviewRating: React.FC<ReviewRatingProps> = ({ userId, courseId }) => {
       >
         Post Review
       </Button>
-
+      
       {/* Display list of reviews */}
       <Box className="mt-4">
         <p className="text-lg font-semibold mb-2">Reviews:</p>

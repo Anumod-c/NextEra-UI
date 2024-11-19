@@ -1,23 +1,22 @@
-import Payouts from '../../components/tutor/Payouts'
-import TutorSidebar from '../../components/tutor/TutorSidebar'
-import TutorNavbar from '../../components/tutor/TutorNavbar'
-import TutorHeader from '../../components/tutor/TutorHeader'
-import Footer from './Footer'
+import Payouts from "../../components/tutor/Payouts";
+import TutorSidebar from "../../components/tutor/TutorSidebar";
+import TutorNavbar from "../../components/tutor/TutorNavbar";
+import TutorHeader from "../../components/tutor/TutorHeader";
+import Footer from "./Footer";
 
 function PayoutListPage() {
   return (
     <div>
-         <TutorNavbar />
-    <TutorHeader />
-    <div className="flex  p-4">
-      <TutorSidebar  />
-      <div className="flex-grow bg-white-100 mt-4 p-4">
-        <Payouts/>
+      <TutorNavbar />
+      <TutorHeader />
+      <div className="flex  p-4">
+        <TutorSidebar />
+        <div className="flex-grow bg-white-100 mt-4 p-4">
+          <Payouts />
+        </div>
       </div>
+      <Footer />
     </div>
-    <Footer />
-    </div>
-  )
+  );
 }
-
-export default PayoutListPage
+export default PayoutListPage;

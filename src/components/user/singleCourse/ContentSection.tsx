@@ -1,15 +1,28 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import SchoolIcon from "@mui/icons-material/School";
 import StarIcon from "@mui/icons-material/Star";
 import TranslateIcon from "@mui/icons-material/Translate";
 import { RiCheckDoubleLine } from "react-icons/ri";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import CloseIcon from "@mui/icons-material/Close";
-import {MdOndemandVideo} from 'react-icons/md'
+import { MdOndemandVideo } from "react-icons/md";
+import { IoNewspaperSharp } from "react-icons/io5";
+
+interface Option {
+  text: string;
+  isCorrect: boolean;
+}
+
+interface Quiz {
+  question: string;
+  options: Option[];
+}
+
 interface Lesson {
   title: string;
   video?: string;
   description: string;
+  quizzes: Quiz[];
 }
 
 interface Section {
@@ -20,7 +33,7 @@ interface Section {
 interface CourseProps {
   course: {
     title: string;
-    
+
     description: string;
     demoURL: string;
     benefits: string[];
@@ -28,7 +41,6 @@ interface CourseProps {
     sections: Section[];
     averageRating?: number;
     enrolledUsers?: string[];
-    // language?: string;
   };
 }
 
@@ -40,7 +52,8 @@ const ContentSection: React.FC<CourseProps> = ({ course }) => {
   };
 
   const extractVideoId = (url: string): string => {
-    const regExp = /^.*(youtu\.be\/|v\/|\/u\/\w\/|embed\/|watch\?v=|&v=|m\.youtube\.com\/watch\?v=)([^#&?]*).*/;
+    const regExp =
+      /^.*(youtu\.be\/|v\/|\/u\/\w\/|embed\/|watch\?v=|&v=|m\.youtube\.com\/watch\?v=)([^#&?]*).*/;
     const match = url.match(regExp);
     return match && match[2].length === 11 ? match[2] : "";
   };
@@ -53,7 +66,7 @@ const ContentSection: React.FC<CourseProps> = ({ course }) => {
           <div className="flex items-center space-x-16">
             <div className="flex items-center  p-4 space-x-2">
               <StarIcon className="text-amber-400" />
-              <p>{course.averageRating?.toFixed(2)||0} rating</p>
+              <p>{course.averageRating?.toFixed(2) || 0} rating</p>
             </div>
             <div className="flex items-center space-x-2">
               <SchoolIcon className="text-violet-800" />
@@ -111,51 +124,63 @@ const ContentSection: React.FC<CourseProps> = ({ course }) => {
           </div>
         </div>
 
-       {/* Course Sections */}
-<div className="bg-gray-50 p-4 rounded-lg">
-  <h3 className="text-2xl font-semibold mb-4">Sections</h3>
-  {course.sections.map((section, index) => (
-    <div className="section-card mb-4" key={index}>
-      <div
-        className="flex justify-between items-center cursor-pointer p-4 bg-white shadow-md rounded-md"
-        onClick={() => toggleSection(index)}
-      >
-        <div className="text-lg font-medium">{section.title}</div>
-        {openSection === index ? <CloseIcon /> : <ArrowDropDownIcon />}
-      </div>
-      {openSection === index && (
-        <div className="p-4 bg-white mt-2 shadow-md rounded-md">
-        {section.lessons.map((lesson, lessonIndex) => (
-          <div
-            className="lesson-card mb-4 p-4 border-b w-full border-gray-200"
-            key={lessonIndex}
-          >
-            {/* For small devices: Video first, then title, then description */}
-            <div className="flex flex-col md:flex-row justify-center items-center md:space-x-4">
-              
-              {/* Video Section with Icon Overlaid on Thumbnail */}
-              <div className="w-full md:w-1/3 mb-4 md:mb-0 relative">
-                {/* Placeholder video thumbnail */}
-                <div className="relative w-full h-40 bg-gray-200 rounded-md overflow-hidden shadow-md">
-                  <MdOndemandVideo className="absolute inset-0 m-auto text-6xl text-gray-600 opacity-70" />
+        {/* Course Sections */}
+        <div className="bg-gray-50 p-4 rounded-lg">
+          <h3 className="text-2xl font-semibold mb-4">Sections</h3>
+          {course.sections.map((section, index) => (
+            <div className="section-card mb-4" key={index}>
+              <div
+                className="flex justify-between items-center cursor-pointer p-4 bg-white shadow-md rounded-md"
+                onClick={() => toggleSection(index)}
+              >
+                <div className="text-lg font-medium">{section.title}</div>
+                {openSection === index ? <CloseIcon /> : <ArrowDropDownIcon />}
+              </div>
+              {openSection === index && (
+                <div className="p-4 bg-white mt-2 shadow-md rounded-md">
+                  {section.lessons.map((lesson, lessonIndex) => (
+                    <div
+                      className="lesson-card mb-4 p-4 border-b w-full border-gray-200"
+                      key={lessonIndex}
+                    >
+                      <div className="flex flex-col md:flex-row justify-center items-center md:space-x-4">
+                        <div className="w-full md:w-1/3 mb-4 md:mb-0 relative">
+                          <div className="relative w-full h-40 bg-gray-200 rounded-md overflow-hidden shadow-md">
+                            <MdOndemandVideo className="absolute inset-0 m-auto text-6xl text-gray-600 opacity-70" />
+                          </div>
+                        </div>
+                        {/* Title and Description Section */}
+                        <div className="w-full md:w-2/3 text-center md:text-left">
+                          <h4 className="text-xl font-semibold mt-2 md:mt-0">
+                            {lesson.title}
+                          </h4>
+                          <p className="mt-2 text-gray-600">
+                            {lesson.description}
+                          </p>
+                          {lesson.quizzes && lesson.quizzes.length > 0 && (
+                            <div className="mt-4 p-6 bg-blue-50 rounded-lg shadow-md flex items-center justify-between">
+                              <div className="flex items-center space-x-4">                               
+                                <IoNewspaperSharp className="text-blue-500 text-4xl" />
+                                <div>
+                                  <h4 className="text-lg font-semibold text-blue-700">
+                                    Quiz Available!
+                                  </h4>
+                                  <p className="text-sm text-gray-600">
+                                    Test your understanding of this lesson.
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              </div>
-      
-              {/* Title and Description Section */}
-              <div className="w-full md:w-2/3 text-center md:text-left">
-                <h4 className="text-xl font-semibold mt-2 md:mt-0">{lesson.title}</h4>
-                <p className="mt-2 text-gray-600">{lesson.description}</p>
-              </div>
+              )}
             </div>
-          </div>
-        ))}
-      </div>
-      
-      )}
-    </div>
-  ))}
-</div>
-
+          ))}
+        </div>
       </div>
     </div>
   );

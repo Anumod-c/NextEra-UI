@@ -1,4 +1,3 @@
-import React from "react";
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 import profileImage from "../../assets/profile.png";
 import { useNavigate } from "react-router-dom";
@@ -31,8 +30,7 @@ const TutorProfile: React.FC = () => {
             src={profilePicture || profileImage}
             alt={`${name}'s profile`}
             className="w-full h-full object-cover rounded-full shadow-md"
-          />
-          
+          />          
         </div>
         <div>
           <h1 className="text-3xl font-semibold text-gray-800">{name}</h1>
@@ -71,7 +69,6 @@ const TutorProfile: React.FC = () => {
               <p className="text-gray-600 font-medium">Name</p>
               <p className="text-gray-900">{name || "Unknown User"}</p>
             </div>
-
             <div className="bg-gray-50 p-2 rounded-md border shadow-md">
               <p className="text-gray-600 font-medium">Email</p>
               <p className="text-gray-900">{email || "john.doe@example.com"}</p>
@@ -82,7 +79,6 @@ const TutorProfile: React.FC = () => {
             </div>
           </div>
         </div>
-
         <div className="p-4 bg-gray-50 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold text-gray-800 mb-3">About Me</h2>
           <p className="text-gray-600">{bio || "No bio available."}</p>

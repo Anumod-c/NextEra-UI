@@ -1,6 +1,6 @@
 import { Player } from "@lottiefiles/react-lottie-player";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom"; // Importing Link for navigation
+import { Link } from "react-router-dom";
 
 const Banner: React.FC = () => {
   return (
@@ -16,7 +16,7 @@ const Banner: React.FC = () => {
           <Player
             autoplay
             loop
-            src="https://lottie.host/5b087d75-ddb5-42cd-89a8-f1de45f89dd4/xwPlWyiQCa.json" style={{ height: "400px", width: "400px" }} // Adjusted size
+            src="https://lottie.host/5b087d75-ddb5-42cd-89a8-f1de45f89dd4/xwPlWyiQCa.json" style={{ height: "400px", width: "400px" }} 
           />
         </motion.div>
       </div>
@@ -32,8 +32,8 @@ const Banner: React.FC = () => {
           collaborate with peers, and track your progress on your educational
           journey.
         </p>
-        <Link 
-          to="/allCourse" 
+        <Link
+          to="/allCourse"
           className="inline-block px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold shadow-md transition-transform transform hover:scale-105"
         >
           Explore Courses

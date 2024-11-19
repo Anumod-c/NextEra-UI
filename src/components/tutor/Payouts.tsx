@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { Pagination } from "@mui/material";
 
 import { tutorEndpoints } from "../../constraints/endpoints/tutorEndpoints";
@@ -25,7 +25,7 @@ const Payouts: React.FC = () => {
       try {
         const response = await tutorAxios.get(tutorEndpoints.payouts, {
           params: { tutorId, page, limit: 6 },
-          
+
         });
         console.log(response.data);
         if (response.data.success) {
@@ -62,7 +62,6 @@ const Payouts: React.FC = () => {
               <th className="p-2 text-left">Title</th>
               <th className="p-2 text-left">Price</th>
               <th className="p-2 text-left">payouts</th>
-              {/* Add more columns as needed */}
             </tr>
           </thead>
           <tbody>
@@ -78,7 +77,6 @@ const Payouts: React.FC = () => {
                 <td className="p-2">{payout.title}</td>
                 <td className="p-2">{payout.price}</td>
                 <td className="p-2 text-green-600">+{payout.tutorShare}</td>
-                {/* Add more cells as needed */}
               </tr>
             ))}
           </tbody>

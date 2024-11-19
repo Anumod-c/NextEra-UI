@@ -19,5 +19,4 @@ function CourseListPage() {
   </div>
   )
 }
-
 export default CourseListPage

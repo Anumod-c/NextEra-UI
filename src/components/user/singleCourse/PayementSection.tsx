@@ -1,16 +1,14 @@
-import React from 'react';
-import StarIcon from '@mui/icons-material/Star';
-import TutorImage from '../../../assets/profile.png';
-import { toast } from 'sonner';
-import userAxios from '../../../constraints/axios/userAxios';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../redux/store';
-import { loadStripe } from '@stripe/stripe-js'
-import { userEndpoints } from '../../../constraints/endpoints/userEndPoints';
-import { useDispatch } from 'react-redux';
-import { setOrderData } from '../../../redux/OrderDataSlice';
-import { useNavigate } from 'react-router-dom';
-import { FaHeart } from "react-icons/fa";
+import StarIcon from "@mui/icons-material/Star";
+import TutorImage from "../../../assets/profile.png";
+import { toast } from "sonner";
+import userAxios from "../../../constraints/axios/userAxios";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
+import { loadStripe } from "@stripe/stripe-js";
+import { userEndpoints } from "../../../constraints/endpoints/userEndPoints";
+import { useDispatch } from "react-redux";
+import { setOrderData } from "../../../redux/OrderDataSlice";
+import { useNavigate } from "react-router-dom";
 interface Lesson {
   title: string;
   video?: string;
@@ -41,18 +39,20 @@ interface PaymentProps {
   };
 }
 
-
 export const PaymentSection: React.FC<PaymentProps> = ({ course, tutor }) => {
-  const dispatch = useDispatch()
-  const user = useSelector((state: RootState) => state.user)
-  const totalLessons = course.sections.reduce((count, section) => count + section.lessons.length, 0);
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user);
+  const totalLessons = course.sections.reduce(
+    (count, section) => count + section.lessons.length,
+    0
+  );
   const userId = useSelector((state: RootState) => state.user.id);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handlePayement = async (courseId: string) => {
     if (!userId) {
-      toast.error("You need to be logged in to make a purchase."); // Show a toast message
-      navigate('/login'); // Redirect to the login page
+      toast.error("You need to be logged in to make a purchase."); 
+      navigate("/login"); 
       return;
     }
     try {
@@ -69,90 +69,88 @@ export const PaymentSection: React.FC<PaymentProps> = ({ course, tutor }) => {
         level: course.level,
         totalLessons: totalLessons,
         discountPrice: course.discountPrice,
-
-
-      }
-
+      };
 
       console.log("course Idddd", courseId, "userID", user.id);
-
-
-      // payement API be completed
-
-      const response = await userAxios.post(userEndpoints.makepayement, courseData);
-      console.log('hayyyy stripe', response.data);
-      dispatch(setOrderData(response.data.orderData))
+      const response = await userAxios.post(
+        userEndpoints.makepayement,
+        courseData
+      );
+      console.log("hayyyy stripe", response.data);
+      dispatch(setOrderData(response.data.orderData));
       const sessionId = response.data.sessionId;
-
       if (stripe && sessionId) {
-        console.log("stripeIDddddd")
+        console.log("stripeIDddddd");
         const result = await stripe.redirectToCheckout({ sessionId });
-
         if (result.error) {
-          toast.error(result.error.message)
+          toast.error(result.error.message);
         }
       } else {
-        toast.error("Something went wrong please try again later.")
+        toast.error("Something went wrong please try again later.");
       }
-
-
     } catch (error) {
-      toast.error("Couldnt buy Course")
+      toast.error("Couldnt buy Course");
     }
-  }
+  };
   return (
-    <div className='payment-section p-4 col-span-1 flex flex-col shadow-xl rounded-lg bg-white md:max-w-xs max-w-full'>
+    <div className="payment-section p-4 col-span-1 flex flex-col shadow-xl rounded-lg bg-white md:max-w-xs max-w-full">
       {/* Price Section */}
-      <div className='price mb-4 text-center'>
-        <h1 className='text-4xl font-bold'>₹ {course.discountPrice || course.price}</h1>
+      <div className="price mb-4 text-center">
+        <h1 className="text-4xl font-bold">
+          ₹ {course.discountPrice || course.price}
+        </h1>
       </div>
 
       {/* Additional Information Section */}
-      <div className='additional-information mb-4 bg-gray-50 p-4 rounded-lg shadow-sm'>
-        <h2 className='text-xl font-semibold mb-2'>This course includes</h2>
-        <div className='flex justify-between mb-2'>
-          <p className='text-md'>Lectures</p>
-          <p className='text-md'>{totalLessons}</p>
+      <div className="additional-information mb-4 bg-gray-50 p-4 rounded-lg shadow-sm">
+        <h2 className="text-xl font-semibold mb-2">This course includes</h2>
+        <div className="flex justify-between mb-2">
+          <p className="text-md">Lectures</p>
+          <p className="text-md">{totalLessons}</p>
         </div>
-        <div className='flex justify-between mb-2'>
-          <p className='text-md'>Level</p>
-          <p className='text-md'>{course.level || 'N/A'}</p>
+        <div className="flex justify-between mb-2">
+          <p className="text-md">Level</p>
+          <p className="text-md">{course.level || "N/A"}</p>
         </div>
-        <div className='flex justify-between mb-2'>
-          <p className='text-md'>Language</p>
-          <p className='text-md'>{course.language || 'English'}</p>
+        <div className="flex justify-between mb-2">
+          <p className="text-md">Language</p>
+          <p className="text-md">{course.language || "English"}</p>
         </div>
       </div>
 
       {/* Buy Now Button */}
-      <div className='button mb-4 flex items-center justify-between'>
-  <button 
-    onClick={() => handlePayement(course._id)} 
-    className='w-full bg-green-500 text-white py-2 rounded-md text-lg shadow hover:bg-green-600 mr-4'
-  >
-    Buy Now
-  </button>
-  <FaHeart className="text-3xl text-red-500 cursor-pointer" /> {/* Solid heart icon */}
-</div>
-
+      <div className="button mb-4 flex items-center justify-between">
+        <button
+          onClick={() => handlePayement(course._id)}
+          className="w-full bg-green-500 text-white py-2 rounded-md text-lg shadow hover:bg-green-600 mr-4"
+        >
+          Enroll Now
+        </button>
+      </div>
 
       {/* Tutor Details Section */}
-      <div className='tutor-details bg-gray-50 p-4 rounded-lg shadow-sm'>
-        <div className='img-name flex items-center mb-4'>
-          <img className='rounded-full w-16 h-16 mr-4' src={TutorImage} alt='Tutor' />
-          <div className='flex flex-col '>
-          <div className='text-lg font-semibold'>  {tutor?.name || 'Instructor Name'}</div>
-          <p className='text-gray-500'>Instructor</p>
-
+      <div className="tutor-details bg-gray-50 p-4 rounded-lg shadow-sm">
+        <div className="img-name flex items-center mb-4">
+          <img
+            className="rounded-full w-16 h-16 mr-4"
+            src={TutorImage}
+            alt="Tutor"
+          />
+          <div className="flex flex-col ">
+            <div className="text-lg font-semibold">
+              {" "}
+              {tutor?.name || "Instructor Name"}
+            </div>
+            <p className="text-gray-500">Instructor</p>
           </div>
         </div>
-        <div className='rating flex items-center'>
-          <StarIcon style={{ color: 'gold' }} />
-          <StarIcon style={{ color: 'gold' }} />
-          <StarIcon style={{ color: 'gold' }} />
-          <StarIcon style={{ color: 'gold' }} />
-          <StarIcon style={{ color: 'gold' }} />
-          <p className='ml-2 text-md'>{course.rating || 'N/A'}</p>
+        <div className="rating flex items-center">
+          <StarIcon style={{ color: "gold" }} />
+          <StarIcon style={{ color: "gold" }} />
+          <StarIcon style={{ color: "gold" }} />
+          <StarIcon style={{ color: "gold" }} />
+          <StarIcon style={{ color: "gold" }} />
+          <p className="ml-2 text-md">{course.rating || "N/A"}</p>
         </div>
       </div>
     </div>

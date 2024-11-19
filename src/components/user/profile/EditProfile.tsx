@@ -11,7 +11,6 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../../../redux/userSlice";
 import { useNavigate } from "react-router-dom";
 
-// Initial values for the form
 const initialValues = {
   name: "",
   email: "",
@@ -24,7 +23,6 @@ const initialValues = {
   twitter: "",
 };
 
-// Yup validation schema
 const validationSchema = Yup.object({
   name: Yup.string().required("Name is required"),
   email: Yup.string()
@@ -37,28 +35,23 @@ const validationSchema = Yup.object({
     .min(1, "Age must be a positive number")
     .required("Age is required"),
   bio: Yup.string().required("Bio is required"),
-  // instagram: Yup.string().url("Invalid Instagram URL"),
-  // facebook: Yup.string().url("Invalid Facebook URL"),
-  // linkedin: Yup.string().url("Invalid LinkedIn URL"),
-  // twitter: Yup.string().url("Invalid Twitter URL"),
 });
 
 const EditProfile: React.FC = () => {
   const navigate = useNavigate()
-  const dispatch =useDispatch()
-  const { id,email, name, phone, bio, age,instagram,twitter,facebook,linkedin} = useSelector(
+  const dispatch = useDispatch()
+  const { id, email, name, phone, bio, age, instagram, twitter, facebook, linkedin } = useSelector(
     (state: RootState) => state.user
   );
 
-  const handleSubmit = async(values: typeof initialValues) => {
-    const response = await userAxios.post(userEndpoints.editProfile,{...values,id});
-    if(!response.data.success){
-         toast.error("Couldnt save")
-
-    }else
-    dispatch(setUser({id,...values}))
+  const handleSubmit = async (values: typeof initialValues) => {
+    const response = await userAxios.post(userEndpoints.editProfile, { ...values, id });
+    if (!response.data.success) {
+      toast.error("Couldnt save")
+    } else
+      dispatch(setUser({ id, ...values }))
     navigate('/profile')
-   toast.success("Profile updated successfully")
+    toast.success("Profile updated successfully")
   };
 
   return (
@@ -66,7 +59,6 @@ const EditProfile: React.FC = () => {
       <UserNavbar />
       <div className="max-w-4xl mx-auto my-10 bg-white p-8 rounded-lg shadow-lg">
         <h1 className="text-2xl font-semibold mb-6">Edit Profile</h1>
-
         <Formik
           initialValues={{
             name: name || "",
@@ -74,10 +66,10 @@ const EditProfile: React.FC = () => {
             phone: phone || "",
             age: age || 0,
             bio: bio || "",
-            instagram:instagram|| "",
-            facebook: facebook||"",
-            linkedin:linkedin|| "",
-            twitter:twitter|| "",
+            instagram: instagram || "",
+            facebook: facebook || "",
+            linkedin: linkedin || "",
+            twitter: twitter || "",
           }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
@@ -117,14 +109,9 @@ const EditProfile: React.FC = () => {
                     <div >
                       <label className="block  mb-1 font-medium">Email</label>
                       <p className="border bg-gray-100  p-3 w-full rounded-md ">
-                        
+
                         {email}
-                        </p>
-                      {/* <ErrorMessage
-                        name="email"
-                        component="div"
-                        className="text-red-500 text-sm mt-1"
-                      /> */}
+                      </p>
                     </div>
                     <div>
                       <label className="block mb-1 font-medium">Phone</label>
@@ -230,7 +217,6 @@ const EditProfile: React.FC = () => {
                   </div>
                 </div>
               </div>
-
               <button
                 type="submit"
                 className="mt-6 w-full bg-green-500 text-white py-3 rounded-md hover:bg-green-600 transition duration-200 ease-in-out"

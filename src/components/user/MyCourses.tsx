@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import StarIcon from '@mui/icons-material/Star';
 
 import { useNavigate } from 'react-router-dom';
 import SkeltonCourse from './skelton/SkeltonCourse';
 import userAxios from '../../constraints/axios/userAxios';
+import { Rating } from '@mui/material';
 
 
 interface TutorDetails {
@@ -20,16 +20,17 @@ interface Course {
   discountPrice: number;
   thumbnail: string;
   tutorDetails: TutorDetails;
+  averageRating?: number
 }
 
-interface CourseProps{
-  fetchUrl:string;
-  title:string;
-  subTitle?:string;
-  purchasedCourses:string[];
+interface CourseProps {
+  fetchUrl: string;
+  title: string;
+  subTitle?: string;
+  purchasedCourses: string[];
 }
 
-const MyCourses: React.FC<CourseProps> = ({fetchUrl,title,subTitle,purchasedCourses}) => {
+const MyCourses: React.FC<CourseProps> = ({ fetchUrl, title, subTitle, purchasedCourses }) => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -39,22 +40,21 @@ const MyCourses: React.FC<CourseProps> = ({fetchUrl,title,subTitle,purchasedCour
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await userAxios.post(fetchUrl,purchasedCourses);
+        const response = await userAxios.post(fetchUrl, purchasedCourses);
         console.log('response from fetching courses', response.data);
-        //  response.data.courses is an array of courses
         const coursesData: Course[] = response.data.courses.map((course: Course) => ({
           _id: course._id,
           title: course.title,
           price: course.price,
           discountPrice: course.discountPrice,
           thumbnail: course.thumbnail,
-          tutorDetails: course.tutorDetails
+          tutorDetails: course.tutorDetails,
+          averageRating: course.averageRating,
         }));
 
         setCourses(coursesData);
         setTimeout(() => {
           setLoading(false);
-
         }, 400);
       } catch (err) {
         console.error('Failed to fetch courses', err);
@@ -64,13 +64,11 @@ const MyCourses: React.FC<CourseProps> = ({fetchUrl,title,subTitle,purchasedCour
     };
 
     fetchCourses();
-  }, [fetchUrl]);
+  }, [fetchUrl, purchasedCourses]);
 
   const handleCourseClick = (coruseId: string) => {
     navigate(`/courses/${coruseId}`);
   }
-
-
 
   if (loading) return <SkeltonCourse />;
   if (error) return <p>{error}</p>;
@@ -89,33 +87,47 @@ const MyCourses: React.FC<CourseProps> = ({fetchUrl,title,subTitle,purchasedCour
         </motion.div>
         <div className="grid  grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
           {courses.map((course, index) => (
-            //make  course component
             <motion.div
               key={course._id}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: index * 0.2 }}
-              className="p-6 bg-white rounded-lg shadow-lg flex flex-col justify-between h-full cursor-pointer"
+              transition={{ duration: 0.5, delay: index * 0.15 }}
+              className="bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition-transform duration-300 cursor-pointer"
               onClick={() => handleCourseClick(course._id)}
             >
               <img
                 src={course.thumbnail}
                 alt={course.title}
-                className="w-full  md:h-40 object-cover rounded-md mb-4"
+                className="w-full h-40 object-cover rounded-md mb-4"
               />
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">{course.title}</h3>
-              <h6 className="text-sm text-gray-500 mb-4">Instructor: {course.tutorDetails.tutorDetails.name}</h6>
-              <div className="flex items-center mb-4">
-                <p className="text-xl font-semibold text-yellow-500 mr-2">4.8</p>
-                <div className="flex">
-                  <StarIcon style={{ color: 'gold' }} />
-                  <StarIcon style={{ color: 'gold' }} />
-                  <StarIcon style={{ color: 'gold' }} />
-                  <StarIcon style={{ color: 'gold' }} />
-                  <StarIcon style={{ color: 'gold' }} />
+              <h3 className="text-lg font-semibold mb-2 text-gray-800">
+                {course.title}
+              </h3>
+              <p className="text-sm text-gray-500 mb-2">
+                Instructor: {course.tutorDetails.tutorDetails.name}
+              </p>
+              {course.averageRating && course.averageRating > 0.5 && (
+                <div className="flex items-center m-2 p-2">
+                  <p className="text-md font-semibold text-yellow-500 mr-2">
+                    {course.averageRating.toFixed(2)}
+                  </p>
+                  <Rating
+                    name="course-rating"
+                    value={parseFloat(course.averageRating.toFixed(2))}
+                    precision={0.5}
+                    readOnly
+                    size="small"
+                  />
                 </div>
+              )}
+              <div className="flex justify-between items-center mt-auto">
+                <p className="text-xl font-bold text-gray-900 p-2 m-2">
+                  ${course.discountPrice}
+                </p>
+                <p className="text-sm text-red-600 line-through p-2 m-2">
+                  ${course.price}
+                </p>
               </div>
-              
             </motion.div>
           ))}
         </div>

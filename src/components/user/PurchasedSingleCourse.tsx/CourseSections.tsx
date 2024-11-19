@@ -1,9 +1,8 @@
-import React from "react";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import tutorImage from '../../../assets/profile.png';
+import tutorImage from "../../../assets/profile.png";
 import CloseIcon from "@mui/icons-material/Close";
 import VideoIcon from "@mui/icons-material/OndemandVideo";
-import StarIcon from '@mui/icons-material/Star';
+import StarIcon from "@mui/icons-material/Star";
 import ReviewRating from "../ReviewRating";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
@@ -25,8 +24,7 @@ interface Lesson {
   title: string;
   video?: string;
   description: string;
-  quizzes?:Quiz[]
-  
+  quizzes?: Quiz[];
 }
 
 interface Section {
@@ -36,7 +34,7 @@ interface Section {
 
 interface CourseSectionsProps {
   course: {
-    _id:string
+    _id: string;
     title: string;
     description: string;
     sections: Section[];
@@ -45,7 +43,7 @@ interface CourseSectionsProps {
   tutor: {
     _id: string;
     name: string;
-    profilePicture?:string;
+    profilePicture?: string;
     email: string;
     phone: number;
   };
@@ -59,16 +57,18 @@ const CourseSections: React.FC<CourseSectionsProps> = ({
   tutor,
   openSection,
   toggleSection,
-  handleVideoClick
+  handleVideoClick,
 }) => {
   console.log(tutor, "tutorfullData");
-  const userId = useSelector((state:RootState)=>state.user.id)
+  const userId = useSelector((state: RootState) => state.user.id);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleQuizClick = (lesson: Lesson) => {
     if (lesson.quizzes) {
-      dispatch(setQuizData({ lessonTitle: lesson.title, quizzes: lesson.quizzes }));
+      dispatch(
+        setQuizData({ lessonTitle: lesson.title, quizzes: lesson.quizzes })
+      );
       navigate("/quiz");
     } else {
       alert("No quizzes available for this lesson.");
@@ -89,53 +89,54 @@ const CourseSections: React.FC<CourseSectionsProps> = ({
             </div>
 
             {openSection === index && (
-  <div className="mt-4 bg-gray-50 p-4 rounded-lg shadow-sm ">
-    {section.lessons.map((lesson, lessonIndex) => (
-      <div key={lessonIndex} className="flex flex-col mb-4">
-        {/* Display Lesson Title */}
-        <div className="flex justify-between items-center  hover:bg-gray-200">
-          <p className="text-lg">{lesson.title}</p>
-          <VideoIcon
-            className="cursor-pointer  text-2xl text-blue-500"
-            onClick={() => handleVideoClick(lesson.video || '')}
-          />
-        </div>
+              <div className="mt-4 bg-gray-50 p-4 rounded-lg shadow-sm ">
+                {section.lessons.map((lesson, lessonIndex) => (
+                  <div key={lessonIndex} className="flex flex-col mb-4">
+                    {/* Display Lesson Title */}
+                    <div className="flex justify-between items-center  hover:bg-gray-200">
+                      <p className="text-lg">{lesson.title}</p>
+                      <VideoIcon
+                        className="cursor-pointer  text-2xl text-blue-500"
+                        onClick={() => handleVideoClick(lesson.video || "")}
+                      />
+                    </div>
 
-                            {/* Display Test/Exam if Quizzes Exist */}
-                            {lesson.quizzes && lesson.quizzes.length > 0 && (
+                    {/* Display Test/Exam if Quizzes Exist */}
+                    {lesson.quizzes && lesson.quizzes.length > 0 && (
                       <div
                         className="mt-2 flex items-center cursor-pointer p-2 hover:bg-gray-200 rounded-lg "
-                        onClick={() => handleQuizClick(lesson)} 
+                        onClick={() => handleQuizClick(lesson)}
                       >
                         <IoNewspaperSharp className="text-blue-500 mr-2" />
                         <p className="text-md ">Take Test</p>
                       </div>
                     )}
-      </div>
-    ))}
-  </div>
-)}
-
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ))}
 
         {/* Tutor Details Card */}
         <div className="tutorDetails mt-14 p-4 bg-white rounded-lg shadow-md flex items-center space-x-4">
-          <img 
-            src={tutor.profilePicture||tutorImage} 
-            alt="tutorImage" 
-            className="w-16 h-16 rounded-full border-2 border-blue-400" 
+          <img
+            src={tutor.profilePicture || tutorImage}
+            alt="tutorImage"
+            className="w-16 h-16 rounded-full border-2 border-blue-400"
           />
           <div className="flex flex-col">
             <p className="text-xl font-semibold">{tutor.name}</p>
             <div className="rating flex items-center mt-1">
               {Array.from({ length: 5 }, (_, index) => (
-                <StarIcon 
-                  key={index} 
-                  style={{ color: index < (course.rating || 0) ? 'gold' : 'gold' }} 
+                <StarIcon
+                  key={index}
+                  style={{
+                    color: index < (course.rating || 0) ? "gold" : "gold",
+                  }}
                 />
               ))}
-              <p className='ml-2 text-md'>{course.rating || 'N/A'}</p>
+              <p className="ml-2 text-md">{course.rating || "N/A"}</p>
             </div>
           </div>
         </div>

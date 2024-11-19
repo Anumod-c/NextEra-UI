@@ -12,10 +12,20 @@ import PurchasedSingleCourse from "./PurchasedSingleCourse";
 import Footer from "../../tutor/Footer";
 import ReviewCard from "../../../components/user/ReviewCard";
 
+interface Option {
+  text: string;
+  isCorrect: boolean;
+}
+
+interface Quiz {
+  question: string;
+  options: Option[];
+}
 interface Lesson {
   title: string;
   video?: string;
   description: string;
+  quizzes: Quiz[];
 }
 interface Section {
   title: string;
@@ -29,7 +39,7 @@ interface Course {
   category: string;
   description: string;
   price: number;
-  enrolledUsers?:string[];
+  enrolledUsers?: string[];
   discountPrice: number;
   thumbnail: string;
   level: string;
@@ -49,7 +59,6 @@ interface Tutor {
 }
 
 function SingleCoursePage() {
-
   const userId = useSelector((state: RootState) => state.user.id);
   const { courseId } = useParams<{ courseId: string }>();
 
@@ -58,7 +67,7 @@ function SingleCoursePage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [hasPurchased, setHasPurchased] = useState<boolean>(false);
-console.log(hasPurchased,'kkkkkkkkkkkkk')
+  console.log(hasPurchased, "kkkkkkkkkkkkk");
   useEffect(() => {
     const fetchCourse = async () => {
       try {
@@ -68,14 +77,14 @@ console.log(hasPurchased,'kkkkkkkkkkkkk')
         console.log("singlecoursedetailswithtuor", response.data);
         if (response.data.success) {
           setCourse(response.data.course);
-          setTutor(response.data.tutor); // Set the tutor data here
-          console.log(response.data.hasPurchased ,'ppppppppppp')
+          setTutor(response.data.tutor); 
+          console.log(response.data.hasPurchased, "ppppppppppp");
           setHasPurchased(response.data.hasPurchased);
         } else {
           setError("Failed to fetch course details");
         }
         setTimeout(() => {
-          setLoading(false); // Set loading to false after fetching
+          setLoading(false);
         }, 500);
       } catch (error) {
         console.error("Failed to fetch course details", error);
@@ -83,14 +92,12 @@ console.log(hasPurchased,'kkkkkkkkkkkkk')
         setLoading(false);
       }
     };
-
     if (courseId) {
       fetchCourse();
     }
-  }, [courseId,userId]);
+  }, [courseId, userId]);
 
   useEffect(() => {
-    // Log course data whenever it changes
     if (course) {
       console.log("Course data updated:", course);
     }
@@ -98,7 +105,6 @@ console.log(hasPurchased,'kkkkkkkkkkkkk')
   if (loading) return <SkeltonSingleCourse />;
   if (error) return <p>{error}</p>;
   if (!course) return <p>No course found.</p>;
-
   if (!hasPurchased)
     return (
       <>
@@ -108,25 +114,23 @@ console.log(hasPurchased,'kkkkkkkkkkkkk')
           <div className="md:col-span-3">
             <ContentSection course={course} />
           </div>
-
           <div className="col-span-1 md:col-span-1  mt-4 p-6">
             <div className="md:sticky md:top-4">
               <PaymentSection course={course} tutor={tutor} />
             </div>
           </div>
           <div className="col-span-full">
-      <ReviewCard courseId={courseId||''} />
-    </div>
-
+            <ReviewCard courseId={courseId || ""} />
+          </div>
         </div>
-        <Footer/>
+        <Footer />
       </>
     );
   return (
     <>
       <UserNavbar />
       <PurchasedSingleCourse course={course} tutor={tutor} />
-      <Footer/>
+      <Footer />
     </>
   );
 }

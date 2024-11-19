@@ -1,4 +1,3 @@
-import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
 
 interface ProgressBarProps {
@@ -9,7 +8,6 @@ interface ProgressBarProps {
 const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep, totalSteps }) => {
   const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
 
-  // Function to render checkpoints
   const renderCheckpoints = () => {
     const checkpoints = [];
     for (let i = 1; i <= totalSteps; i++) {
@@ -36,14 +34,11 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep, totalSteps }) =>
 
   return (
     <div className="relative w-full">
-      {/* Background track with gradient */}
       <div className="absolute w-full h-2 rounded-full bg-gradient-to-r from-gray-300 to-gray-100 shadow-inner"></div>
-      {/* Progress track */}
       <div
         className="absolute h-2  rounded-full bg-gradient-to-r from-blue-400 to-blue-600 shadow-md transition-all duration-300"
         style={{ width: `${progressPercentage}%` }}
       ></div>
-      {/* Checkpoints */}
       <div className="relative w-full">{renderCheckpoints()}</div>
     </div>
   );

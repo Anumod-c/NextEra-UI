@@ -1,7 +1,7 @@
-import React, { useRef, useState } from "react";
+import  { useRef, useState } from "react";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 
-import { Trash2, UploadCloud, File } from "lucide-react"; // Added File icon for certificate
+import { Trash2, UploadCloud, File } from "lucide-react"; 
 import * as Yup from "yup";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -121,7 +121,6 @@ const EditProfile = () => {
         setCertificateFileName(file.name);
       }
 
-      // Generate unique filename
       const fileName = `${randomFileName()}_${file.name}`;
       const fileType = file.type;
 
@@ -167,14 +166,11 @@ const EditProfile = () => {
           },
         }
       );
-
       if (!response) {
         throw new Error("Failed to submit form");
       }
-
       if (response) {
         console.log("response", response.data);
-
         const {
           _id,
           email,
@@ -222,9 +218,9 @@ const EditProfile = () => {
   };
 
   return (<>
-  <TutorNavbar/>
+    <TutorNavbar />
     <div className="flex h-screen">
-        <TutorSidebar/>
+      <TutorSidebar />
       <div className="flex-1 m-4  rounded-md  max-h-screen px-6 py-10 lg:px-20">
         <h2 className="text-3xl mb-5 text-center font-bold">
           Edit profile
@@ -559,8 +555,7 @@ const EditProfile = () => {
         </Formik>
       </div>
     </div>
-    </>
-
+  </>
   );
 };
 

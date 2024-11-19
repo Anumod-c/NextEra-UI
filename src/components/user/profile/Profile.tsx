@@ -14,22 +14,21 @@ import axios from "axios";
 const randomImageName = (): string => CryptoJS.SHA256(Date.now().toString()).toString(CryptoJS.enc.Hex);
 
 interface IProfile {
-    id:string;
+    id: string;
     name: string;
     coursesEnrolled: string[];
     profilePicture: string;
 }
 
-const Profile: React.FC<IProfile> = ({ id,name, coursesEnrolled, profilePicture }) => {
+const Profile: React.FC<IProfile> = ({ id, name, coursesEnrolled, profilePicture }) => {
 
     const dispatch = useDispatch();
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const [previewImage, setPreviewImage] = useState<string | null>(null); // State for image preview
+    const [previewImage, setPreviewImage] = useState<string | null>(null); 
     const navigate = useNavigate();
     const bucketName = import.meta.env.VITE_AWS_BUCKET_NAME;
     const region = import.meta.env.VITE_AWS_REGION;
 
-    // Function to trigger file input on image click
     const handleImageClick = () => {
         if (fileInputRef.current) {
             fileInputRef.current.click();
@@ -45,7 +44,7 @@ const Profile: React.FC<IProfile> = ({ id,name, coursesEnrolled, profilePicture 
                     fileType,
                 },
             });
-            console.log(response.data.url,'urlll')
+            console.log(response.data.url, 'urlll')
             return response.data.url;
         } catch (error) {
             console.error("Error fetching presigned URL", error);
@@ -63,7 +62,7 @@ const Profile: React.FC<IProfile> = ({ id,name, coursesEnrolled, profilePicture 
 
             const fileName = `${randomImageName()}_${file.name}`;
             const fileType = file.type.startsWith('image') ? 'image' : 'application/octet-stream';
-            console.log(fileName,fileType,'k')
+            console.log(fileName, fileType, 'k')
 
             const uploadUrl = await getPresignedUrlForUpload(fileName, fileType);
 
@@ -76,30 +75,22 @@ const Profile: React.FC<IProfile> = ({ id,name, coursesEnrolled, profilePicture 
                         },
                     });
 
-                    // Generate the viewable URL for the uploaded image
                     const viewUrl = `https://${bucketName}.s3.${region}.amazonaws.com/${fileName}`;
                     console.log(viewUrl)
                     setPreviewImage(viewUrl)
-                    
-                    // Save the viewable URL in the database
                     const response = await userAxios.put(userEndpoints.updateProfilePicture, {
                         profilePicture: viewUrl,
-                        userId:id // Wrap the viewUrl in an object
+                        userId: id 
                     });
                     console.log(response.data, "Profile picture updated");
-                // Update Redux or perform any other action based on the response
-                dispatch(updateProfilePicture(viewUrl));
-                toast.success("Profile picture updated successfully!");
-
-                    // Update Redux with the new profile picture
-                    
-                    // toast.success("Profile picture updated successfully!");
+                    dispatch(updateProfilePicture(viewUrl));
+                    toast.success("Profile picture updated successfully!");
                 } catch (error) {
                     toast.error("Error uploading the profile picture");
                 }
             }
         }
-    };    
+    };
     return (
         <div className="flex flex-wrap bg-gradient-to-b from-gray-100 to-white shadow-md justify-center items-center md:justify-normal md:items-normal p-4">
             {/* Profile Image */}
@@ -118,7 +109,6 @@ const Profile: React.FC<IProfile> = ({ id,name, coursesEnrolled, profilePicture 
                     style={{ display: "none" }}
                 />
             </div>
-
             {/* User Info */}
             <div className="flex-grow flex flex-col justify-between ml-4">
                 <div className="hidden pl-2 sm:block font-bold text-3xl">{name}</div>

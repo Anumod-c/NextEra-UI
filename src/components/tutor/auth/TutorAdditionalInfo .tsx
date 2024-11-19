@@ -1,9 +1,10 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
-import { Player } from "@lottiefiles/react-lottie-player";
-import { motion } from "framer-motion"; // Import motion
 
-import { Trash2, UploadCloud, File } from "lucide-react"; // Added File icon for certificate
+import { Player } from "@lottiefiles/react-lottie-player";
+import { motion } from "framer-motion"; 
+
+import { Trash2, UploadCloud, File } from "lucide-react"; 
 import * as Yup from "yup";
 import axios from "axios";
 import { tutorEndpoints } from "../../../constraints/endpoints/tutorEndpoints";
@@ -16,14 +17,14 @@ import { setTutor } from "../../../redux/tutorSlice";
 const TutorAdditionalInfo = () => {
     const [previewImage, setPreviewImage] = useState<string | null>(null);
     const [cvFileName, setCvFileName] = useState<string | null>(null);
-    const [certificateFileName, setCertificateFileName] = useState<string | null>(null); // Added state for certificate name
+    const [certificateFileName, setCertificateFileName] = useState<string | null>(null); 
     const imageInputRef = useRef<HTMLInputElement>(null);
     const cvInputRef = useRef<HTMLInputElement>(null);
     const certificateInputRef = useRef<HTMLInputElement>(null);
     const bucketName = import.meta.env.VITE_AWS_BUCKET_NAME;
     const region = import.meta.env.VITE_AWS_REGION;
 
-    const tutorId = useSelector((state:RootState)=>state.tutor.id)
+    const tutorId = useSelector((state: RootState) => state.tutor.id)
     const navigate = useNavigate();
     const dispatch = useDispatch()
     const randomFileName = () => {
@@ -108,12 +109,10 @@ const TutorAdditionalInfo = () => {
                 throw new Error("Failed to upload file");
             }
 
-            // Set the final URL
             const finalUrl = `https://${bucketName}.s3.${region}.amazonaws.com/${fileName}`;
             setFieldValue(fieldName, finalUrl);
-
             if (fieldName === "cv") {
-                setCvFileName(file.name); 
+                setCvFileName(file.name);
             }
         } catch (error) {
             console.error("Error uploading file:", error);
@@ -126,25 +125,20 @@ const TutorAdditionalInfo = () => {
         { setSubmitting }: FormikHelpers<typeof initialValues>
     ) => {
         try {
-            const response = await axios.post(tutorEndpoints.additionalInfo, {tutorId,...values}, {
+            const response = await axios.post(tutorEndpoints.additionalInfo, { tutorId, ...values }, {
                 headers: {
                     "Content-Type": "application/json",
                 },
             });
-
             if (!response) {
                 throw new Error("Failed to submit form");
             }
-
-           if(response){
-            console.log('response',response.data)
-
-            const {_id,email,bio,cv,expertise,status,name,phone,profilePicture,qualifications}= response.data.result;
-
-            dispatch(setTutor({id:_id,name,phone,bio,cv,qualifications,profilePicture,expertise,status,email}))
-
-            navigate('/tutor')
-           }
+            if (response) {
+                console.log('response', response.data)
+                const { _id, email, bio, cv, expertise, status, name, phone, profilePicture, qualifications } = response.data.result;
+                dispatch(setTutor({ id: _id, name, phone, bio, cv, qualifications, profilePicture, expertise, status, email }))
+                navigate('/tutor')
+            }
         } catch (error) {
             console.error("Submit error:", error);
             throw error;
@@ -155,14 +149,13 @@ const TutorAdditionalInfo = () => {
 
     return (
         <div className="flex h-screen">
-            {/* Left Section: Hidden on small screens */}
             <div className="hidden lg:flex flex-1 bg-[#698eff] justify-center items-center animate-fadeIn">
                 <motion.div
                     className="flex-1  flex justify-center items-center"
-                    initial={{ x: -100, opacity: 0 }} // Start position
-                    animate={{ x: 0, opacity: 1 }} // End position
-                    exit={{ x: -100, opacity: 0 }} // Exit animation
-                    transition={{ duration: 0.8, ease: [0.68, -0.55, 0.27, 1.55] }} // Smooth easing
+                    initial={{ x: -100, opacity: 0 }}
+                    animate={{ x: -10, opacity: 1 }}
+                    exit={{ x: -100, opacity: 0 }}
+                    transition={{ duration: 0.8, ease: [0.68, -0.55, 0.27, 1.55] }}
                 >
                     <Player
                         autoplay
@@ -313,7 +306,7 @@ const TutorAdditionalInfo = () => {
                                                 <button
                                                     type="button"
                                                     className="flex items-center justify-center px-3 py-2 rounded-lg bg-gray-200 hover:bg-gray-300"
-                                                    onClick={() => certificateInputRef.current?.click()} 
+                                                    onClick={() => certificateInputRef.current?.click()}
                                                 >
                                                     <File className="h-5 w-5 text-blue-500 mr-2" /> Upload
                                                     Certificate

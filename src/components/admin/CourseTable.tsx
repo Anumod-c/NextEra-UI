@@ -25,16 +25,13 @@ const CourseTable: React.FC = () => {
     const fetchCourse = async (page = 1) => {
       setLoading(true);
       try {
-        console.log("hyyyy");
-
-        const response = await adminAxios.get(adminEndpoints.courseTable,{params: {  page, limit: 6 },
+        const response = await adminAxios.get(adminEndpoints.courseTable, {
+          params: { page, limit: 6 },
           withCredentials: true,
         });
-        console.log("data reached frontend", response.data);
         if (response.data) {
           setCourses(response.data.coursesWithTutor);
           setTotalPages(response.data.totalPages);
-
         }
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -67,7 +64,7 @@ const CourseTable: React.FC = () => {
     }
   };
   if (loading) {
-    return <div>Loading...</div>; // Show loading indicator while data is being fetched
+    return <div>Loading...</div>;
   }
   return (
     <>
@@ -83,8 +80,6 @@ const CourseTable: React.FC = () => {
               <th className="p-2 text-left">Price</th>
               <th className="p-2 text-left">Tutor Name</th>
               <th className="p-2 text-left">Status</th>
-
-              {/* Add more columns as needed */}
             </tr>
           </thead>
           <tbody>
@@ -97,7 +92,6 @@ const CourseTable: React.FC = () => {
                     className="w-24 h-16 object-cover"
                   />
                 </td>
-
                 <td className="p-2">{courses.title}</td>
                 <td className="p-2">{courses.category}</td>
                 <td className="p-2">{courses.level}</td>
@@ -121,15 +115,16 @@ const CourseTable: React.FC = () => {
             ))}
           </tbody>
         </table>
-      </div> 
+      </div>
       <div className="w-full flex justify-center items-center p-2 m-2 ">
-      <Pagination
+        <Pagination
           count={totalPages}
           page={currentPage}
           onChange={handlePageChange}
           size="large"
           color="primary"
-        />      </div>
+        />
+      </div>
     </>
   );
 };

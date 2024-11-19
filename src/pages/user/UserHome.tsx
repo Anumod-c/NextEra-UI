@@ -1,7 +1,6 @@
 import Banner from "../../components/user/Banner";
 import Courses from "../../components/user/Courses";
 import UserNavbar from "../../components/user/UserNavbar";
-
 import { courseEndpoints } from "../../constraints/endpoints/courseEndpoints";
 import Footer from "../tutor/Footer";
 function UserHome() {
@@ -14,7 +13,11 @@ function UserHome() {
         fetchUrl={courseEndpoints.fetchlatestCourse}
         title="Latest Courses"
         subTitle="Check out the newest additions"
-        
+      />
+       <Courses
+        fetchUrl={courseEndpoints.mostPurchasedCourse}
+        title="Most purhcased Courses"
+        subTitle="Discover the most popular courses among students"
       />
       <Footer/>
     </div>

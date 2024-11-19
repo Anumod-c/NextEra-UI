@@ -34,15 +34,14 @@ function UserLogin() {
   const [showPassword, setShowPassword] = useState(false);
 
 
-  useEffect(()=>{
+  useEffect(() => {
     const queryparams = new URLSearchParams(location.search);
     const message = queryparams.get('message');
-    if(message =='blocked'){
+    if (message == 'blocked') {
       toast.error("You have beed blocked by admin. Contact admin for more information")
-
     }
-
   })
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -54,24 +53,24 @@ function UserLogin() {
         credential,
       });
       console.log(result.data, "Google Login Result");
-
       if (result.data.result.success) {
+        Cookies.set('userToken', JSON.stringify(result.data.token.accessToken));
 
-        Cookies.set('userToken',JSON.stringify(result.data.token.accessToken));
-      Cookies.set('userRefreshToken', JSON.stringify(result.data.token.refreshToken)); 
-      localStorage.setItem('userRefreshToken',JSON.stringify(result.data.token.refreshToken))
+        Cookies.set('userRefreshToken', JSON.stringify(result.data.token.refreshToken));
 
-        const { _id, name, email, phone, facebook, purchasedCourses , instagram, linkedin, twitter, age, bio, completedCourses, coursesEnrolled, profilePicture,status } = result.data.result.user;
+        localStorage.setItem('userRefreshToken', JSON.stringify(result.data.token.refreshToken))
+
+        const { _id, name, email, phone, facebook, purchasedCourses, instagram, linkedin, twitter, age, bio, completedCourses, coursesEnrolled, profilePicture, status } = result.data.result.user;
+        
+        Cookies.set('userId', _id);
+        
         console.log('Login result: id', _id);
 
-        Cookies.set('userId',_id);
-
-        if(!status){
-          return  toast.error("You have beed blocked by admin. Contact admin for more information")
+        if (!status) {
+          return toast.error("You have beed blocked by admin. Contact admin for more information")
         }
-        dispatch(setUser({ id: _id, name, email,purchasedCourses, phone, facebook, instagram, linkedin, twitter, age, bio, completedCourses, coursesEnrolled, profilePicture }));
+        dispatch(setUser({ id: _id, name, email, purchasedCourses, phone, facebook, instagram, linkedin, twitter, age, bio, completedCourses, coursesEnrolled, profilePicture }));
 
-        
         navigate("/home");
       } else {
         toast.info("Couldn't login with Google");
@@ -92,23 +91,26 @@ function UserLogin() {
 
       if (result.data.result.success) {
 
-        Cookies.set('userToken',JSON.stringify(result.data.token.accessToken));
-      Cookies.set('userRefreshToken', JSON.stringify(result.data.token.refreshToken)); 
-      localStorage.setItem('userRefreshToken',JSON.stringify(result.data.token.refreshToken))
-      Cookies.set('userId',JSON.stringify(result.data.token.refreshToken));
+        Cookies.set('userToken', JSON.stringify(result.data.token.accessToken));
 
-        const {_id, name, email, phone, purchasedCourses,facebook, instagram, linkedin, twitter, age, bio, completedCourses, coursesEnrolled, profilePicture ,status} = result.data.result.userData;
-        Cookies.set('userId',_id);
+        Cookies.set('userRefreshToken', JSON.stringify(result.data.token.refreshToken));
 
+        localStorage.setItem('userRefreshToken', JSON.stringify(result.data.token.refreshToken))
+
+        Cookies.set('userId', JSON.stringify(result.data.token.refreshToken));
+
+        const { _id, name, email, phone, purchasedCourses, facebook, instagram, linkedin, twitter, age, bio, completedCourses, coursesEnrolled, profilePicture, status } = result.data.result.userData;
+        
+        Cookies.set('userId', _id);
+        
         console.log('Login result: id', _id);
 
-        if(!status){
-          return  toast.error("You are blocked by the admin. Contact admin for furthur details")
+        if (!status) {
+          return toast.error("You are blocked by the admin. Contact admin for furthur details")
         }
-        dispatch(setUser({ id: _id, name, email, phone, facebook, instagram, linkedin, twitter, age, bio, completedCourses, coursesEnrolled, profilePicture,purchasedCourses }));
+        dispatch(setUser({ id: _id, name, email, phone, facebook, instagram, linkedin, twitter, age, bio, completedCourses, coursesEnrolled, profilePicture, purchasedCourses }));
 
         navigate("/home");
-       
       } else {
         toast.error(result.data.result.message);
       }
@@ -125,10 +127,10 @@ function UserLogin() {
       <div className="flex-1 bg-[#ecf5fb] flex justify-center items-center animate-fadeIn">
         <motion.div
           className="flex-1 bg-[#ecf5fb] flex justify-center items-center"
-          initial={{ x: -100, opacity: 0 }} // Start position
-          animate={{ x: 0, opacity: 1 }} // End position
-          exit={{ x: -100, opacity: 0 }} // Exit animation
-          transition={{ duration: 0.8, ease: [0.68, -0.55, 0.27, 1.55] }} // Smooth easing
+          initial={{ x: -100, opacity: 0 }}
+          animate={{ x: -10, opacity: 1 }}
+          exit={{ x: -100, opacity: 0 }}
+          transition={{ duration: 0.8, ease: [0.68, -0.55, 0.27, 1.55] }}
         >
           <Player
             autoplay
@@ -151,7 +153,6 @@ function UserLogin() {
           <p className="text-gray-600 mb-4">
             Nice to see you again! Please log in with your account
           </p>
-
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -189,7 +190,6 @@ function UserLogin() {
                     className='text-red-500 text-xs mx-2 px-2'
                   />
                 </div>
-
                 <a
                   className="flex justify-end text-blue-800"
                   onClick={() => navigate("/forgotPassword")}
@@ -220,7 +220,6 @@ function UserLogin() {
                     onError={() => console.log("Login Failed")}
                   />
                 </div>
-
                 <div className="flex justify-center">
                   <p className="px-2">Don't have an account?</p>
                   <a

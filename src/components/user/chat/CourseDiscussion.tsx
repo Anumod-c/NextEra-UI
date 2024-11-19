@@ -37,14 +37,11 @@ const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   console.log("final  msg", messages);
-  // Reference for the messages container to scroll to the bottom
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
-
-  const liveContainerRef = useRef<HTMLDivElement | null>(null); // Reference for live streaming container
+  const liveContainerRef = useRef<HTMLDivElement | null>(null); 
   const [isJoiningLive] = useState(false);
   const userName = useSelector((state: RootState) => state.user.name);
 
-  // Scroll to the bottom whenever messages change
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -60,16 +57,9 @@ const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
     setShowEmojiPicker(false);
   };
 
-  // useEffect(() => {
-  //   if (isJoiningLive) {
-  //     handleJoinLive();
-  //   }
-  // }, [isJoiningLive]);
-
   const handleJoinLive = async () => {
     if (!selectedCourse) return;
 
-    // Check if the selected course has a live stream available
     if (!selectedCourse._id) {
       alert("Live stream not available for this course.");
       return;
@@ -78,7 +68,6 @@ const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
     const appId = 562645982;
     const serverSecret = "66e52e9f21e684d532b62699c16464e4";
     const userID = currentUserId;
-    // Generate a kit token for joining live
     console.log("selected coure for streaming", selectedCourse._id);
     const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
       appId,
@@ -88,14 +77,13 @@ const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
       userName
     );
 
-    // Create and join room with ZegoUIKitPrebuilt (disable audio/video for user)
     const zp = ZegoUIKitPrebuilt.create(kitToken);
     zp.joinRoom({
       container: liveContainerRef.current,
       scenario: {
         mode: ZegoUIKitPrebuilt.LiveStreaming,
         config: {
-          role: ZegoUIKitPrebuilt.Audience, // Set role as audience
+          role: ZegoUIKitPrebuilt.Audience, 
         },
       },
 
@@ -106,8 +94,8 @@ const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
       useFrontFacingCamera: false,
       turnOnMicrophoneWhenJoining: false,
       turnOnCameraWhenJoining: false,
-      showMyMicrophoneToggleButton: false, // Corrected property name
-      showMyCameraToggleButton: false, // Corrected property name
+      showMyMicrophoneToggleButton: false, 
+      showMyCameraToggleButton: false, 
     });
   };
 
@@ -125,7 +113,6 @@ const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
                 />
                 <span>{selectedCourse.title}</span>
               </div>
-
               <button
                 onClick={handleJoinLive}
                 className="md:bg-green-500 text-white p-2 px-4 m-2 flex items-center gap-2 rounded-lg shadow-md transition-transform transform hover:scale-105 md:hover:bg-green-600"
@@ -157,9 +144,8 @@ const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
         {messages.map((msg, index) => (
           <div
             key={index}
-            className={`flex ${
-              msg.userId === currentUserId ? "justify-end" : "justify-start"
-            }`}
+            className={`flex ${msg.userId === currentUserId ? "justify-end" : "justify-start"
+              }`}
           >
             {msg.userId !== currentUserId && (
               <div className="flex mb-6 items-start space-x-3">
@@ -256,5 +242,4 @@ const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
     </div>
   );
 };
-
 export default CourseDiscussion;

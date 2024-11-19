@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -10,10 +10,6 @@ import { toast } from "sonner";
 import { tutorEndpoints } from "../../constraints/endpoints/tutorEndpoints";
 import CryptoJS from "crypto-js";
 import tutorAxios from "../../constraints/axios/tutorAxios";
-
-
-
-
 
 interface AddCourseProps {
   onNext: () => void;
@@ -42,11 +38,9 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const formData = useSelector((state: RootState) => state.course.addCourse);
-  console.log('formdata',formData);
-  
-  const tutorId = useSelector((state:RootState)=>state.tutor.id);
-  console.log('tutorId',tutorId);
-
+  console.log('formdata', formData);
+  const tutorId = useSelector((state: RootState) => state.tutor.id);
+  console.log('tutorId', tutorId);
   const [previewImage, setPreviewImage] = useState<string | null>(null); // State for image preview
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null); // State for storing the presigned URL
 
@@ -77,34 +71,30 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
     const fileType = file.type.startsWith('video') ? 'video' : 'image';
 
     // Get upload URL
-  const uploadUrl = await getPresignedUrlForUpload(fileName, fileType);
-  if (uploadUrl) {
-    try {
-      // Upload the file
-      await axios.put(uploadUrl, file, {
-        headers: {
-          'Content-Type': file.type,
-        }
-      });
-      const viewUrl = `https://${bucketName}.s3.${region}.amazonaws.com/${fileName}`
-      console.log('View URL:', viewUrl);
-  
-      // const viewUrl = await getPresignedUrlForDownload(fileName);
-      
-      setThumbnailUrl(viewUrl); // Set the URL used for viewing
+    const uploadUrl = await getPresignedUrlForUpload(fileName, fileType);
+    if (uploadUrl) {
+      try {
+        // Upload the file
+        await axios.put(uploadUrl, file, {
+          headers: {
+            'Content-Type': file.type,
+          }
+        });
+        const viewUrl = `https://${bucketName}.s3.${region}.amazonaws.com/${fileName}`
+        console.log('View URL:', viewUrl);
+        setThumbnailUrl(viewUrl); // Set the URL used for viewing
         toast.success("Thumbnail uploaded successfully");
-        console.log(typeof(viewUrl),'typeofff')
-        console.log('thumbnail url which i will modify  now',viewUrl);
-        
+        console.log(typeof (viewUrl), 'typeofff')
+        console.log('thumbnail url which i will modify  now', viewUrl);
         setPreviewImage(viewUrl)
         return viewUrl
       } catch (error) {
         console.error("Error uploading file", error);
         toast.error("Error uploading thumbnail");
       }
-      
+
     }
-    
+
   };
   // const getPresignedUrlForDownload = async (filename: string) => {
   //   try {
@@ -124,7 +114,7 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="w-[90%] bg-white shadow-lg rounded-lg px-8 py-6">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-6">
           Add New Course
         </h2>
         <Formik
@@ -141,11 +131,11 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
           validationSchema={validationSchema}
           onSubmit={async (values) => {
 
-            const courseData ={tutorId,...values}
-            console.log(thumbnailUrl,'thumbanuil url which i will modify now');          
-            dispatch(saveAddCourse(courseData));            
-              onNext();
-           
+            const courseData = { tutorId, ...values }
+            console.log(thumbnailUrl, 'thumbanuil url which i will modify now');
+            dispatch(saveAddCourse(courseData));
+            onNext();
+
           }}
         >
           {({ setFieldValue }) => (
@@ -161,7 +151,6 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
                   />
                   <ErrorMessage name="courseTitle" component="div" className="text-red-600" />
                 </div>
-                
                 <div className="flex flex-col md:flex-row gap-8 w-full">
                   <div className="flex-1 flex flex-col gap-4">
                     <label className="text-lg font-medium text-gray-700">Course Price</label>
@@ -173,7 +162,6 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
                     />
                     <ErrorMessage name="coursePrice" component="div" className="text-red-600" />
                   </div>
-
                   <div className="flex-1 flex flex-col gap-4">
                     <label className="text-lg font-medium text-gray-700">Discount Price</label>
                     <Field
@@ -185,7 +173,6 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
                     <ErrorMessage name="courseDiscountPrice" component="div" className="text-red-600" />
                   </div>
                 </div>
-
                 <div className="flex flex-col gap-4 w-full">
                   <label className="text-lg font-medium text-gray-700">Course Description</label>
                   <Field
@@ -197,7 +184,6 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
                   />
                   <ErrorMessage name="courseDesc" component="div" className="text-red-600" />
                 </div>
-
                 <div className="flex flex-col md:flex-row gap-8 w-full">
                   <div className="flex-1 flex flex-col gap-4">
                     <label className="text-lg font-medium text-gray-700">Course Category</label>
@@ -212,7 +198,6 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
                     </Field>
                     <ErrorMessage name="courseCategory" component="div" className="text-red-600" />
                   </div>
-
                   <div className="flex-1 flex flex-col gap-4">
                     <label className="text-lg font-medium text-gray-700">Course Level</label>
                     <Field as="select" name="courseLevel" className="w-full h-12 rounded-md bg-gray-100 px-4 py-2 text-gray-700 border border-gray-300 focus:ring-2 focus:ring-blue-500">
@@ -224,7 +209,6 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
                     <ErrorMessage name="courseLevel" component="div" className="text-red-600" />
                   </div>
                 </div>
-
                 <div className="flex-1 flex flex-col gap-4">
                   <label className="text-lg font-medium text-gray-700">Demo URL</label>
                   <Field
@@ -235,10 +219,9 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
                   />
                   <ErrorMessage name="demoURL" component="div" className="text-red-600" />
                 </div>
-
                 <div className="flex flex-col items-center justify-center">
                   <label className="text-lg font-medium text-gray-700 mb-2">
-                    Add Thumbnail 
+                    Add Thumbnail
                   </label>
                   <div
                     className="w-full sm:max-w-[400px] h-0 lg:pb-[14.25%] md:pb-[32.25%] pb-[55.25%] relative rounded-md bg-gray-100 border-2 border-dashed border-gray-300 hover:bg-gray-200 cursor-pointer"
@@ -256,26 +239,20 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
                       </span>
                     )}
                   </div>
-
                   <input
                     type="file"
                     ref={fileInputRef}
                     className="hidden"
                     accept="image/*"
-                    onChange={async(e) => {
+                    onChange={async (e) => {
                       const file = e.target.files?.[0];
                       if (file) {
-                       
                         const s3url = await handleFileUpload(file);
-                      
                         setFieldValue('thumbnail', s3url || formData.thumbnail); // Setting file name as thumbnail
                       }
                     }}
                   />
-                  
                 </div>
-                
-
                 <div className="w-full space-x-4 flex justify-end">
                   <button
                     type="button"
@@ -291,8 +268,6 @@ const AddCourse: React.FC<AddCourseProps> = ({ onNext, onBack }) => {
                     Next
                   </button>
                 </div>
-                
-               
               </section>
             </Form>
           )}

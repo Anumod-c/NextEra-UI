@@ -1,5 +1,3 @@
-// CourseDetails.tsx
-import React from "react";
 import SchoolIcon from "@mui/icons-material/School";
 import StarIcon from "@mui/icons-material/Star";
 import TranslateIcon from "@mui/icons-material/Translate";
@@ -19,9 +17,9 @@ interface Section {
 interface CourseDetailsProps {
   course: {
     title: string;
-    averageRating?:number
+    averageRating?: number
     description: string;
-    enrolledUsers?:string[];
+    enrolledUsers?: string[];
     benefits: string[];
     prerequisites: string[];
     sections: Section[];
@@ -36,7 +34,7 @@ const CourseDetails: React.FC<CourseDetailsProps> = ({ course, selectedVideo }) 
       <div className="flex items-center space-x-8 mt-4">
         <div className="flex items-center space-x-2">
           <StarIcon className="text-amber-400" />
-          <p>{course.averageRating?.toFixed(2)||0 } rating</p>
+          <p>{course.averageRating?.toFixed(2) || 0} rating</p>
         </div>
         <div className="flex items-center space-x-2">
           <SchoolIcon className="text-violet-800" />

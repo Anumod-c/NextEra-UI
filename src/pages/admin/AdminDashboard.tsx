@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import AdminSideBar from '../../components/admin/AdminSideBar';
 import AdminNavbar from '../../components/admin/AdminNavbar';
 import AdminHeader from '../../components/admin/AdminHeader';
@@ -14,12 +14,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 
 export interface IPayout {
-  totalPayout: number;  // The total payout for a given period
-  _id: number;          // A unique identifier for each payout record
+  totalPayout: number;  
+  _id: number;         
 }
 
 const AdminDashboard: React.FC = () => {
-const adminId = useSelector((state:RootState)=>state.admin.id)
+  const adminId = useSelector((state: RootState) => state.admin.id)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedSection, setSelectedSection] = useState('dashboard');
 
@@ -27,8 +27,8 @@ const adminId = useSelector((state:RootState)=>state.admin.id)
   const [totalInstructors, setTotalInstructors] = useState<number>(0);
   const [totalCourses, setTotalCourses] = useState<number>(0);
 
-  const [payouts, setPayouts] = useState<number[]>([]); // Payouts for each period
-  const [labels, setLabels] = useState<string[]>([]); // Corresponding labels for the periods
+  const [payouts, setPayouts] = useState<number[]>([]); 
+  const [labels, setLabels] = useState<string[]>([]);
   // const [totalLiveCourses, setTotalLiveCourses] = useState<number>(0);
   useEffect(() => {
     const fetchHeaderData = async () => {
@@ -47,7 +47,6 @@ const adminId = useSelector((state:RootState)=>state.admin.id)
         console.error('Error fetching dashboard data:', error);
       }
     };
-
     fetchHeaderData();
   }, [adminId]);
 
@@ -84,13 +83,13 @@ const adminId = useSelector((state:RootState)=>state.admin.id)
     fetchPayouts();
   }, [])
 
-
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
   const handleSectionChange = (section: string) => {
     setSelectedSection(section);
+    toggleSidebar()
   };
 
   const renderContent = () => {
@@ -113,10 +112,8 @@ const adminId = useSelector((state:RootState)=>state.admin.id)
             </div>
             <div className="flex-grow bg-white mt-4 p-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-
                 <div className="flex items-center justify-center shadow-lg rounded-lg p-4">
-                  <AdminBarGraph  labels={labels} payouts={payouts} />
+                  <AdminBarGraph labels={labels} payouts={payouts} />
                 </div>
                 <div className="flex items-center justify-center shadow-lg bg-white rounded-lg p-4">
                   <AdminDonutGraph totalStudents={totalStudents}

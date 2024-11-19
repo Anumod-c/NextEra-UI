@@ -18,7 +18,7 @@ const UserTutorSelection = () => {
           autoplay
           loop
           src="https://lottie.host/7100dd4f-826b-421f-801b-752477ccd826/vBS1LriaZx.json"
-          style={{ height: "70%", width: "70%"  }}
+          style={{ height: "70%", width: "70%" }}
         />
 
         <button
@@ -55,7 +55,7 @@ const UserTutorSelection = () => {
           Enroll as Instructor
         </button>
         <p className="text-gray-600 m-4">
-        Become a part of our vibrant teaching community by enrolling as a teacher. Share your expertise, create engaging courses, interact with students, and make a meaningful impact on learners' lives. Empower the next generation of learners with your knowledge and passion."
+          Become a part of our vibrant teaching community by enrolling as a teacher. Share your expertise, create engaging courses, interact with students, and make a meaningful impact on learners' lives. Empower the next generation of learners with your knowledge and passion."
         </p>
       </motion.div>
     </div>

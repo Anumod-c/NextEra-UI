@@ -1,15 +1,14 @@
-import React from "react";
 import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { FaPlus, FaTrash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { saveAddCourse2 } from "../../redux/courseSlice"; // Adjust the path as needed
+import { saveAddCourse2 } from "../../redux/courseSlice"; 
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 
 interface AddCourse2Props {
   onNext: () => void;
-  onBack:()=>void
+  onBack: () => void
 }
 
 const validationSchema = Yup.object({
@@ -21,9 +20,9 @@ const validationSchema = Yup.object({
     .min(1, "At least one benefit is required"),
 });
 
-const AddCourse2: React.FC<AddCourse2Props> = ({ onNext,onBack }) => {
+const AddCourse2: React.FC<AddCourse2Props> = ({ onNext, onBack }) => {
   const dispatch = useDispatch();
-  const formData2= useSelector((state:RootState)=>state.course.addCourse2)
+  const formData2 = useSelector((state: RootState) => state.course.addCourse2)
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="w-[90%] bg-white shadow-lg rounded-lg px-8 py-6">
@@ -32,16 +31,15 @@ const AddCourse2: React.FC<AddCourse2Props> = ({ onNext,onBack }) => {
         </h2>
 
         <Formik
-          initialValues={formData2||{
+          initialValues={formData2 || {
             prerequisites: [""],
             benefits: [""],
           }}
           validationSchema={validationSchema}
-          onSubmit={async(values) => {
+          onSubmit={async (values) => {
             dispatch(saveAddCourse2(values));
-            console.log('values of prequisite and benifits',values);
-              onNext();
-            
+            console.log('values of prequisite and benifits', values);
+            onNext();
           }}
         >
           {({ values }) => (
@@ -100,7 +98,7 @@ const AddCourse2: React.FC<AddCourse2Props> = ({ onNext,onBack }) => {
                     <FieldArray name="benefits">
                       {({ remove, push }) => (
                         <>
-                          {values.benefits.map(( benifits,index) => (
+                          {values.benefits.map((_, index) => (
                             <div
                               key={index}
                               className="flex items-center gap-2"
@@ -136,16 +134,14 @@ const AddCourse2: React.FC<AddCourse2Props> = ({ onNext,onBack }) => {
                     </FieldArray>
                   </div>
                 </div>
-                
-
                 <div className="w-full space-x-4 flex justify-end mt-6">
-                <button
-                  type="button"
-                  onClick={onBack}
-                  className="py-2 px-4 bg-gray-600 text-white font-semibold rounded-md hover:bg-gray-700 transition"
-                >
-                  Back
-                </button>
+                  <button
+                    type="button"
+                    onClick={onBack}
+                    className="py-2 px-4 bg-gray-600 text-white font-semibold rounded-md hover:bg-gray-700 transition"
+                  >
+                    Back
+                  </button>
                   <button
                     type="submit"
                     className="py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"

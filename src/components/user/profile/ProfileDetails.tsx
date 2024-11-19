@@ -6,14 +6,14 @@ interface IEditProfile {
   phone: string;
   age?: number;
   bio?: string;
-  instagram:string;
-  facebook:string;
-  twitter:string;
-  linkedin:string;
+  instagram: string;
+  facebook: string;
+  twitter: string;
+  linkedin: string;
 
 }
 
-const ProfileDetails: React.FC<IEditProfile> = ({ email, name, age, phone, bio,facebook,instagram,linkedin,twitter }) => {
+const ProfileDetails: React.FC<IEditProfile> = ({ email, name, age, phone, bio, facebook, instagram, linkedin, twitter }) => {
   return (
     <>
       <div className="max-w-7xl mx-auto p-6 space-y-6">
@@ -71,8 +71,6 @@ const ProfileDetails: React.FC<IEditProfile> = ({ email, name, age, phone, bio,f
             </div>
           </div>
         </div>
-
-        
       </div>
     </>
   );

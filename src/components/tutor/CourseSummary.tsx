@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { courseEndpoints } from '../../constraints/endpoints/courseEndpoints';
@@ -17,7 +17,7 @@ interface CourseSummaryProps {
 
 const CourseSummary: React.FC<CourseSummaryProps> = ({ onBack }) => {
   const tutorId = useSelector((state: RootState) => state.tutor.id);
-  const dispatch =useDispatch()
+  const dispatch = useDispatch()
 
   const navigate = useNavigate();
   const [openSection, setOpenSection] = useState<number | null>(null);
@@ -72,7 +72,6 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({ onBack }) => {
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
       <h2 className="text-4xl font-bold mb-8 text-center">Course Summary</h2>
-
       {/* Course Details */}
       <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 mb-6">
         <h3 className="text-3xl font-semibold mb-4">{courseTitle}</h3>
@@ -109,7 +108,6 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({ onBack }) => {
           </div>
         </div>
       </div>
-
       {/* Prerequisites */}
       <div className="bg-gray-50 p-6 rounded-lg mb-6 shadow-md">
         <h3 className="text-2xl font-semibold mb-4">Prerequisites</h3>
@@ -122,7 +120,6 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({ onBack }) => {
           ))}
         </div>
       </div>
-
       {/* Course Benefits */}
       <div className="bg-gray-50 p-6 rounded-lg mb-6 shadow-md">
         <h3 className="text-2xl font-semibold mb-4">Benefits</h3>
@@ -135,7 +132,6 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({ onBack }) => {
           ))}
         </div>
       </div>
-
       {/* Course Sections */}
       <div className="bg-gray-50 p-6 rounded-lg shadow-md mb-6">
         <h3 className="text-2xl font-semibold mb-4">Sections</h3>
@@ -166,7 +162,7 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({ onBack }) => {
                           height="300"
                           controls
                         >
-                          <source src={lesson.video || ''}  type="video/mp4" />
+                          <source src={lesson.video || ''} type="video/mp4" />
                           Your browser does not support the video tag.
                         </video>
                       </div>
@@ -182,7 +178,6 @@ const CourseSummary: React.FC<CourseSummaryProps> = ({ onBack }) => {
           </div>
         ))}
       </div>
-
       {/* Action Buttons */}
       <div className="flex justify-between mt-8">
         <button

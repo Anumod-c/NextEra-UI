@@ -12,7 +12,7 @@ import axios from "axios";
 export interface Message {
   userId: string;
   content?: string;
-  image?:string;
+  image?: string;
   userName: string;
   profilePicture: string;
 }
@@ -28,7 +28,6 @@ const ChatLayout: React.FC = () => {
 
   const bucketName = import.meta.env.VITE_AWS_BUCKET_NAME;
   const region = import.meta.env.VITE_AWS_REGION;
-
   const randomFileName = () => `${Date.now()}-${Math.random().toString(36).substring(2)}`;
 
   const getPresignedUrlForUpload = async (fileName: string, fileType: string) => {
@@ -62,30 +61,27 @@ const ChatLayout: React.FC = () => {
     if (selectedCourse) {
       const courseId = selectedCourse._id;
       SocketService.joinRoom(courseId);
-
       SocketService.loadPreviousMessages("loadPreviousMessages", (previousMessages) => {
         const mappedMessages = previousMessages.map((msg: Message) => ({
           userId: msg.userId,
           userName: msg.userName,
-          image:msg.image,
+          image: msg.image,
           text: msg.content,
           profilePicture: msg.profilePicture,
         }));
-
         setCourseMessages((prevMessages) => ({
           ...prevMessages,
           [courseId]: mappedMessages,
         }));
       });
     }
-
     return () => {
       if (selectedCourse) SocketService.leaveRoom(selectedCourse._id);
     };
   }, [selectedCourse]);
 
   useEffect(() => {
-    const handleMessageReceive = (newMessage: { userId: string; image:string; text: string; courseId: string }) => {
+    const handleMessageReceive = (newMessage: { userId: string; image: string; text: string; courseId: string }) => {
       if (selectedCourse && newMessage.courseId === selectedCourse._id) {
         setCourseMessages((prevMessages) => ({
           ...prevMessages,
@@ -93,9 +89,7 @@ const ChatLayout: React.FC = () => {
         }));
       }
     };
-
     SocketService.onMessage(handleMessageReceive);
-
     return () => SocketService.removeMessageListener(handleMessageReceive);
   }, [selectedCourse]);
 
@@ -118,20 +112,17 @@ const ChatLayout: React.FC = () => {
   const handleSendImage = async () => {
     if (selectedImage && selectedCourse) {
       const fileName = randomFileName();
-      console.log(fileName,'filename')
+      console.log(fileName, 'filename')
       const fileType = selectedImage.type;
       const uploadUrl = await getPresignedUrlForUpload(fileName, fileType);
-
       if (uploadUrl) {
         try {
           await axios.put(uploadUrl, selectedImage, {
             headers: { "Content-Type": fileType },
           });
-
           const finalUrl = `https://${bucketName}.s3.${region}.amazonaws.com/${fileName}`;
           const newMessage = { userId: currentUserId, image: finalUrl, courseId: selectedCourse._id };
           SocketService.sendImage(selectedCourse._id, newMessage);
-
           setShowImagePreview(false);
           setSelectedImage(null);
         } catch (error) {
