@@ -627,7 +627,7 @@ const AddLesson: React.FC<AddLessonProps> = ({ onNext, onBack }) => {
                                                               <>
                                                                 {quiz.options.map(
                                                                   (
-                                                                    option,
+                                                                    _,
                                                                     optionIndex
                                                                   ) => (
                                                                     <div

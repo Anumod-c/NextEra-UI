@@ -54,7 +54,7 @@ const AddCourse2: React.FC<AddCourse2Props> = ({ onNext, onBack }) => {
                     <FieldArray name="prerequisites">
                       {({ remove, push }) => (
                         <>
-                          {values.prerequisites.map((prerequisite, index) => (
+                          {values.prerequisites.map((_, index) => (
                             <div
                               key={index}
                               className="flex items-center gap-2"

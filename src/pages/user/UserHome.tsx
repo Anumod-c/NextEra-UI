@@ -1,10 +1,13 @@
-import Banner from "../../components/user/Banner";
-import Courses from "../../components/user/Courses";
-import UserNavbar from "../../components/user/UserNavbar";
+import  { Suspense, lazy } from "react";
 import { courseEndpoints } from "../../constraints/endpoints/courseEndpoints";
-import Footer from "../tutor/Footer";
+import Spinner from "../../components/user/Spinner";
+const UserNavbar = lazy(() => import("../../components/user/UserNavbar"));
+const Banner = lazy(() => import("../../components/user/Banner"));
+const Courses = lazy(() => import("../../components/user/Courses"));
+const Footer = lazy(() => import("../tutor/Footer"));
 function UserHome() {
   return (
+    <Suspense fallback={<Spinner/>}>
     <div>
       <UserNavbar />
       <Banner/>
@@ -21,6 +24,7 @@ function UserHome() {
       />
       <Footer/>
     </div>
+    </Suspense>
   );
 }
 
