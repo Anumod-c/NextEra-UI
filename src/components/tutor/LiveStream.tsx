@@ -7,9 +7,9 @@ interface LiveStreamProps {
 }
 const LiveStream: React.FC<LiveStreamProps> = ({ roomId, tutorName, tutorId }) => {
   const myMeeting = async (element: HTMLDivElement) => {
-    const appId = 562645982;
-    const serverSecret = '66e52e9f21e684d532b62699c16464e4';
-    const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
+    const appId = Number(import.meta.env.VITE_APP_ID); 
+    const serverSecret = import.meta.env.VITE_SERVER_SECRET; 
+        const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
       appId,
       serverSecret,
       roomId || '',

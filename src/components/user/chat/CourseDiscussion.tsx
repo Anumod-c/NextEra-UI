@@ -65,10 +65,10 @@ const CourseDiscussion: React.FC<CourseDiscussionProps> = ({
       return;
     }
 
-    const appId = 562645982;
-    const serverSecret = "66e52e9f21e684d532b62699c16464e4";
+    const appId = Number(import.meta.env.VITE_APP_ID); 
+    const serverSecret = import.meta.env.VITE_SERVER_SECRET; 
     const userID = currentUserId;
-    console.log("selected coure for streaming", selectedCourse._id);
+    console.log("selected coure for streaming", selectedCourse._id,appId,serverSecret);
     const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
       appId,
       serverSecret,
