@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 const About = () => {
   return (
     <section className="py-16   bg-blue-50">
-      <div className="container p-2 mx-auto flex flex-col md:flex-row   items-center">
+      <div className="container p-2 mx-auto flex flex-col-reverse md:flex-row   items-center">
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
