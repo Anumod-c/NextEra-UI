@@ -3,13 +3,13 @@ import { motion } from 'framer-motion';
 
 const About = () => {
   return (
-    <section className="py-16  pl-14 bg-blue-50">
-      <div className="container mx-auto flex flex-col md:flex-row items-center">
+    <section className="py-16   bg-blue-50">
+      <div className="container p-2 mx-auto flex flex-col md:flex-row   items-center">
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 1 }}
-          className="w-full md:w-1/2 p-6">
+          className="w-full md:w-1/2 p-16">
           <h2 className="text-4xl font-bold mb-4">Why Nextera?</h2>
           <p className="text-lg mb-6">At Nextera, we're committed to providing the best e-learning experience. Whether you're a beginner or an expert, our platform is designed to help you grow and succeed in your learning journey.</p>
         </motion.div>
@@ -30,7 +30,9 @@ const About = () => {
       </div>
 
       {/* Features Section */}
-      <div className="grid grid-cols-1 mt-16 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="flex justify-between p-4">
+
+      <div className="grid grid-cols-1 mt-16 md:grid-cols-3 lg:grid-cols-4 gap-6  ">
         {/* Card 1: Best Tutors */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -180,6 +182,8 @@ const About = () => {
           </p>
         </motion.div>
       </div>
+      </div>
+
     </section>
   );
 };

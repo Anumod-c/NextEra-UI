@@ -6,7 +6,7 @@ import FAQ from '../../components/user/FAQ'
 import Footer from '../tutor/Footer'
 function UserLandingPage() {  
   return (
-    <div>
+    <div className="overflow-hidden">
     <Hero />
     <About />
     <Courses fetchUrl={courseEndpoints.mostRatedCourse} title="Most Rated Courses" subTitle="See what students love the most"/>

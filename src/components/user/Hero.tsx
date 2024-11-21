@@ -8,8 +8,8 @@ const Hero = () => {
     navigate('/UserTutorSelection')
   }
   return (
-    <section className="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-blue-400 to-indigo-600">
-      <div className="lottiplayer w-full md:w-1/2 flex justify-center">
+    <section className="flex flex-col items-center pt-6 h-screen bg-gradient-to-r from-blue-400 to-indigo-600">
+      <div className="lottiplayer w-full md:w-1/2 flex items-center justify-center overflow-hidden">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -28,8 +28,7 @@ const Hero = () => {
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}>
-        <h1 className='text-5xl'>NEXTERA</h1>
-        <h1 className="text-5xl font-bold">Empower Your Learning Journey with Nextera</h1>
+        <h1 className="text-3xl font-bold">Empower Your Learning Journey with Nextera</h1>
         <p className="mt-4 text-lg">Courses, Live Classes, Chat, and an Integrated IDE — All in One Platform</p>
         <motion.button onClick={handleClick}
           whileHover={{ scale: 1.1 }}
